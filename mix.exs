@@ -6,6 +6,7 @@ defmodule HubsynchTwo.MixProject do
       apps_path: "apps",
       version: "0.1.0",
       start_permanent: Mix.env() == :prod,
+      aliases: aliases(),
       deps: deps()
     ]
   end
@@ -17,5 +18,29 @@ defmodule HubsynchTwo.MixProject do
   # Run "mix help deps" for examples and options.
   defp deps do
     []
+  end
+
+  # Aliases are shortcuts or tasks specific to the current project.
+  # For example, to install project dependencies and perform other setup tasks, run:
+  #
+  #     $ mix setup
+  #
+  # See the documentation for `Mix` for more info on aliases.
+  defp aliases do
+    [
+      setup: [
+        "deps.get",
+        "ecto.setup",
+        "cmd npm install --prefix assets"
+      ],
+      "ecto.setup": [
+        "ecto.create",
+        "ecto.migrate",
+        "run apps/hub_identity/priv/repo/seeds.exs",
+        "run apps/hub_ledger/priv/repo/seeds.exs"
+      ],
+      "ecto.reset": ["ecto.drop", "ecto.setup"],
+      test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"]
+    ]
   end
 end

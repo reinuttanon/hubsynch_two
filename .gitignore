@@ -28,3 +28,6 @@ erl_crash.dump
 
 # Ignore mac os DS_Store
 *.DS_Store
+
+# Ignore node modules
+*/node_modules/
