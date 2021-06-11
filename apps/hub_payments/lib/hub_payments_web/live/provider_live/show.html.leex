@@ -1,0 +1,42 @@
+<h1>Show Provider</h1>
+
+<%= if @live_action in [:edit] do %>
+  <%= live_modal @socket, HubPaymentsWeb.ProviderLive.FormComponent,
+    id: @provider.id,
+    title: @page_title,
+    action: @live_action,
+    provider: @provider,
+    return_to: Routes.provider_show_path(@socket, :show, @provider) %>
+<% end %>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @provider.name %>
+  </li>
+
+  <li>
+    <strong>Credentials:</strong>
+    <%= @provider.credentials %>
+  </li>
+
+  <li>
+    <strong>Url:</strong>
+    <%= @provider.url %>
+  </li>
+
+  <li>
+    <strong>Active:</strong>
+    <%= @provider.active %>
+  </li>
+
+  <li>
+    <strong>Uuid:</strong>
+    <%= @provider.uuid %>
+  </li>
+
+</ul>
+
+<span><%= live_patch "Edit", to: Routes.provider_show_path(@socket, :edit, @provider), class: "button" %></span>
+<span><%= live_redirect "Back", to: Routes.provider_index_path(@socket, :index) %></span>

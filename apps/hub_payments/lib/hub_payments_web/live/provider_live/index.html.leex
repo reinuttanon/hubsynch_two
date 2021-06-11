@@ -1,0 +1,43 @@
+<h1>Listing Providers</h1>
+
+<%= if @live_action in [:new, :edit] do %>
+  <%= live_modal @socket, HubPaymentsWeb.ProviderLive.FormComponent,
+    id: @provider.id || :new,
+    title: @page_title,
+    action: @live_action,
+    provider: @provider,
+    return_to: Routes.provider_index_path(@socket, :index) %>
+<% end %>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Credentials</th>
+      <th>Url</th>
+      <th>Active</th>
+      <th>Uuid</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody id="providers">
+    <%= for provider <- @providers do %>
+      <tr id="provider-<%= provider.id %>">
+        <td><%= provider.name %></td>
+        <td><%= provider.credentials %></td>
+        <td><%= provider.url %></td>
+        <td><%= provider.active %></td>
+        <td><%= provider.uuid %></td>
+
+        <td>
+          <span><%= live_redirect "Show", to: Routes.provider_show_path(@socket, :show, provider) %></span>
+          <span><%= live_patch "Edit", to: Routes.provider_index_path(@socket, :edit, provider) %></span>
+          <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: provider.id, data: [confirm: "Are you sure?"] %></span>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<span><%= live_patch "New Provider", to: Routes.provider_index_path(@socket, :new) %></span>
