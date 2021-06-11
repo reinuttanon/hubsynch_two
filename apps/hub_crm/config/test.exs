@@ -2,7 +2,7 @@ use Mix.Config
 
 # Configure the Repos to migrate, drop, etc
 config :hub_crm,
-  ecto_repos: [HubCrm.Repo, HubCrm.HubsynchRepo]
+  ecto_repos: [HubCrm.Repo]
 
 # Configure your database
 #
@@ -13,20 +13,6 @@ config :hub_crm, HubCrm.Repo,
   username: "postgres",
   password: "postgres",
   database: "hub_crm_test#{System.get_env("MIX_TEST_PARTITION")}",
-  hostname: "localhost",
-  pool: Ecto.Adapters.SQL.Sandbox
-
-config :hub_crm, HubCrm.HubIdentityRepo,
-  username: "postgres",
-  password: "postgres",
-  database: "hub_identity_test#{System.get_env("MIX_TEST_PARTITION")}",
-  hostname: "localhost",
-  pool: Ecto.Adapters.SQL.Sandbox
-
-config :hub_crm, HubCrm.HubsynchRepo,
-  username: "root",
-  password: "root",
-  database: "hubsynch_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
 

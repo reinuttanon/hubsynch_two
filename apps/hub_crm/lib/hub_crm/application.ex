@@ -9,10 +9,6 @@ defmodule HubCrm.Application do
     children = [
       # Start the Ecto repository
       HubCrm.Repo,
-      # Start the Ecto Hubsynch repository
-      # HubCrm.HubsynchRepo,
-      # Start the Ecto HubIdentity repository
-      HubCrm.HubIdentityRepo,
       # Start the countries cache
       HubCrm.Countries.CountryServer,
       # Start the Telemetry supervisor

@@ -16,7 +16,7 @@ defmodule HubCrm.DataCase do
 
   use ExUnit.CaseTemplate
 
-  @repos [HubCrm.Repo, HubCrm.HubsynchRepo, HubIdentity.Repo]
+  @repos [HubCrm.Repo, HubIdentity.Repo]
 
   using do
     quote do
@@ -26,6 +26,7 @@ defmodule HubCrm.DataCase do
       import Ecto.Changeset
       import Ecto.Query
       import HubCrm.DataCase
+      import HubCrm.Factory
     end
   end
 

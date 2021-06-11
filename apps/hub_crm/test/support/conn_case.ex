@@ -17,7 +17,7 @@ defmodule HubCrmWeb.ConnCase do
 
   use ExUnit.CaseTemplate
 
-  @repos [HubCrm.Repo, HubCrm.HubsynchRepo, HubIdentity.Repo]
+  @repos [HubCrm.Repo, HubIdentity.Repo]
 
   using do
     quote do
@@ -25,6 +25,7 @@ defmodule HubCrmWeb.ConnCase do
       import Plug.Conn
       import Phoenix.ConnTest
       import HubCrmWeb.ConnCase
+      import HubCrm.Factory
 
       alias HubCrmWeb.Router.Helpers, as: Routes
 
