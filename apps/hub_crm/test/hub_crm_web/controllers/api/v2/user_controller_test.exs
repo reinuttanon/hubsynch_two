@@ -90,7 +90,7 @@ defmodule HubCrmWeb.Api.V2.UserControllerTest do
   end
 
   defp build_api_conn do
-    api_key = HubCrm.HubIdentityFactory.insert(:api_key)
+    api_key = HubIdentity.Factory.insert(:api_key, type: "private")
 
     build_conn()
     |> put_req_header("accept", "application/json")

@@ -1,0 +1,8 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/dashboard">
+      <img src="<%= Routes.static_path(@conn, "/images/sideways_hub_identity_logo.png") %>" alt="HubIdentity logo" class="d-inline-block align-top">
+    </a>
+    <%= link "Log out", to: Routes.administrator_session_path(@conn, :delete), method: :delete, class: "nav-link" %>
+  </div>
+</nav>

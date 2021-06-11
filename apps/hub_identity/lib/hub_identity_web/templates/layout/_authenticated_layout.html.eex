@@ -1,0 +1,17 @@
+<header>
+  <%= render "_top_nav_menu.html", assigns %>
+</header>
+<main role="main" class="container ml-2">
+  <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
+  <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
+
+    <div class="row">
+      <div class="col-3">
+        <%= render "_admin_menu.html", assigns %>
+      </div>
+      <div class="col-9 border-left">
+        <%= @inner_content %>
+      </div>
+    </div>
+
+</main>

@@ -13,7 +13,6 @@
   <thead>
     <tr>
       <th>Name</th>
-      <th>Credentials</th>
       <th>Url</th>
       <th>Active</th>
       <th>Uuid</th>
@@ -25,7 +24,6 @@
     <%= for provider <- @providers do %>
       <tr id="provider-<%= provider.id %>">
         <td><%= provider.name %></td>
-        <td><%= provider.credentials %></td>
         <td><%= provider.url %></td>
         <td><%= provider.active %></td>
         <td><%= provider.uuid %></td>

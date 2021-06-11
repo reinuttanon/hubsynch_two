@@ -1,0 +1,5 @@
+<h4>Data Deletion Confirmation</h4>
+<p>Your Data was deleted on <%= @user_activity.inserted_at %><p>
+<p>Your confirmation number for this is: <%= @user_activity.uid %></p>
+
+<h4>Thank you</h4>

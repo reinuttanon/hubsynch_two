@@ -1,0 +1,13 @@
+<h1><%= @administrator.email %></h1>
+<ul>
+  <li>System: <%= @administrator.system %></li>
+  <li>Created: <%= @administrator.inserted_at %></li>
+</ul>
+
+<%= link "Remove this Administrator", to: Routes.administrator_path(@conn, :delete, @administrator), method: :delete, data: [confirm: "Are you sure?"] %>
+<br/>
+<%= if @current_administrator.system do %>
+  <%= link "Edit this Administrator", to: Routes.administrator_path(@conn, :edit, @administrator) %>
+<% end %>
+
+<h3>when logging and admin activity is available place here</h3>

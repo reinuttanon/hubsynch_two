@@ -1,0 +1,28 @@
+<h1>Show Api key</h1>
+
+<ul>
+
+  <li>
+    <strong>Data:</strong>
+    <%= @api_key.data %>
+  </li>
+
+  <li>
+    <strong>Deleted at:</strong>
+    <%= @api_key.deleted_at %>
+  </li>
+
+  <li>
+    <strong>Type:</strong>
+    <%= @api_key.type %>
+  </li>
+
+  <li>
+    <strong>Uid:</strong>
+    <%= @api_key.uid %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.api_key_path(@conn, :edit, @api_key) %></span>
+<span><%= link "Back", to: Routes.api_key_path(@conn, :index) %></span>

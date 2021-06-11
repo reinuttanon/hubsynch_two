@@ -1,0 +1,24 @@
+<h1>Our Privacy Policy</h1>
+<div class=kiyaku-wrap>
+  <p>Hivelocity Co., Ltd. (hereafter, “this/the Company”) conducts operations surrounding the support of web marketing through internet services. This Company aims, as a company that provides quality projects and services, to provide convenient, beneficial, high-quality products and services that satisfy the customer. As such, we consider the responsible use and guardianship of the personal information provided to us by the various individuals we interact with, including the personal information entrusted to us by our customers, to be one of our most important obligations. </p>
+  <p>This Company collects, uses, and provides personal information only when appropriate, having considered the content and scope of our operations and having clearly established the objectives for its use within only that necessary scope. We take all possible measures to ensure that the personal information collected by this Company is used only within the scope of the objectives for its use and never used for other purposes. Additionally, this Company recognizes the risks of unauthorized access to personal information and of the loss, disruption, destruction, alteration, falsification, and disclosure of personal information and we take all possible measures to prevent such occurrences or redress them should they occur.</p>
+  <p>This Company has established a Privacy Policy (Policy for the Protection of Personal Information) and is committed to the execution and maintenance of measures for all necessary and appropriate guardianship of personal information. All employees of this Company, including officers, regular employees, agency temporary employees, and other special employees, adhere to this Privacy Policy, laws concerning personal information, policies established by Japan, and other relevant standards.</p>
+  <p>To realize compliance with these rules, this Company as a whole has engaged in efforts including the establishment of a compliance program based on JISQ15001, the regular review of changes in social obligations, and the continuous improvement of our personal information protection management system. For any questions or complaints pertaining to this Company’s Privacy Policy (Policy for the Protection of Personal Information) or about the handling of personal information, please contact us as listed below.</p>
+  <p class=right-side>Last Update: October 5th, 2015
+    <br/>Enacted: April 20th, 2006
+    <br/>Hivelocity Inc.
+    <br/>CEO / Akiyoshi Fukumitsu
+  </p>
+  <p>
+    <strong><span class=txt-sl>Hivelocity Inc. : <a href="/en/contact">Inquiry Form</a></span></strong>
+    <br/>For more information about our objectives in using personal information or for procedures for requesting the release of personal information,
+    <br/>please reference this Company’s “<a href="/en/kojinjoho">Personal Information Handling practices</a>”.
+  </p>
+  <p>
+    <span class=null>
+      <img loading=lazy class=alignleft src="https://bst-image.imgix.net/prod-hivelocity/content/uploads/2018/05/pmark-eng.png" alt=pmark width=100 height=100 data-pagespeed-url-hash=3990385897 onload="pagespeed.CriticalImages.checkImageForCriticality(this);"/>
+    </span>
+  </p>
+</div>
+
+<span><%= link "日本語", to: "/privacy_policy/v1/jp" %></span>

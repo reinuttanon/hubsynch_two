@@ -1,0 +1,3 @@
+<h1>Edit ProviderConfig</h1>
+
+<%= render "form.html", Map.put(assigns, :action, Routes.provider_config_path(@conn, :update, @provider_config)) %>

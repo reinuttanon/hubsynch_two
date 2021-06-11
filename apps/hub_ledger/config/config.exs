@@ -23,15 +23,15 @@ config :logger, :console,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
-# Get your money right with config
-config :money,
-  default_currency: :JPY,
-  separator: ",",
-  fractional_unit: true,
-  strip_insignificant_zeros: false,
-  custom_currencies: [
-    HIP: %{name: "Hivelocity Points", symbol: "HiP", exponent: 0, symbol_on_right: true}
-  ]
+# # Get your money right with config
+# config :money,
+#   default_currency: :JPY,
+#   separator: ",",
+#   fractional_unit: true,
+#   strip_insignificant_zeros: false,
+#   custom_currencies: [
+#     HIP: %{name: "Hivelocity Points", symbol: "HiP", exponent: 0, symbol_on_right: true}
+#   ]
 
 # Sendgrid config
 config :sendgrid,

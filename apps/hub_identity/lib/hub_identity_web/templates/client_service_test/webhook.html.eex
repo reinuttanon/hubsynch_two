@@ -1,0 +1,68 @@
+<h2>Testing your Webhook OUTDATED UPDATE!!</h2>
+
+<h4>General Explanation</h4>
+<p>This webhook occurs after a user has successfully authenticated with an Open Authentication Provider (such as Google or Facebook) and before the user record is saved.</p>
+<p>The goal of the webhook is to associate the authenticated user with a user on your system or database by the users email address.</p>
+<p>In order to facilitate the request your system must have an open endpoint able to recieve an <span class="text-success">HTTPS GET</span> request and return the proper <span class="text-info">JSON</span> reponse.</p>
+
+<h4>Webhook Request</h4>
+<p>The <span class="text-success">GET</span> request will be the URL from the webhook settings.</p>
+<div class="w-auto p-2 bg-light">
+  <p><%= @client_service.webhook_url %><span class="text-info">?email=</span><span class="text-danger">email address of user</span></p>
+</div>
+
+<h4>Webhook Response</h4>
+<p>The <span class="text-info">JSON</span> response your webhook endpoint needs to return:</p>
+<div class="w-auto bg-light">
+  <pre><code>
+    {
+      <span class="text-info">"owner_type"</span>: <span class="text-danger">string</span>,
+      <span class="text-info">"owner_uid"</span>: <span class="text-danger">string</span>
+    }
+  </code></pre>
+</div>
+
+<h4>Webhook Authentication</h4>
+<p>If your webhook endpoint needs authentication credentials those can be configured in the settings.</p>
+<p>The webhook endpoint authorization type</p>
+<div class="w-auto p-2 bg-light">
+  <p class="text-info"><%= @client_service.webhook_auth_type %></p>
+</div>
+<p>The webhook endpoint authorization key</p>
+<div class="w-auto p-2 bg-light">
+  <p class="text-danger"><%= @client_service.webhook_auth_key %></p>
+</div>
+
+<h4>Test</h4>
+<div class="card bg-light mb-3">
+  <div class="card-body">
+      <%= form_for @conn, Routes.client_service_test_path(@conn, :send_webhook, @client_service), fn f -> %>
+        <div class="mb-3 row">
+          <%= label f, :email, class: "col-sm-2 col-form-label" %>
+          <div class="col-sm-10">
+            <%= text_input f, :email, class: "form-control" %>
+          </div>
+        </div>
+        <%= submit "Send Webhook", class: "btn btn-primary" %>
+      <% end %>
+  </div>
+</div>
+
+<%= if assigns[:success_response] do %>
+<div class="card text-white bg-success mb-3">
+  <div class="card-header">Success Response</div>
+  <div class="card-body">
+    <p class="card-text">Owner UID:<%= @success_response.owner_uid %></p>
+    <p class="card-text">Owner Type:<%= @success_response.owner_type %></p>
+  </div>
+</div>
+<% end %>
+
+<%= if assigns[:fail_response] do %>
+<div class="card text-white bg-danger mb-3">
+  <div class="card-header">Failure Response</div>
+  <div class="card-body">
+    <p class="card-text"><%= @fail_response %></p>
+  </div>
+</div>
+<% end %>

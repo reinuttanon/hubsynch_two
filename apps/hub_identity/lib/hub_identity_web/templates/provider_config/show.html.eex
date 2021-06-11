@@ -1,0 +1,38 @@
+<h1><%= @provider_config.name %></h1>
+
+<ul>
+
+  <li>
+    <strong>Auth URl:</strong>
+    <%= @provider_config.auth_url %>
+  </li>
+
+  <li>
+    <strong>Client ID:</strong>
+    <%= @provider_config.client_id %>
+  </li>
+
+  <li>
+    <strong>Client Secret:</strong>
+    <%= @provider_config.client_secret %>
+  </li>
+
+  <li>
+    <strong>Scopes:</strong>
+    <%= @provider_config.scopes %>
+  </li>
+
+  <li>
+    <strong>Active:</strong>
+    <%= @provider_config.active %>
+  </li>
+
+
+  <li>
+    <strong>Uid:</strong>
+    <%= @provider_config.uid %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.provider_config_path(@conn, :edit, @provider_config) %></span>

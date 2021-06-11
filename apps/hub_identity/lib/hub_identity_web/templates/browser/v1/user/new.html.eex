@@ -1,0 +1,51 @@
+<div class="row justify-content-md-center">
+  <div class="col col-md-auto">
+    <div class="card border-0">
+        <img src="<%= Routes.static_path(@conn, "/images/hub_identity.png") %>" class="card-img-top", alt="HubIdentity Logo"/>
+    </div>
+  </div>
+</div>
+
+<div class="row justify-content-md-center">
+  <br/>
+  <br/>
+</div>
+
+<div class="row justify-content-lg-center">
+  <div class="col">
+    <div class="card shadow-sm mb-5 bg-body rounded">
+      <div class="card-header">
+        Register with HubIdentity
+      </div>
+      <div class="card-body mx-4">
+        <%= form_for @changeset, Routes.browser_v1_user_path(@conn, :create), fn f -> %>
+
+          <div class="form-group row">
+            <%= label f, :email, class: "form-label" %>
+            <%= email_input f, :email, required: true, class: "form-control" %>
+            <%= error_tag f, :email %>
+          </div>
+
+          <div class="form-group row">
+            <%= label f, :password, class: "form-label" %>
+            <%= password_input f, :password, required: true, class: "form-control" %>
+            <%= error_tag f, :password %>
+          </div>
+
+          <div class="form-group row">
+            <%= label f, :password_confirmation, class: "form-label" %>
+            <%= password_input f, :password_confirmation, required: true, class: "form-control" %>
+            <%= error_tag f, :password_confirmation %>
+          </div>
+
+          <div>
+            <%= submit "Register", class: "btn btn-primary" %>
+          </div>
+        <% end %>
+      </div>
+      <div class="card-footer text-muted">
+        Already have a HubIdentity account? <%= link "Login", to: Routes.browser_v1_provider_path(@conn, :providers) %>
+      </div>
+    </div>
+  </div>
+</div>

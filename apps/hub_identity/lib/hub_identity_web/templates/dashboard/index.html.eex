@@ -1,0 +1,23 @@
+<h2>Dashboard</h2>
+
+<div class="card shadow p-3 mb-5 bg-white rounded">
+  <div class="card-body">
+    <h3 class="card-title">Users</h3>
+    <p>HubIdentity Users: <%= @hub_identity_users %></p>
+    <%= for {name, total} <- @provider_users do %>
+      <p><%= String.capitalize(name) %> OauthUsers <%= total %></p>
+    <% end %>
+    <h4 class="card-subtitle mb-2 font-weight-light">Total <%= @total_users %></h4>
+  </div>
+</div>
+
+<div class="card shadow p-3 mb-5 bg-white rounded">
+  <div class="card-body">
+    <h3 class="card-title">Authentications</h3>
+    <p>HubIdentity Users: <%= @hub_identity_auths %></p>
+    <%= for {name, total} <- @provider_auths do %>
+      <p><%= String.capitalize(name) %> OauthUsers <%= total %></p>
+    <% end %>
+    <h4 class="card-subtitle mb-2 font-weight-light">Total: <%= @total_auths %></h4>
+  </div>
+</div>

@@ -1,0 +1,22 @@
+<h1>Provider Configurations</h1>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Uid</th>
+      <th scope="col">Active</th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for provider_config <- @provider_configs do %>
+    <tr>
+      <td><%= link provider_config.name, to: Routes.provider_config_path(@conn, :show, provider_config) %></td>
+      <td><%= provider_config.uid %></td>
+      <td><%= provider_config.active %></td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New ProviderConfig", to: Routes.provider_config_path(@conn, :new) %></span>

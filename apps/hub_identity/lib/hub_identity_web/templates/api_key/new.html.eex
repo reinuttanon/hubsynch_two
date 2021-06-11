@@ -1,0 +1,3 @@
+<h1>New Api key</h1>
+
+<%= render "form.html", Map.put(assigns, :action, Routes.api_key_path(@conn, :create)) %>

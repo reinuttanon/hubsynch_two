@@ -1,0 +1,25 @@
+<h2>Testing your Redirect</h2>
+
+<h4>General Explanation</h4>
+<p>
+	Once a User has successfully authenticated with either HubIdentity or an Open Authentication Provider (such as Google or Facebook) a redirect back to your application will be sent to the user.
+</p>
+<p>
+	The redirect will be created from the URL specificed in your applications settings. (and shown below)
+</p>
+<p>
+	The redirect will contain an <span class="text-success">User Token</span> inside the request.  The <span class="text-success">User Token</span> can be used along with your <span class="text-danger">Private API Key</span> to obtain the users information through our API.
+</p>
+
+<h4>Test</h4>
+<div class="card bg-light mb-3">
+  <div class="card-body">
+    <h6 class="card-subtitle mb-2 font-weight-light">Redirect URL:</h6>
+    <div class="w-auto p-2 bg-white border border-primary">
+      <%= @client_service.redirect_url %>
+    </div>
+    <br/>
+    <p>Generate a sample User Token and attach them to a redirect to your application</p>
+    <%= link "Generate", to: Routes.client_service_test_path(@conn, :generate_redirect, @client_service), class: "btn btn-primary",  target: "_blank" %>
+  </div>
+</div>

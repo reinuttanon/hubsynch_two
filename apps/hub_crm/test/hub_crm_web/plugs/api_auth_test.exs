@@ -7,7 +7,7 @@ defmodule HubCrmWeb.Plugs.ApiAuthTest do
     setup [:create_user]
 
     test "with proper x-api-key header returns a session", %{user: user} do
-      api_key = HubCrm.HubIdentityFactory.insert(:api_key)
+      api_key = HubIdentity.Factory.insert(:api_key)
 
       conn =
         build_api_conn(api_key.data)
@@ -25,7 +25,7 @@ defmodule HubCrmWeb.Plugs.ApiAuthTest do
     end
 
     test "with public x-api-key returns 401 not authorized", %{user: user} do
-      api_key = HubCrm.HubIdentityFactory.insert(:api_key, type: "public")
+      api_key = HubIdentity.Factory.insert(:api_key, type: "public")
 
       conn =
         build_api_conn(api_key.data)

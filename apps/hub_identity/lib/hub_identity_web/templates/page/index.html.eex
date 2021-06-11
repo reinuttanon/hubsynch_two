@@ -1,0 +1,22 @@
+<div class="row justify-content-md-center">
+  <div class="col col-md-auto">
+    <div class="card border-0">
+        <img src="<%= Routes.static_path(@conn, "/images/hub_identity.png") %>" class="card-img-top", alt="HubIdentity Logo"/>
+    </div>
+  </div>
+</div>
+
+<div class="row justify-content-md-center">
+  <br/>
+  <br/>
+</div>
+
+<div class="row justify-content-lg-center">
+  <div class="col">
+    <section class="text-center">
+      <h1><%= gettext "Welcome to %{name}", name: "HubIdentity" %></h1>
+      <p>Peace of mind from prototype to production</p>
+      <%= link "Log in", to: Routes.administrator_session_path(@conn, :new), class: "nav-link" %>
+    </section>
+  </div>
+</div>

@@ -1,0 +1,24 @@
+<h1>Client services</h1>
+
+<table class="table table-striped">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col"></th>
+      <th scope="col">Name</th>
+      <th scope="col">Url</th>
+      <th scope="col">Uid</th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for client_service <- @client_services do %>
+    <tr>
+      <td><img src="<%= client_service.logo %>" style="height: 100px" alt="<%= client_service.name %> logo"></td>
+      <td><%= link client_service.name, to: Routes.client_service_path(@conn, :show, client_service) %></td>
+      <td><%= client_service.url %></td>
+      <td><%= client_service.uid %></td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Client service", to: Routes.client_service_path(@conn, :new) %></span>

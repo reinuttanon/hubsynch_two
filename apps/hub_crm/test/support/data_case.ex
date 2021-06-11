@@ -16,7 +16,7 @@ defmodule HubCrm.DataCase do
 
   use ExUnit.CaseTemplate
 
-  @repos [HubCrm.Repo, HubCrm.HubsynchRepo, HubCrm.HubIdentityRepo]
+  @repos [HubCrm.Repo, HubCrm.HubsynchRepo, HubIdentity.Repo]
 
   using do
     quote do

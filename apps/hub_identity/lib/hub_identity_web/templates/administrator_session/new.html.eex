@@ -1,0 +1,45 @@
+<div class="row justify-content-md-center">
+  <div class="col col-md-auto">
+    <div class="card border-0">
+        <img src="<%= Routes.static_path(@conn, "/images/hub_identity.png") %>" class="card-img-top", alt="HubIdentity Logo"/>
+    </div>
+  </div>
+</div>
+
+<div class="row justify-content-md-center">
+  <br/>
+  <br/>
+</div>
+
+<h1>Log in</h1>
+
+<%= form_for @conn, Routes.administrator_session_path(@conn, :create), [as: :administrator], fn f -> %>
+  <%= if @error_message do %>
+    <div class="alert alert-danger">
+      <p><%= @error_message %></p>
+    </div>
+  <% end %>
+
+  <div class="mb-3">
+    <%= label f, :email, class: "form-label" %>
+    <%= email_input f, :email, required: true, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= label f, :password, class: "form-label" %>
+    <%= password_input f, :password, required: true, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= label f, :remember_me, "Keep me logged in for 60 days", class: "form-label" %>
+    <%= checkbox f, :remember_me, class: "form-control" %>
+  </div>
+
+  <div>
+    <%= submit "Log in", class: "btn btn-primary" %>
+  </div>
+<% end %>
+
+<p>
+  <%= link "Forgot your password?", to: Routes.administrator_reset_password_path(@conn, :new) %>
+</p>

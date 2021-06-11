@@ -1,0 +1,32 @@
+<h1>Listing Api keys</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Data</th>
+      <th>Deleted at</th>
+      <th>Type</th>
+      <th>Uid</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for api_key <- @api_keys do %>
+    <tr>
+      <td><%= api_key.data %></td>
+      <td><%= api_key.deleted_at %></td>
+      <td><%= api_key.type %></td>
+      <td><%= api_key.uid %></td>
+
+      <td>
+        <span><%= link "Show", to: Routes.api_key_path(@conn, :show, api_key) %></span>
+        <span><%= link "Edit", to: Routes.api_key_path(@conn, :edit, api_key) %></span>
+        <span><%= link "Delete", to: Routes.api_key_path(@conn, :delete, api_key), method: :delete, data: [confirm: "Are you sure?"] %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Api key", to: Routes.api_key_path(@conn, :new) %></span>

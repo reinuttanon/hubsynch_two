@@ -6,9 +6,33 @@ defmodule HubPayments.PaymentsTest do
   describe "charges" do
     alias HubPayments.Payments.Charge
 
-    @valid_attrs %{money: %{}, owner: %{}, process_date: "2010-04-17T14:00:00Z", reference: "some reference", request_date: "2010-04-17T14:00:00Z", settle_date: "2010-04-17T14:00:00Z", uuid: "some uuid"}
-    @update_attrs %{money: %{}, owner: %{}, process_date: "2011-05-18T15:01:01Z", reference: "some updated reference", request_date: "2011-05-18T15:01:01Z", settle_date: "2011-05-18T15:01:01Z", uuid: "some updated uuid"}
-    @invalid_attrs %{money: nil, owner: nil, process_date: nil, reference: nil, request_date: nil, settle_date: nil, uuid: nil}
+    @valid_attrs %{
+      money: %{amount: 1000, currency: "JPY"},
+      owner: %{},
+      process_date: "2010-04-17T14:00:00Z",
+      reference: "some reference",
+      request_date: "2010-04-17T14:00:00Z",
+      settle_date: "2010-04-17T14:00:00Z",
+      uuid: "some uid"
+    }
+    @update_attrs %{
+      money: %{amount: 5000, currency: "JPY"},
+      owner: %{},
+      process_date: "2011-05-18T15:01:01Z",
+      reference: "some updated reference",
+      request_date: "2011-05-18T15:01:01Z",
+      settle_date: "2011-05-18T15:01:01Z",
+      uuid: "some updated uuid"
+    }
+    @invalid_attrs %{
+      money: nil,
+      owner: nil,
+      process_date: nil,
+      reference: nil,
+      request_date: nil,
+      settle_date: nil,
+      uuid: nil
+    }
 
     def charge_fixture(attrs \\ %{}) do
       {:ok, charge} =
@@ -31,13 +55,15 @@ defmodule HubPayments.PaymentsTest do
 
     test "create_charge/1 with valid data creates a charge" do
       assert {:ok, %Charge{} = charge} = Payments.create_charge(@valid_attrs)
-      assert charge.money == %{}
+
+      assert charge.money == %Money{amount: 1000, currency: :JPY}
       assert charge.owner == %{}
+
       assert charge.process_date == DateTime.from_naive!(~N[2010-04-17T14:00:00Z], "Etc/UTC")
       assert charge.reference == "some reference"
       assert charge.request_date == DateTime.from_naive!(~N[2010-04-17T14:00:00Z], "Etc/UTC")
       assert charge.settle_date == DateTime.from_naive!(~N[2010-04-17T14:00:00Z], "Etc/UTC")
-      assert charge.uuid == "some uuid"
+      assert charge.uuid == "some uid"
     end
 
     test "create_charge/1 with invalid data returns error changeset" do
@@ -47,7 +73,7 @@ defmodule HubPayments.PaymentsTest do
     test "update_charge/2 with valid data updates the charge" do
       charge = charge_fixture()
       assert {:ok, %Charge{} = charge} = Payments.update_charge(charge, @update_attrs)
-      assert charge.money == %{}
+      assert charge.money == %Money{amount: 5000, currency: :JPY}
       assert charge.owner == %{}
       assert charge.process_date == DateTime.from_naive!(~N[2011-05-18T15:01:01Z], "Etc/UTC")
       assert charge.reference == "some updated reference"
@@ -77,9 +103,33 @@ defmodule HubPayments.PaymentsTest do
   describe "points" do
     alias HubPayments.Payments.Point
 
-    @valid_attrs %{money: %{}, owner: %{}, process_date: "2010-04-17T14:00:00Z", reference: "some reference", request_date: "2010-04-17T14:00:00Z", settle_date: "2010-04-17T14:00:00Z", uuid: "some uuid"}
-    @update_attrs %{money: %{}, owner: %{}, process_date: "2011-05-18T15:01:01Z", reference: "some updated reference", request_date: "2011-05-18T15:01:01Z", settle_date: "2011-05-18T15:01:01Z", uuid: "some updated uuid"}
-    @invalid_attrs %{money: nil, owner: nil, process_date: nil, reference: nil, request_date: nil, settle_date: nil, uuid: nil}
+    @valid_attrs %{
+      money: %{amount: 1000, currency: "HiP"},
+      owner: %{},
+      process_date: "2010-04-17T14:00:00Z",
+      reference: "some reference",
+      request_date: "2010-04-17T14:00:00Z",
+      settle_date: "2010-04-17T14:00:00Z",
+      uuid: "some uuid"
+    }
+    @update_attrs %{
+      money: %{amount: 5000, currency: "HiP"},
+      owner: %{},
+      process_date: "2011-05-18T15:01:01Z",
+      reference: "some updated reference",
+      request_date: "2011-05-18T15:01:01Z",
+      settle_date: "2011-05-18T15:01:01Z",
+      uuid: "some updated uuid"
+    }
+    @invalid_attrs %{
+      money: nil,
+      owner: nil,
+      process_date: nil,
+      reference: nil,
+      request_date: nil,
+      settle_date: nil,
+      uuid: nil
+    }
 
     def point_fixture(attrs \\ %{}) do
       {:ok, point} =
@@ -102,7 +152,7 @@ defmodule HubPayments.PaymentsTest do
 
     test "create_point/1 with valid data creates a point" do
       assert {:ok, %Point{} = point} = Payments.create_point(@valid_attrs)
-      assert point.money == %{}
+      assert point.money == %Money{amount: 1000, currency: :HIP}
       assert point.owner == %{}
       assert point.process_date == DateTime.from_naive!(~N[2010-04-17T14:00:00Z], "Etc/UTC")
       assert point.reference == "some reference"
@@ -118,7 +168,7 @@ defmodule HubPayments.PaymentsTest do
     test "update_point/2 with valid data updates the point" do
       point = point_fixture()
       assert {:ok, %Point{} = point} = Payments.update_point(point, @update_attrs)
-      assert point.money == %{}
+      assert point.money == %Money{amount: 5000, currency: :HIP}
       assert point.owner == %{}
       assert point.process_date == DateTime.from_naive!(~N[2011-05-18T15:01:01Z], "Etc/UTC")
       assert point.reference == "some updated reference"

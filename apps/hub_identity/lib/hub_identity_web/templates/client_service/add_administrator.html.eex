@@ -1,0 +1,18 @@
+<h1>Add an Administrator to <%= @client_service.name %></h1>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">Email</th>
+      <th scope="col">Add</th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for administrator <- @administrators do %>
+    <tr>
+      <td><%= administrator.email %></td>
+      <td><%= link "add", to: Routes.client_service_path(@conn, :add_administrator, @client_service, %{administrator_id: administrator.id}), method: :post %></td>
+    </tr>
+<% end %>
+  </tbody>
+</table>

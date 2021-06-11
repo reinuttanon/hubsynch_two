@@ -37,6 +37,16 @@ config :logger, :console,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
+# Get your money right with config
+config :money,
+  default_currency: :JPY,
+  separator: ",",
+  fractional_unit: true,
+  strip_insignificant_zeros: false,
+  custom_currencies: [
+    HIP: %{name: "Hivelocity Points", symbol: "HiP", exponent: 0, symbol_on_right: true}
+  ]
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 # import_config "#{Mix.env()}.exs"
