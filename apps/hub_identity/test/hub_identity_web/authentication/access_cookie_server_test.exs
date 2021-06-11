@@ -1,5 +1,5 @@
 defmodule HubIdentityWeb.Authentication.AccessCookiesServerTest do
-  use HubIdentityWeb.ConnCase, async: true
+  use HubIdentityWeb.ConnCase, async: false
 
   import HubIdentity.Factory
 
