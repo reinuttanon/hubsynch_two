@@ -10,7 +10,7 @@ defmodule HubCrm.Application do
       # Start the Ecto repository
       HubCrm.Repo,
       # Start the Ecto Hubsynch repository
-      HubCrm.HubsynchRepo,
+      # HubCrm.HubsynchRepo,
       # Start the Ecto HubIdentity repository
       HubCrm.HubIdentityRepo,
       # Start the countries cache
