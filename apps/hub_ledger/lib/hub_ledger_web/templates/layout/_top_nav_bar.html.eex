@@ -1,0 +1,48 @@
+<nav class="navbar has-background-light" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a class="navbar-item" href="/">HubLedger</a>
+
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+
+  <div id="navbarBasicExample" class="navbar-menu">
+    <div class="navbar-start">
+
+      <div class="navbar-item has-dropdown is-hoverable">
+        <p class="navbar-link">
+          Reporting
+        </p>
+
+        <div class="navbar-dropdown">
+          <%= link "Accounts", to: Routes.reports_account_path(@conn, :index), class: "navbar-item" %>
+          <%= link "Journal Entries", to: Routes.reports_entry_path(@conn, :index), class: "navbar-item" %>
+          <%= link "Transactions", to: Routes.reports_transaction_path(@conn, :index), class: "dropdown-item" %>
+        </div>
+      </div>
+
+      <div class="navbar-item has-dropdown is-hoverable">
+        <p class="navbar-link">
+          Settings
+        </p>
+
+        <div class="navbar-dropdown">
+          <%= link "Accounts", to: Routes.account_path(@conn, :index), class: "dropdown-item" %>
+          <%= link "Entry Builders", to: Routes.entry_builder_path(@conn, :index), class: "dropdown-item" %>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <div class="navbar-end">
+      <div class="navbar-item">
+        <div class="buttons">
+          <%= link "Log out", to: Routes.session_path(@conn, :log_out), class: "button is-link is-outlined" %>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>

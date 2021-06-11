@@ -1,0 +1,24 @@
+<h4 class="title is-4">Accounts</h4>
+
+<table class="table is-hoverable">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Currency</th>
+      <th>Type</th>
+      <th>UUID</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= for account <- @accounts do %>
+      <tr>
+        <td><%= link account.name, to: Routes.account_path(@conn, :show, account) %></td>
+        <td><%= account.currency %></td>
+        <td><%= account.type %></td>
+        <td><%= account.uuid %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<span><%= link "New account", to: Routes.account_path(@conn, :new), class: "button is-link" %></span>

@@ -1,0 +1,29 @@
+<div class="content">
+  <h1><%= @page_title %></h1>
+
+  <table class="table is-bordered">
+    <thead>
+      <tr>
+        <th>Description</th>
+        <th>UUID</th>
+        <th>Reported Date</th>
+        <th>Owner Object</th>
+        <th>Owner UID</th>
+        <th>Transactions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= for entry <- @entries do %>
+        <tr>
+          <td><%= entry.description %></td>
+          <td><%= entry.uuid %></td>
+          <td><%= entry.reported_date %></td>
+          <td><%= entry.owner.object %></td>
+          <td><%= entry.owner.uid %></td>
+          <td><%= length(entry.transactions) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+</div>

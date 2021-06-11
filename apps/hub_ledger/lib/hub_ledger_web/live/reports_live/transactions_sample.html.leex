@@ -1,0 +1,27 @@
+<div class="content">
+  <h1><%= @page_title %></h1>
+
+  <table class="table is-bordered">
+    <thead>
+      <tr>
+        <th>Kind</th>
+        <th>Description</th>
+        <td>Account Name</td>
+        <th>Amount</th>
+        <th>Reported Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= for transaction <- @transactions do %>
+        <tr>
+          <td><%= transaction.kind %></td>
+          <td><%= transaction.description %></td>
+          <td><%= transaction.account.name %></td>
+          <td><%= Money.to_string(transaction.money) %></td>
+          <td><%= transaction.reported_date %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+</div>

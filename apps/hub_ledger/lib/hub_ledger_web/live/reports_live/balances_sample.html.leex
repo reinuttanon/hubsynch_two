@@ -1,0 +1,27 @@
+<div class="content">
+  <h1><%= @page_title %></h1>
+
+  <table class="table is-hoverable">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>UUID</th>
+        <th>From Date</th>
+        <th>To Date</th>
+        <th>Balance</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= for balance <- @balances do %>
+        <tr>
+          <td><%= balance.name %></td>
+          <td><%= balance.uuid %></td>
+          <td><%= balance.from_date %></td>
+          <td><%= balance.to_date%></td>
+          <td><%= Money.new(balance.amount, balance.currency) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  
+</div>

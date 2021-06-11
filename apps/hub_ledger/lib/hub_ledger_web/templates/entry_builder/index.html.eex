@@ -1,0 +1,22 @@
+<h4 class="title is-4">Entry Builders</h4>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">UUID</th>
+      <th scope="col">Active</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= for entry_builder <- @entry_builders do %>
+      <tr>
+        <td><%= link entry_builder.name, to: Routes.entry_builder_path(@conn, :show, entry_builder) %></td>
+        <td><%= entry_builder.uuid %></td>
+        <td><%= entry_builder.active %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<span><%= link "New entry_builder", to: Routes.entry_builder_path(@conn, :new), class: "button is-link" %></span>

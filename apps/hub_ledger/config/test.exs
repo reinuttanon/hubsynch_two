@@ -1,0 +1,41 @@
+use Mix.Config
+# Configure the Repos to migrate, drop, etc
+config :hub_ledger,
+  ecto_repos: [HubLedger.Repo, HubLedger.HubIdentityRepo]
+
+# Configure your database
+#
+# The MIX_TEST_PARTITION environment variable can be used
+# to provide built-in test partitioning in CI environment.
+# Run `mix help test` for more information.
+config :hub_ledger, HubLedger.Repo,
+  username: "postgres",
+  password: "postgres",
+  database: "hub_ledger_test#{System.get_env("MIX_TEST_PARTITION")}",
+  hostname: "localhost",
+  pool: Ecto.Adapters.SQL.Sandbox
+
+config :hub_ledger, HubLedger.HubIdentityRepo,
+  username: "postgres",
+  password: "postgres",
+  database: "hub_identity_test#{System.get_env("MIX_TEST_PARTITION")}",
+  hostname: "localhost",
+  pool: Ecto.Adapters.SQL.Sandbox
+
+# We don't run a server during test. If one is required,
+# you can enable the server option below.
+config :hub_ledger, HubLedgerWeb.Endpoint,
+  http: [port: 4002],
+  server: false
+
+config :hub_ledger, hub_identity: HubLedger.HttpTester
+config :hub_ledger, hub_identity_user: HubLedger.HttpTester
+
+config :hub_ledger, email: HubLedger.EmailTester
+
+# Sendgrid config
+config :sendgrid,
+  api_key: "test_api"
+
+# Print only warnings and errors during test
+config :logger, level: :warn

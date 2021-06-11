@@ -1,0 +1,161 @@
+ <%= if @live_action == :view_sample do %>
+  <%= live_modal @socket, @component,
+    id: :view_sample,
+    page_title: @page_title,
+    entries: @entries,
+    transactions: @transactions,
+    return_to: Routes.reports_entry_path(@socket, :index) %>
+<% end %>
+
+<h4 class="title is-4"><%= @page_title %></h4>
+
+<div class="columns">
+  <div class="column">
+
+    <div class="box has-background-link-light">
+      <h3 class="title is-5">Entry Parameters</h3>
+      <%= f = form_for :parameters, "#", [phx_submit: :add] %>
+
+        <div class="field has-addons">
+          <div class="control is-expanded">
+            <%= text_input f, :description, class: "input", placeholder: "Entry Description" %>
+          </div>
+          <div class="control">
+            <%= submit "Add", class: "button is-info" %>
+          </div>
+        </div>
+      </form>
+
+      <br/>
+
+       <%= f = form_for :parameters, "#", [phx_change: :validate, phx_submit: :add] %>
+        <div class="field has-addons">
+          <div class="control is-expanded">
+           <%= text_input f, :uuid, class: "input", placeholder: "Entry UUID" %>
+          </div>
+          <div class="control">
+            <%= if @errors["uuid"] do %>
+              <%= submit "Add", class: "button is-info", disabled: true %>
+            <% else %>
+              <%= submit "Add", class: "button is-info" %>
+            <% end %>
+            
+          </div>
+        </div>
+          <%= if @errors["uuid"] do %>
+            <p class="help is-danger">Entry UUID is invalid</p>
+          <% end %>
+      </form>
+    </div>
+
+    <div class="box has-background-link-light">
+      <h3 class="title is-5">Owner Parameters</h3>
+      <%= f = form_for :parameters, "#", [phx_submit: :add] %>
+
+        <div class="field has-addons">
+          <div class="control is-expanded">
+            <%= text_input f, :owner_object, class: "input", placeholder: "Owner Object" %>
+          </div>
+          <div class="control">
+            <%= submit "Add", class: "button is-info" %>
+          </div>
+        </div>
+      </form>
+
+      <br/>
+
+       <%= f = form_for :parameters, "#", [phx_submit: :add] %>
+        <div class="field has-addons">
+          <div class="control is-expanded">
+           <%= text_input f, :owner_uid, class: "input", placeholder: "Owner UID" %>
+          </div>
+          <div class="control">
+            <%= submit "Add", class: "button is-info" %>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="box has-background-link-light">
+      <h3 class="title is-5">Entry Dates</h3>
+      <%= f = form_for :parameters, "#", [phx_submit: :add] %>
+        <div class="field has-addons">
+          <label class="field-label is-normal">From</label>
+          <div class="control is-expanded">
+            <%= datetime_local_input f, :from_date, class: "input" %>
+          </div>
+          <div class="control">
+            <%= submit "Add", class: "button is-info" %>
+          </div>
+        </div>
+      </form>
+
+      <br/>
+
+      <%= f = form_for :parameters, "#", [phx_submit: :add] %>
+        <div class="field has-addons">
+          <label for="to_date" class="field-label">To</label>
+          <p class="control is-expanded">
+            <%= datetime_local_input f, :to_date, class: "input" %>
+          </p>
+          <p class="control">
+            <%= submit "Add", class: "button is-info" %>
+          </p>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="column">
+    <div class="box has-background-info-dark has-text-white">
+      
+      <h5 class="title is-5 has-text-white">Report Summary</h5>
+      <p>Entry UUID's</p>
+      <ul>
+        <%= for uuid <- @parameters["uuids"] do %>
+        <li><%= uuid %></li>
+        <% end %>
+      </ul>
+
+      <p>Entry Description: <%= @parameters["description"] %></p>
+
+      <p>Owner Object <%= @parameters["owner"]["object"] %></p>
+
+      <p>Owner UID <%= @parameters["owner"]["uid"] %></p>
+
+      <p>From Date: <%= @parameters["from_date"] %></p>
+
+      <p>To Date: <%= @parameters["to_date"] %></p>
+
+      <h6 class="title is-6 is has-text-white">Total Records: <%= @total_records %></h6>
+        <%= f = form_for :options, "#", [phx_change: :options, phx_submit: :view_sample] %>
+          <div class="columns">
+            <div class="column">
+              <div class="field">
+                  <%= checkbox f, :preload, checked: @parameters["preload"] == "true" %> 
+                  <label class="checkbox">Transactions Only</label>
+              </div>
+            </div>
+
+            <div class="column">
+              <div class="field is-grouped-left">
+                <label class="field-label is-normal">Date Order</label>
+                <div class="select">
+                  <%= select f, :order_by, @parameters["order_options"] %>
+                </div>
+              </div>
+            </div>
+          </div>
+   
+          <div class="field is-grouped-center">
+            <div class="control">
+              <%= submit "View Sample", class: "button is-info", disabled: @total_records == 0 %>
+              <%= link "Reset", to: "#", phx_click: "reset", class: "button is-warning" %>
+          <%= button "Generate Report", to: Routes.download_path(@socket, :csv_download, %{"entries" => @parameters}), class: "button is-success", disabled: @total_records == 0 %>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,22 @@
+<h1>Transactions</h1>
+
+<table class="table is-hoverable">
+  <thead>
+    <tr>
+      <th>Kind</th>
+      <th>Description</th>
+      <th>Amount</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= for transaction <- @transactions do %>
+      <tr>
+        <td><%= transaction.kind %></td>
+        <td><%= transaction.description %></td>
+        <td><%= Money.to_string(transaction.money) %></td>
+        <td><%= link "view", to: Routes.transaction_path(@conn, :show, transaction) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

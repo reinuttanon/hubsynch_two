@@ -1,0 +1,20 @@
+<h1>Entries</h1>
+
+<table class="table is-hoverable">
+  <thead>
+    <tr>
+      <th>Description</th>
+      <th>UUID</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= for entry <- @entries do %>
+      <tr>
+        <td><%= entry.description %></td>
+        <td><%= entry.uuid %></td>
+        <td><%= link "view", to: Routes.entry_path(@conn, :show, entry) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

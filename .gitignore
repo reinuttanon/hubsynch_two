@@ -24,7 +24,7 @@ erl_crash.dump
 /tmp
 
 # Apps are maintained by seperate git repos
-/apps
+/apps/hub_identity
 
 # Ignore .env files
 *.secret.exs

@@ -1,0 +1,23 @@
+<div class="content">
+  <h4 class="title is-4"><%= @account.name %></h4>
+
+  <div class="box has-background-info-light">
+    <p><span class="has-text-weight-bold">Active:</span> <%= @account.active %></p>
+    <p><span class="has-text-weight-bold">Currency:</span> <%= @account.currency %></p>
+    <p><span class="has-text-weight-bold">Kind:</span> <%= @account.kind %></p>
+    <p><span class="has-text-weight-bold">Type:</span> <%= @account.type %></p>
+    <p><span class="has-text-weight-bold">UUID:</span> <%= @account.uuid %></p>
+    <p><span class="has-text-weight-bold">Owner:</span></p>
+    <ul>
+      <li><span class="has-text-weight-bold">Object:</span> <%= @account.owner.object %></li>
+      <li><span class="has-text-weight-bold">UID:</span> <%= @account.owner.uid %></li>
+    </ul>
+  </div>
+
+  <div class="box has-background-warning-light">
+    <h5 class="title is-5">Current Balance: <%= Money.to_string(@account.balance.money, symbol: true) %></h5>
+  </div>
+
+  <span><%= link "Edit account", to: Routes.account_path(@conn, :edit, @account), class: "button is-link" %></span>
+
+</div>

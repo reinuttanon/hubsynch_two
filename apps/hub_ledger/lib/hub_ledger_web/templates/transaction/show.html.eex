@@ -1,0 +1,18 @@
+<h2>Transaction</h2>
+
+<h3>Amount: <%= Money.to_string(@transaction.money) %></h3>
+
+<h4>Details</h4>
+
+<ul>
+  <li>Kind: <%= @transaction.kind %></li>
+  <li>Description: <%= @transaction.description %></li>
+  <li>Reported Date:<%= @transaction.reported_date %></li>
+  <li>Inserted Date:<%= @transaction.inserted_at %></li>
+  <li>UUID: <%= @transaction.uuid %></li>
+</ul>
+<h4>Entry</h4>
+<%= link @transaction.entry.uuid, to: Routes.entry_path(@conn, :show, @transaction.entry) %>
+
+<h4>Account</h4>
+<%= link @transaction.account.name, to: Routes.account_path(@conn, :show, @transaction.account) %>
