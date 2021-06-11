@@ -25,3 +25,10 @@ erl_crash.dump
 
 # Apps are maintained by seperate git repos
 /apps
+
+# Ignore .env files
+*.secret.exs
+.env*
+
+# Ignore mac os DS_Store
+*.DS_Store
