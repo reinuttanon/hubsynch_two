@@ -21,9 +21,11 @@ defmodule HubPayments.Payments.Charge do
   def changeset(charge, attrs) do
     charge
     |> cast(attrs, [:credit_card_id, :provider_id, :reference, :money, :owner])
-    |> validate_required([:money, :uuid])
+    |> validate_required([:credit_card_id, :provider_id, :money])
     |> foreign_key_constraint(:credit_card_id)
     |> foreign_key_constraint(:provider_id)
+    |> put_change(:request_date, now())
+    |> put_change(:uuid, Ecto.UUID.generate())
   end
 
   defp now do
