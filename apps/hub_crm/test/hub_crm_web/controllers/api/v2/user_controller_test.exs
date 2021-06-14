@@ -74,9 +74,8 @@ defmodule HubCrmWeb.Api.V2.UserControllerTest do
       user = insert(:user)
       conn = build_api_conn()
 
-      _response =
-        delete(conn, Routes.user_path(conn, :delete, user.uuid))
-        |> response(204)
+      delete(conn, Routes.user_path(conn, :delete, user.uuid))
+      |> response(204)
 
       null =
         get(conn, Routes.user_path(conn, :show, user.uuid))
