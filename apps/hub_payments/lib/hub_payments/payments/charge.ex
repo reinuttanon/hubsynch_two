@@ -10,8 +10,9 @@ defmodule HubPayments.Payments.Charge do
     field :request_date, :utc_datetime
     field :settle_date, :utc_datetime
     field :uuid, :string
-    field :credit_card_id, :id
-    field :provider_id, :id
+
+    belongs_to :credit_card, HubPayments.Wallets.CreditCard
+    belongs_to :provider, HubPayments.Providers.Provider
 
     timestamps()
   end
@@ -19,15 +20,14 @@ defmodule HubPayments.Payments.Charge do
   @doc false
   def changeset(charge, attrs) do
     charge
-    |> cast(attrs, [:reference, :request_date, :process_date, :settle_date, :money, :uuid, :owner])
-    |> validate_required([
-      :reference,
-      :request_date,
-      :process_date,
-      :settle_date,
-      :money,
-      :uuid,
-      :owner
-    ])
+    |> cast(attrs, [:credit_card_id, :provider_id, :reference, :money, :owner])
+    |> validate_required([:money, :uuid])
+    |> foreign_key_constraint(:credit_card_id)
+    |> foreign_key_constraint(:provider_id)
+  end
+
+  defp now do
+    DateTime.utc_now()
+    |> DateTime.truncate(:second)
   end
 end
