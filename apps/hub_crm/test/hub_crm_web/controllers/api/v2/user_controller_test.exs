@@ -3,9 +3,6 @@ defmodule HubCrmWeb.Api.V2.UserControllerTest do
 
   import HubCrm.Factory
 
-  alias HubCrm.Identities
-  alias HubCrm.Identities.User
-
   describe "create user" do
     test "renders user when data is valid" do
       conn = build_api_conn()
