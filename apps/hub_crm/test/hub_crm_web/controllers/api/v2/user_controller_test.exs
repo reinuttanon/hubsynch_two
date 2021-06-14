@@ -3,9 +3,6 @@ defmodule HubCrmWeb.Api.V2.UserControllerTest do
 
   import HubCrm.Factory
 
-  alias HubCrm.Identities
-  alias HubCrm.Identities.User
-
   describe "create user" do
     test "renders user when data is valid" do
       conn = build_api_conn()
@@ -77,9 +74,8 @@ defmodule HubCrmWeb.Api.V2.UserControllerTest do
       user = insert(:user)
       conn = build_api_conn()
 
-      response =
-        delete(conn, Routes.user_path(conn, :delete, user.uuid))
-        |> response(204)
+      delete(conn, Routes.user_path(conn, :delete, user.uuid))
+      |> response(204)
 
       null =
         get(conn, Routes.user_path(conn, :show, user.uuid))

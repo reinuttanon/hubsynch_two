@@ -3,9 +3,6 @@ defmodule HubCrmWeb.Api.V2.AddressControllerTest do
 
   import HubCrm.Factory
 
-  alias HubCrm.Identities
-  alias HubCrm.Identities.Address
-
   describe "index" do
     test "lists all addresses" do
       conn = build_api_conn()

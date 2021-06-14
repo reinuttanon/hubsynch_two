@@ -5,11 +5,11 @@ defmodule HubCrmWeb.Plugs.ApiAuthTest do
     setup [:create_user]
 
     test "with proper x-api-key header returns a session", %{user: user} do
-      api_key = HubIdentity.Factory.insert(:api_key)
+      api_key = HubIdentity.Factory.insert(:api_key, type: "private")
 
       conn =
         build_api_conn(api_key.data)
-        |> get("/api/v1/users/#{user.id}")
+        |> get("/api/v2/users/#{user.id}")
 
       assert get_session(conn, :api_key) == api_key
     end
@@ -17,7 +17,7 @@ defmodule HubCrmWeb.Plugs.ApiAuthTest do
     test "without x-api-key header returns 401 not authorized", %{user: user} do
       conn =
         build_conn()
-        |> get("/api/v1/users/#{user.id}")
+        |> get("/api/v2/users/#{user.id}")
 
       assert response(conn, 401) =~ "not authorized"
     end
@@ -27,7 +27,7 @@ defmodule HubCrmWeb.Plugs.ApiAuthTest do
 
       conn =
         build_api_conn(api_key.data)
-        |> get("/api/v1/users/#{user.id}")
+        |> get("/api/v2/users/#{user.id}")
 
       assert response(conn, 401) =~ "not authorized"
     end
@@ -35,7 +35,7 @@ defmodule HubCrmWeb.Plugs.ApiAuthTest do
     test "with fake x-api-key returns 401 not authorized", %{user: user} do
       conn =
         build_api_conn("bad_key_123456")
-        |> get("/api/v1/users/#{user.id}")
+        |> get("/api/v2/users/#{user.id}")
 
       assert response(conn, 401) =~ "not authorized"
     end
