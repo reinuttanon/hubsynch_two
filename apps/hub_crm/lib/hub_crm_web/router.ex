@@ -9,21 +9,7 @@ defmodule HubCrmWeb.Router do
   scope "/api/v1", HubCrmWeb.Api.V1 do
     pipe_through [:auth_api]
 
-    post "/users", HubsynchUsersController, :create
-    get "/users", HubsynchUsersController, :show
-    get "/users/:user_id", HubsynchUsersController, :show
-    put "/users/:user_id", HubsynchUsersController, :update
-    delete "/users/:user_id", HubsynchUsersController, :delete
-
-    post "/users/:user_id/addresses", HubsynchAddressController, :create
-    get "/users/:user_id/addresses", HubsynchAddressController, :index
-    get "/users/:user_id/addresses/:address_id", HubsynchAddressController, :show
-    put "/users/:user_id/addresses/:address_id", HubsynchAddressController, :update
-    delete "/users/:user_id/addresses/:address_id", HubsynchAddressController, :delete
-
     get "/support/countries", SupportController, :countries
-    get "/support/occupations", SupportController, :occupations
-    get "/support/prefectures", SupportController, :prefectures
   end
 
   scope "/api/v1", HubCrmWeb.Api.V1 do
