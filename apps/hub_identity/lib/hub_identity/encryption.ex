@@ -18,16 +18,16 @@ defmodule HubIdentity.Encryption do
     Tokens.access_token(client_service, resource)
   end
 
-  def generate_tokens(%ClientService{refresh_token: false} = client_service, user, email) do
-    Tokens.access_token(client_service, user, email)
-  end
-
   def generate_tokens(%ClientService{} = client_service, resource) do
     access_token_task = Task.async(fn -> Tokens.access_token(client_service, resource) end)
 
     refresh_token_task = Task.async(fn -> Tokens.refresh_token(client_service, resource) end)
 
     {Task.await(access_token_task), Task.await(refresh_token_task)}
+  end
+
+  def generate_tokens(%ClientService{refresh_token: false} = client_service, user, email) do
+    Tokens.access_token(client_service, user, email)
   end
 
   def generate_tokens(%ClientService{} = client_service, user, email) do

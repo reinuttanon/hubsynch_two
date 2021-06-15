@@ -6,6 +6,25 @@ defmodule HubLedgerWeb.Authentication.UserAuth do
   alias HubLedger.Users.User
   def init(opts), do: opts
 
+  def call(conn, _opt) do
+    with user_id when is_integer(user_id) <- get_session(conn, :user_id),
+         %User{} = user <- Users.get_user!(user_id) do
+      conn
+      |> assign(:current_user, user)
+    else
+      _ ->
+        conn
+        |> put_flash(:error, "You must log in to access this page.")
+        |> maybe_store_return_to()
+        |> redirect(to: "/")
+        |> halt()
+    end
+  end
+
+  def fetch_current_ledger_user(conn, _opts) do
+    assign(conn, :current_user, get_session(conn, :user_id))
+  end
+
   def log_in_user(conn, user) do
     administrator_return_to = get_session(conn, :administrator_return_to)
 
@@ -24,21 +43,6 @@ defmodule HubLedgerWeb.Authentication.UserAuth do
     |> redirect(to: "/")
   end
 
-  def call(conn, _opt) do
-    with user_id when is_integer(user_id) <- get_session(conn, :user_id),
-         %User{} = user <- Users.get_user!(user_id) do
-      conn
-      |> assign(:current_user, user)
-    else
-      _ ->
-        conn
-        |> put_flash(:error, "You must log in to access this page.")
-        |> maybe_store_return_to()
-        |> redirect(to: "/")
-        |> halt()
-    end
-  end
-
   @doc """
   Used for routes that require the administrator to not be authenticated.
   """
@@ -51,10 +55,6 @@ defmodule HubLedgerWeb.Authentication.UserAuth do
     else
       _ -> conn
     end
-  end
-
-  def fetch_current_ledger_user(conn, _opts) do
-    assign(conn, :current_user, get_session(conn, :user_id))
   end
 
   defp maybe_store_return_to(%{method: "GET"} = conn) do

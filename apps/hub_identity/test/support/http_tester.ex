@@ -117,7 +117,7 @@ defmodule HubIdentity.HttpTester do
        status_code: 200,
        body:
          "{\n  \"access_token\": \"ya29.a0AfH6SMApp3QCCKyO3FFsbV030vubQA2h4Ff-2lrgt68tdP1f05SU4RwltF3Tir63yrEPPd0R_Vg0OLxLKmOr0kq1k0namPKw91108J-r4KfIgNzLAi82iNmM4w4rNZiX2ZsVOCX72LB2e1gDiHkf-_a3i9K2tsCOifR8rcxoQ-g\",\n  \"expires_in\": 3599,\n  \"scope\": \"openid https://www.googleapis.com/auth/userinfo.email\",\n  \"token_type\": \"Bearer\",\n  \"id_token\": \"#{
-           erin_hivelocity
+           erin_hivelocity()
          }\"\n}"
      }}
   end
@@ -136,10 +136,6 @@ defmodule HubIdentity.HttpTester do
        body:
          "{\"access_token\":\"EAAjdCzU2WI8BAKOf0lgROqxPNLMfUmIrpxpiUSSe3KSJpoFZCQZBk0RMkZBOCrb61Vkb0S8W9M7UvI2GXGM4Cj0RMNwtZAGjV3t22JrompPZAk9rkZAOeiabgyhqBX76IefzRvlXOS3leNVV5KZCfP4zWlZCWEdtgixIFqvf9XIAeQZDZD\",\"token_type\":\"bearer\",\"expires_in\":5183999}"
      }}
-  end
-
-  defp sullymustycode do
-    "eyJhbGciOiJSUzI1NiIsImtpZCI6ImVlYTFiMWY0MjgwN2E4Y2MxMzZhMDNhM2MxNmQyOWRiODI5NmRhZjAiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiIyMjEzMjQwMTgyMTEtdXN0Z3FuN3Vwb3JkOHJ1NXBidG5tajh1MDNkZ2Q5OTQuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJhdWQiOiIyMjEzMjQwMTgyMTEtdXN0Z3FuN3Vwb3JkOHJ1NXBidG5tajh1MDNkZ2Q5OTQuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMDUzNzQ2ODE1OTU5NzIxODkzNjIiLCJoZCI6ImhpdmVsb2NpdHkuY28uanAiLCJlbWFpbCI6ImVyaW5AaGl2ZWxvY2l0eS5jby5qcCIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJhdF9oYXNoIjoiTDhiemNkcDVqalQyV3FMYjNicDlNUSIsImlhdCI6MTYxMTE4NjAxMSwiZXhwIjoxNjExMTg5NjExfQ.XoBCgc4o5xNPtyA2Eis34JvO7Mbvxhv8Q0khH6MecGUQS3PGFnj7SqZir55Ptce27n9sB56391ppX78nU_OK_q4xlSigXfXuN3uYg3ZSI0U-Cmh_3sd1RYLf8EuOJUDg9Tmq9a1M90Mfw65HbxaskG3Y31fAzib_dFodCv0HzDiuhJhKEPv5NFuYA0db70pNyV5c3se33_GmrnSJASa59BKVc18a9HUWm1VdKT9dFyWA5MXMBp1Hd8nxBqn5393VDYiMNtyQNloniVt-jWaVcDmsvPTAFzpj1qYX8nJfL4OPzkSt1e0-ZZsqgSoxVq1_KEKV7YIuLC7UICo0WI2jSQ"
   end
 
   defp erin_hivelocity do
