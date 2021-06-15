@@ -18,7 +18,7 @@ defmodule HubLedgerWeb.ConnCase do
   use ExUnit.CaseTemplate
   import HubLedger.Factory
 
-  @repos [HubLedger.Repo, HubLedger.HubIdentityRepo]
+  @repos [HubLedger.Repo, HubIdentity.Repo]
 
   using do
     quote do

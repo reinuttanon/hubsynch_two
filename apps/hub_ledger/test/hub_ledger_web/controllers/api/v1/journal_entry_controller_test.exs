@@ -309,7 +309,7 @@ defmodule HubLedgerWeb.Api.V1.JournalEntryControllerTest do
   end
 
   defp build_api_conn do
-    api_key = HubLedger.HubIdentityFactory.insert(:api_key)
+    api_key = HubIdentity.Factory.insert(:api_key, type: "private")
 
     build_conn()
     |> put_req_header("accept", "application/json")

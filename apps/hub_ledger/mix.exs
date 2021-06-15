@@ -56,7 +56,8 @@ defmodule HubLedger.MixProject do
       {:benchee, "~> 1.0", only: [:dev, :test]},
       {:csv, "~> 2.4"},
       {:hub_identity_elixir, "~> 0.1.51"},
-      {:sendgrid, "~> 2.0"}
+      {:sendgrid, "~> 2.0"},
+      {:hub_identity, in_umbrella: true}
     ]
   end
 

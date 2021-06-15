@@ -141,8 +141,7 @@ defmodule HubLedger.Reports.Accounts do
          "from_date" => from_date,
          "to_date" => to_date
        }) do
-    amount =
-      credits =
+    credits =
       Ledgers.sum_transactions(%{
         account_id: id,
         kind: "credit",

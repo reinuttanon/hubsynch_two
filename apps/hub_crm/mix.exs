@@ -55,7 +55,8 @@ defmodule HubCrm.MixProject do
       {:argon2_elixir, "~> 2.0"},
       {:ex_machina, "~> 2.4", only: :test},
       {:httpoison, "~> 1.7"},
-      {:ex_doc, "~> 0.23", only: :dev, runtime: false}
+      {:ex_doc, "~> 0.23", only: :dev, runtime: false},
+      {:hub_identity, in_umbrella: true}
     ]
   end
 

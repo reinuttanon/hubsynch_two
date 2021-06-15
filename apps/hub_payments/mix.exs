@@ -53,7 +53,8 @@ defmodule HubPayments.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:money, "~> 1.4"},
       {:ex_machina, "~> 2.7.0", only: :test},
-      {:hub_identity_elixir, "~> 0.1.51"}
+      {:hub_identity_elixir, "~> 0.1.51"},
+      {:hub_identity, in_umbrella: true}
     ]
   end
 
