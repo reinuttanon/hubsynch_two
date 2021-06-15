@@ -69,7 +69,7 @@ defmodule HubPayments.Payments do
   """
   def update_charge(%Charge{} = charge, attrs) do
     charge
-    |> Charge.changeset(attrs)
+    |> Charge.update_changeset(attrs)
     |> Repo.update()
   end
 
@@ -165,7 +165,7 @@ defmodule HubPayments.Payments do
   """
   def update_point(%Point{} = point, attrs) do
     point
-    |> Point.changeset(attrs)
+    |> Point.update_changeset(attrs)
     |> Repo.update()
   end
 

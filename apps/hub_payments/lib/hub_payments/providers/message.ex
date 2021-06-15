@@ -2,13 +2,17 @@ defmodule HubPayments.Providers.Message do
   use Ecto.Schema
   import Ecto.Changeset
 
+  alias HubPayments.Embeds.Owner
+
   schema "messages" do
-    field :data, :map
-    field :owner, :map
+    field :data, :map, default: %{}
     field :request, :string
     field :response, :string
     field :type, :string
-    field :provider_id, :id
+
+    belongs_to :provider, HubPayments.Providers.Provider
+
+    embeds_one :owner, Owner, on_replace: :update
 
     timestamps()
   end
@@ -16,7 +20,8 @@ defmodule HubPayments.Providers.Message do
   @doc false
   def changeset(message, attrs) do
     message
-    |> cast(attrs, [:type, :owner, :request, :response, :data])
-    |> validate_required([:type, :owner, :request, :response, :data])
+    |> cast(attrs, [:type, :request, :response, :data])
+    |> cast_embed(:owner, with: &Owner.changeset/2)
+    |> validate_required([:type, :owner, :request])
   end
 end

@@ -6,7 +6,6 @@ defmodule HubPayments.PaymentsTest do
   describe "charges" do
     alias HubPayments.Payments.Charge
 
-    @valid_attrs params_for(:charge)
     @update_attrs %{
       money: %{amount: 5000, currency: "JPY"},
       owner: %{},
@@ -58,10 +57,11 @@ defmodule HubPayments.PaymentsTest do
 
     test "update_charge/2 with valid data updates the charge" do
       charge = insert(:charge)
-      assert {:ok, %Charge{} = charge} = Payments.update_charge(charge, @update_attrs)
-      assert charge.money == %Money{amount: 5000, currency: :JPY}
-      assert charge.owner == %HubPayments.Embeds.Owner{object: nil, uid: nil}
-      assert charge.reference == "New reference"
+      assert {:ok, %Charge{} = updated_charge} = Payments.update_charge(charge, @update_attrs)
+      assert updated_charge.money == %Money{amount: 5000, currency: :JPY}
+      assert updated_charge.owner == %HubPayments.Embeds.Owner{object: nil, uid: nil}
+      assert updated_charge.reference == "New reference"
+      assert updated_charge.uuid == charge.uuid
     end
 
     test "update_charge/2 with invalid data returns error changeset" do
@@ -84,7 +84,6 @@ defmodule HubPayments.PaymentsTest do
   describe "points" do
     alias HubPayments.Payments.Point
 
-    @valid_attrs params_for(:point)
     @update_attrs %{
       money: %{amount: 5000, currency: "HiP"},
       owner: %{object: "HubIdentity.User", uid: "user_12345678"}
@@ -107,7 +106,12 @@ defmodule HubPayments.PaymentsTest do
     end
 
     test "create_point/1 with valid data creates a point" do
-      assert {:ok, %Point{} = point} = Payments.create_point(@valid_attrs)
+      assert {:ok, %Point{} = point} =
+               Payments.create_point(%{
+                 money: %{amount: 10_000, currency: :JPY},
+                 owner: %{object: "HubIdentity.User", uid: "user_12345678"}
+               })
+
       assert point.money == %Money{amount: 10000, currency: :JPY}
       assert point.request_date == now()
       assert point.uuid != nil
@@ -119,13 +123,15 @@ defmodule HubPayments.PaymentsTest do
 
     test "update_point/2 with valid data updates the point" do
       point = insert(:point)
-      assert {:ok, %Point{} = point} = Payments.update_point(point, @update_attrs)
-      assert point.money == %Money{amount: 5000, currency: :HIP}
+      assert {:ok, %Point{} = updated_point} = Payments.update_point(point, @update_attrs)
+      assert updated_point.money == %Money{amount: 5000, currency: :HIP}
 
-      assert point.owner == %HubPayments.Embeds.Owner{
+      assert updated_point.owner == %HubPayments.Embeds.Owner{
                object: "HubIdentity.User",
                uid: "user_12345678"
              }
+
+      assert updated_point.uuid == point.uuid
     end
 
     test "update_point/2 with invalid data returns error changeset" do

@@ -14,7 +14,8 @@ defmodule HubPayments.Factory do
     %HubPayments.Payments.Charge{
       money: Money.new(10_000, :JPY),
       credit_card: build(:credit_card),
-      provider: build(:provider)
+      provider: build(:provider),
+      uuid: Ecto.UUID.generate()
     }
   end
 
@@ -29,9 +30,29 @@ defmodule HubPayments.Factory do
     }
   end
 
+  def message_factory do
+    %HubPayments.Providers.Message{
+      data: %{value: "one"},
+      type: "authorization",
+      request: "<xml>these are the droids your looking for</xml>",
+      provider: build(:provider)
+    }
+  end
+
   def point_factory do
     %HubPayments.Payments.Point{
-      money: Money.new(10_000, :JPY)
+      money: Money.new(10_000, :JPY),
+      uuid: Ecto.UUID.generate()
+    }
+  end
+
+  def wallet_factory do
+    %HubPayments.Wallets.Wallet{
+      owner: %HubPayments.Embeds.Owner{
+        object: "HubIdentity.User",
+        uid: "user_12345678"
+      },
+      uuid: Ecto.UUID.generate()
     }
   end
 end

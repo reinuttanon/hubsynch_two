@@ -27,6 +27,13 @@ defmodule HubPayments.Payments.Point do
     |> put_change(:uuid, Ecto.UUID.generate())
   end
 
+  def update_changeset(point, attrs) do
+    point
+    |> cast(attrs, [:money, :reference])
+    |> cast_embed(:owner, with: &Owner.changeset/2)
+    |> validate_required([:money])
+  end
+
   defp now do
     DateTime.utc_now()
     |> DateTime.truncate(:second)

@@ -36,6 +36,7 @@ defmodule HubPayments.Payments.Charge do
     charge
     |> cast(attrs, [:credit_card_id, :money, :provider_id, :reference])
     |> cast_embed(:owner, with: &Owner.changeset/2)
+    |> validate_required([:credit_card_id, :money, :provider_id])
   end
 
   defp now do

@@ -6,41 +6,38 @@ defmodule HubPayments.WalletsTest do
   describe "wallets" do
     alias HubPayments.Wallets.Wallet
 
-    @valid_attrs %{
-      owner: %{},
-      prefered_credit_card_uuid: "some prefered_credit_card_uuid",
-      uuid: "some uuid"
-    }
     @update_attrs %{
-      owner: %{},
-      prefered_credit_card_uuid: "some updated prefered_credit_card_uuid",
-      uuid: "some updated uuid"
+      owner: %{object: "newOwner", uid: "new_12345"},
+      prefered_credit_card_uuid: "some updated prefered_credit_card_uuid"
     }
     @invalid_attrs %{owner: nil, prefered_credit_card_uuid: nil, uuid: nil}
 
-    def wallet_fixture(attrs \\ %{}) do
-      {:ok, wallet} =
-        attrs
-        |> Enum.into(@valid_attrs)
-        |> Wallets.create_wallet()
-
-      wallet
-    end
-
     test "list_wallets/0 returns all wallets" do
-      wallet = wallet_fixture()
+      wallet = insert(:wallet)
       assert Wallets.list_wallets() == [wallet]
     end
 
     test "get_wallet!/1 returns the wallet with given id" do
-      wallet = wallet_fixture()
+      wallet = insert(:wallet)
       assert Wallets.get_wallet!(wallet.id) == wallet
     end
 
     test "create_wallet/1 with valid data creates a wallet" do
-      assert {:ok, %Wallet{} = wallet} = Wallets.create_wallet(@valid_attrs)
-      assert wallet.owner == %{}
-      assert wallet.prefered_credit_card_uuid == "some prefered_credit_card_uuid"
+      assert {:ok, %Wallet{} = wallet} =
+               Wallets.create_wallet(%{
+                 owner: %{
+                   object: "HubIdentity.User",
+                   uid: "user_12345678"
+                 },
+                 prefered_credit_card_uuid: "cc_uuid"
+               })
+
+      assert wallet.owner == %HubPayments.Embeds.Owner{
+               object: "HubIdentity.User",
+               uid: "user_12345678"
+             }
+
+      assert wallet.prefered_credit_card_uuid == "cc_uuid"
       assert wallet.uuid != nil
     end
 
@@ -49,27 +46,32 @@ defmodule HubPayments.WalletsTest do
     end
 
     test "update_wallet/2 with valid data updates the wallet" do
-      wallet = wallet_fixture()
-      assert {:ok, %Wallet{} = wallet} = Wallets.update_wallet(wallet, @update_attrs)
-      assert wallet.owner == %{}
-      assert wallet.prefered_credit_card_uuid == "some updated prefered_credit_card_uuid"
-      assert wallet.uuid == "some updated uuid"
+      wallet = insert(:wallet)
+      assert {:ok, %Wallet{} = updated_wallet} = Wallets.update_wallet(wallet, @update_attrs)
+
+      assert updated_wallet.owner == %HubPayments.Embeds.Owner{
+               object: "newOwner",
+               uid: "new_12345"
+             }
+
+      assert updated_wallet.prefered_credit_card_uuid == "some updated prefered_credit_card_uuid"
+      assert updated_wallet.uuid == wallet.uuid
     end
 
     test "update_wallet/2 with invalid data returns error changeset" do
-      wallet = wallet_fixture()
+      wallet = insert(:wallet)
       assert {:error, %Ecto.Changeset{}} = Wallets.update_wallet(wallet, @invalid_attrs)
       assert wallet == Wallets.get_wallet!(wallet.id)
     end
 
     test "delete_wallet/1 deletes the wallet" do
-      wallet = wallet_fixture()
+      wallet = insert(:wallet)
       assert {:ok, %Wallet{}} = Wallets.delete_wallet(wallet)
       assert_raise Ecto.NoResultsError, fn -> Wallets.get_wallet!(wallet.id) end
     end
 
     test "change_wallet/1 returns a wallet changeset" do
-      wallet = wallet_fixture()
+      wallet = insert(:wallet)
       assert %Ecto.Changeset{} = Wallets.change_wallet(wallet)
     end
   end
