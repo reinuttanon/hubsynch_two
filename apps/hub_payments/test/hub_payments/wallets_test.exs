@@ -6,8 +6,16 @@ defmodule HubPayments.WalletsTest do
   describe "wallets" do
     alias HubPayments.Wallets.Wallet
 
-    @valid_attrs %{owner: %{}, prefered_credit_card_uuid: "some prefered_credit_card_uuid", uuid: "some uuid"}
-    @update_attrs %{owner: %{}, prefered_credit_card_uuid: "some updated prefered_credit_card_uuid", uuid: "some updated uuid"}
+    @valid_attrs %{
+      owner: %{},
+      prefered_credit_card_uuid: "some prefered_credit_card_uuid",
+      uuid: "some uuid"
+    }
+    @update_attrs %{
+      owner: %{},
+      prefered_credit_card_uuid: "some updated prefered_credit_card_uuid",
+      uuid: "some updated uuid"
+    }
     @invalid_attrs %{owner: nil, prefered_credit_card_uuid: nil, uuid: nil}
 
     def wallet_fixture(attrs \\ %{}) do
@@ -33,7 +41,7 @@ defmodule HubPayments.WalletsTest do
       assert {:ok, %Wallet{} = wallet} = Wallets.create_wallet(@valid_attrs)
       assert wallet.owner == %{}
       assert wallet.prefered_credit_card_uuid == "some prefered_credit_card_uuid"
-      assert wallet.uuid == "some uuid"
+      assert wallet.uuid != nil
     end
 
     test "create_wallet/1 with invalid data returns error changeset" do
@@ -69,9 +77,30 @@ defmodule HubPayments.WalletsTest do
   describe "credit_cards" do
     alias HubPayments.Wallets.CreditCard
 
-    @valid_attrs %{brand: "some brand", exp_month: "some exp_month", exp_year: "some exp_year", fingerprint: "some fingerprint", last_four: "some last_four", uuid: "some uuid"}
-    @update_attrs %{brand: "some updated brand", exp_month: "some updated exp_month", exp_year: "some updated exp_year", fingerprint: "some updated fingerprint", last_four: "some updated last_four", uuid: "some updated uuid"}
-    @invalid_attrs %{brand: nil, exp_month: nil, exp_year: nil, fingerprint: nil, last_four: nil, uuid: nil}
+    @valid_attrs %{
+      brand: "some brand",
+      exp_month: "some exp_month",
+      exp_year: "some exp_year",
+      fingerprint: "some fingerprint",
+      last_four: "some last_four",
+      uuid: "some uuid"
+    }
+    @update_attrs %{
+      brand: "some updated brand",
+      exp_month: "some updated exp_month",
+      exp_year: "some updated exp_year",
+      fingerprint: "some updated fingerprint",
+      last_four: "some updated last_four",
+      uuid: "some updated uuid"
+    }
+    @invalid_attrs %{
+      brand: nil,
+      exp_month: nil,
+      exp_year: nil,
+      fingerprint: nil,
+      last_four: nil,
+      uuid: nil
+    }
 
     def credit_card_fixture(attrs \\ %{}) do
       {:ok, credit_card} =
@@ -99,7 +128,7 @@ defmodule HubPayments.WalletsTest do
       assert credit_card.exp_year == "some exp_year"
       assert credit_card.fingerprint == "some fingerprint"
       assert credit_card.last_four == "some last_four"
-      assert credit_card.uuid == "some uuid"
+      assert credit_card.uuid != nil
     end
 
     test "create_credit_card/1 with invalid data returns error changeset" do
@@ -108,13 +137,15 @@ defmodule HubPayments.WalletsTest do
 
     test "update_credit_card/2 with valid data updates the credit_card" do
       credit_card = credit_card_fixture()
-      assert {:ok, %CreditCard{} = credit_card} = Wallets.update_credit_card(credit_card, @update_attrs)
+
+      assert {:ok, %CreditCard{} = credit_card} =
+               Wallets.update_credit_card(credit_card, @update_attrs)
+
       assert credit_card.brand == "some updated brand"
       assert credit_card.exp_month == "some updated exp_month"
       assert credit_card.exp_year == "some updated exp_year"
       assert credit_card.fingerprint == "some updated fingerprint"
       assert credit_card.last_four == "some updated last_four"
-      assert credit_card.uuid == "some updated uuid"
     end
 
     test "update_credit_card/2 with invalid data returns error changeset" do

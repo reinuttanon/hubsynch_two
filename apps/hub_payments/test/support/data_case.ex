@@ -24,6 +24,7 @@ defmodule HubPayments.DataCase do
       import Ecto.Changeset
       import Ecto.Query
       import HubPayments.DataCase
+      import HubPayments.Factory
     end
   end
 

@@ -6,64 +6,50 @@ defmodule HubPayments.PaymentsTest do
   describe "charges" do
     alias HubPayments.Payments.Charge
 
-    @valid_attrs %{
-      money: %{amount: 1000, currency: "JPY"},
-      owner: %{},
-      process_date: "2010-04-17T14:00:00Z",
-      reference: "some reference",
-      request_date: "2010-04-17T14:00:00Z",
-      settle_date: "2010-04-17T14:00:00Z",
-      uuid: "some uid"
-    }
+    @valid_attrs params_for(:charge)
     @update_attrs %{
       money: %{amount: 5000, currency: "JPY"},
       owner: %{},
-      process_date: "2011-05-18T15:01:01Z",
-      reference: "some updated reference",
-      request_date: "2011-05-18T15:01:01Z",
-      settle_date: "2011-05-18T15:01:01Z",
-      uuid: "some updated uuid"
+      reference: "New reference"
     }
     @invalid_attrs %{
-      money: nil,
-      owner: nil,
-      process_date: nil,
-      reference: nil,
-      request_date: nil,
-      settle_date: nil,
-      uuid: nil
+      credit_card_id: nil,
+      provider_id: nil,
+      money: nil
     }
 
-    def charge_fixture(attrs \\ %{}) do
-      {:ok, charge} =
-        attrs
-        |> Enum.into(@valid_attrs)
-        |> Payments.create_charge()
-
-      charge
-    end
-
     test "list_charges/0 returns all charges" do
-      charge = charge_fixture()
-      assert Payments.list_charges() == [charge]
+      charge = insert(:charge)
+      [found_charge] = Payments.list_charges()
+      assert found_charge.id == charge.id
+      assert found_charge.uuid == charge.uuid
     end
 
     test "get_charge!/1 returns the charge with given id" do
-      charge = charge_fixture()
-      assert Payments.get_charge!(charge.id) == charge
+      charge = insert(:charge)
+      found_charge = Payments.get_charge!(charge.id)
+      assert found_charge.id == charge.id
+      assert found_charge.uuid == charge.uuid
     end
 
     test "create_charge/1 with valid data creates a charge" do
-      assert {:ok, %Charge{} = charge} = Payments.create_charge(@valid_attrs)
+      provider = insert(:provider)
+      credit_card = insert(:credit_card)
 
-      assert charge.money == %Money{amount: 1000, currency: :JPY}
-      assert charge.owner == %{}
+      assert {:ok, %Charge{} = charge} =
+               Payments.create_charge(%{
+                 credit_card_id: credit_card.id,
+                 money: %{amount: 100, currency: "JPY"},
+                 owner: %{object: "User", uid: "1234"},
+                 provider_id: provider.id,
+                 reference: "reference-1"
+               })
 
-      assert charge.process_date == DateTime.from_naive!(~N[2010-04-17T14:00:00Z], "Etc/UTC")
-      assert charge.reference == "some reference"
-      assert charge.request_date == DateTime.from_naive!(~N[2010-04-17T14:00:00Z], "Etc/UTC")
-      assert charge.settle_date == DateTime.from_naive!(~N[2010-04-17T14:00:00Z], "Etc/UTC")
-      assert charge.uuid == "some uid"
+      assert charge.money == %Money{amount: 100, currency: :JPY}
+      assert charge.owner == %HubPayments.Embeds.Owner{object: "User", uid: "1234"}
+      assert charge.request_date == now()
+      assert charge.reference == "reference-1"
+      assert charge.uuid != nil
     end
 
     test "create_charge/1 with invalid data returns error changeset" do
@@ -71,31 +57,26 @@ defmodule HubPayments.PaymentsTest do
     end
 
     test "update_charge/2 with valid data updates the charge" do
-      charge = charge_fixture()
+      charge = insert(:charge)
       assert {:ok, %Charge{} = charge} = Payments.update_charge(charge, @update_attrs)
       assert charge.money == %Money{amount: 5000, currency: :JPY}
-      assert charge.owner == %{}
-      assert charge.process_date == DateTime.from_naive!(~N[2011-05-18T15:01:01Z], "Etc/UTC")
-      assert charge.reference == "some updated reference"
-      assert charge.request_date == DateTime.from_naive!(~N[2011-05-18T15:01:01Z], "Etc/UTC")
-      assert charge.settle_date == DateTime.from_naive!(~N[2011-05-18T15:01:01Z], "Etc/UTC")
-      assert charge.uuid == "some updated uuid"
+      assert charge.owner == %HubPayments.Embeds.Owner{object: nil, uid: nil}
+      assert charge.reference == "New reference"
     end
 
     test "update_charge/2 with invalid data returns error changeset" do
-      charge = charge_fixture()
+      charge = insert(:charge)
       assert {:error, %Ecto.Changeset{}} = Payments.update_charge(charge, @invalid_attrs)
-      assert charge == Payments.get_charge!(charge.id)
     end
 
     test "delete_charge/1 deletes the charge" do
-      charge = charge_fixture()
+      charge = insert(:charge)
       assert {:ok, %Charge{}} = Payments.delete_charge(charge)
       assert_raise Ecto.NoResultsError, fn -> Payments.get_charge!(charge.id) end
     end
 
     test "change_charge/1 returns a charge changeset" do
-      charge = charge_fixture()
+      charge = insert(:charge)
       assert %Ecto.Changeset{} = Payments.change_charge(charge)
     end
   end
@@ -103,62 +84,33 @@ defmodule HubPayments.PaymentsTest do
   describe "points" do
     alias HubPayments.Payments.Point
 
-    @valid_attrs %{
-      money: %{amount: 1000, currency: "HiP"},
-      owner: %{},
-      process_date: "2010-04-17T14:00:00Z",
-      reference: "some reference",
-      request_date: "2010-04-17T14:00:00Z",
-      settle_date: "2010-04-17T14:00:00Z",
-      uuid: "some uuid"
-    }
+    @valid_attrs params_for(:point)
     @update_attrs %{
       money: %{amount: 5000, currency: "HiP"},
-      owner: %{},
-      process_date: "2011-05-18T15:01:01Z",
-      reference: "some updated reference",
-      request_date: "2011-05-18T15:01:01Z",
-      settle_date: "2011-05-18T15:01:01Z",
-      uuid: "some updated uuid"
+      owner: %{object: "HubIdentity.User", uid: "user_12345678"}
     }
     @invalid_attrs %{
-      money: nil,
-      owner: nil,
-      process_date: nil,
-      reference: nil,
-      request_date: nil,
-      settle_date: nil,
-      uuid: nil
+      money: nil
     }
 
-    def point_fixture(attrs \\ %{}) do
-      {:ok, point} =
-        attrs
-        |> Enum.into(@valid_attrs)
-        |> Payments.create_point()
-
-      point
-    end
-
     test "list_points/0 returns all points" do
-      point = point_fixture()
-      assert Payments.list_points() == [point]
+      point = insert(:point)
+      [found_point] = Payments.list_points()
+      assert found_point.id == point.id
+      assert found_point.uuid == point.uuid
     end
 
     test "get_point!/1 returns the point with given id" do
-      point = point_fixture()
-      assert Payments.get_point!(point.id) == point
+      point = insert(:point)
+      found_point = Payments.get_point!(point.id)
+      assert found_point.uuid == point.uuid
     end
 
     test "create_point/1 with valid data creates a point" do
       assert {:ok, %Point{} = point} = Payments.create_point(@valid_attrs)
-      assert point.money == %Money{amount: 1000, currency: :HIP}
-      assert point.owner == %{}
-      assert point.process_date == DateTime.from_naive!(~N[2010-04-17T14:00:00Z], "Etc/UTC")
-      assert point.reference == "some reference"
-      assert point.request_date == DateTime.from_naive!(~N[2010-04-17T14:00:00Z], "Etc/UTC")
-      assert point.settle_date == DateTime.from_naive!(~N[2010-04-17T14:00:00Z], "Etc/UTC")
-      assert point.uuid == "some uuid"
+      assert point.money == %Money{amount: 10000, currency: :JPY}
+      assert point.request_date == now()
+      assert point.uuid != nil
     end
 
     test "create_point/1 with invalid data returns error changeset" do
@@ -166,32 +118,35 @@ defmodule HubPayments.PaymentsTest do
     end
 
     test "update_point/2 with valid data updates the point" do
-      point = point_fixture()
+      point = insert(:point)
       assert {:ok, %Point{} = point} = Payments.update_point(point, @update_attrs)
       assert point.money == %Money{amount: 5000, currency: :HIP}
-      assert point.owner == %{}
-      assert point.process_date == DateTime.from_naive!(~N[2011-05-18T15:01:01Z], "Etc/UTC")
-      assert point.reference == "some updated reference"
-      assert point.request_date == DateTime.from_naive!(~N[2011-05-18T15:01:01Z], "Etc/UTC")
-      assert point.settle_date == DateTime.from_naive!(~N[2011-05-18T15:01:01Z], "Etc/UTC")
-      assert point.uuid == "some updated uuid"
+
+      assert point.owner == %HubPayments.Embeds.Owner{
+               object: "HubIdentity.User",
+               uid: "user_12345678"
+             }
     end
 
     test "update_point/2 with invalid data returns error changeset" do
-      point = point_fixture()
+      point = insert(:point)
       assert {:error, %Ecto.Changeset{}} = Payments.update_point(point, @invalid_attrs)
-      assert point == Payments.get_point!(point.id)
     end
 
     test "delete_point/1 deletes the point" do
-      point = point_fixture()
+      point = insert(:point)
       assert {:ok, %Point{}} = Payments.delete_point(point)
       assert_raise Ecto.NoResultsError, fn -> Payments.get_point!(point.id) end
     end
 
     test "change_point/1 returns a point changeset" do
-      point = point_fixture()
+      point = insert(:point)
       assert %Ecto.Changeset{} = Payments.change_point(point)
     end
+  end
+
+  defp now do
+    DateTime.utc_now()
+    |> DateTime.truncate(:second)
   end
 end
