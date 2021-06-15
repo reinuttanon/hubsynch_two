@@ -23,6 +23,7 @@ defmodule HubPaymentsWeb.ConnCase do
       import Plug.Conn
       import Phoenix.ConnTest
       import HubPaymentsWeb.ConnCase
+      import HubPayments.Factory
 
       alias HubPaymentsWeb.Router.Helpers, as: Routes
 

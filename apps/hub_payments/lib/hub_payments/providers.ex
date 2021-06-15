@@ -69,7 +69,7 @@ defmodule HubPayments.Providers do
   """
   def update_provider(%Provider{} = provider, attrs) do
     provider
-    |> Provider.changeset(attrs)
+    |> Provider.update_changeset(attrs)
     |> Repo.update()
   end
 
