@@ -9,6 +9,5 @@ defmodule HubPayments.Repo.Migrations.CreateWallets do
 
       timestamps()
     end
-
   end
 end

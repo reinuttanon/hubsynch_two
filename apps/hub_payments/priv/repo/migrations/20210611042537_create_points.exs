@@ -13,6 +13,5 @@ defmodule HubPayments.Repo.Migrations.CreatePoints do
 
       timestamps()
     end
-
   end
 end

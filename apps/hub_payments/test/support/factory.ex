@@ -55,6 +55,7 @@ defmodule HubPayments.Factory do
       value: "key_value"
     }
   end
+
   def wallet_factory do
     %HubPayments.Wallets.Wallet{
       owner: %HubPayments.Embeds.Owner{

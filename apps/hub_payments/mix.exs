@@ -24,7 +24,7 @@ defmodule HubPayments.MixProject do
   def application do
     [
       mod: {HubPayments.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :memento]
     ]
   end
 
@@ -54,7 +54,8 @@ defmodule HubPayments.MixProject do
       {:money, "~> 1.4"},
       {:ex_machina, "~> 2.7.0", only: :test},
       {:hub_identity_elixir, "~> 0.1.51"},
-      {:hub_identity, in_umbrella: true}
+      {:hub_identity, in_umbrella: true},
+      {:memento, "~> 0.3.1"}
     ]
   end
 

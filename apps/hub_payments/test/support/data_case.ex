@@ -36,9 +36,12 @@ defmodule HubPayments.DataCase do
       Ecto.Adapters.SQL.Sandbox.mode(HubPayments.Repo, {:shared, self()})
     end
 
+    on_exit(fn -> Memento.Table.clear(HubPayments.Shared.SettingRecord) end)
+
     :ok
   end
 
+  @spec errors_on(Ecto.Changeset.t()) :: %{optional(atom) => [binary | map]}
   @doc """
   A helper that transforms changeset errors into a map of messages.
 

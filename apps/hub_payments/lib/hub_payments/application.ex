@@ -14,7 +14,8 @@ defmodule HubPayments.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: HubPayments.PubSub},
       # Start the Endpoint (http/https)
-      HubPaymentsWeb.Endpoint
+      HubPaymentsWeb.Endpoint,
+      HubPayments.Shared.SettingServer
       # Start a worker by calling: HubPayments.Worker.start_link(arg)
       # {HubPayments.Worker, arg}
     ]
