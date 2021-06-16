@@ -1,0 +1,45 @@
+<h1>Listing Settings</h1>
+
+<%= if @live_action in [:new, :edit] do %>
+  <%= live_modal @socket, HubPaymentsWeb.SettingLive.FormComponent,
+    id: @setting.id || :new,
+    title: @page_title,
+    action: @live_action,
+    setting: @setting,
+    return_to: Routes.setting_index_path(@socket, :index) %>
+<% end %>
+
+<table>
+  <thead>
+    <tr>
+      <th>Key</th>
+      <th>Value</th>
+      <th>Description</th>
+      <th>Active</th>
+      <th>Type</th>
+      <th>Env</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody id="settings">
+    <%= for setting <- @settings do %>
+      <tr id="setting-<%= setting.id %>">
+        <td><%= setting.key %></td>
+        <td><%= setting.value %></td>
+        <td><%= setting.description %></td>
+        <td><%= setting.active %></td>
+        <td><%= setting.type %></td>
+        <td><%= setting.env %></td>
+
+        <td>
+          <span><%= live_redirect "Show", to: Routes.setting_show_path(@socket, :show, setting) %></span>
+          <span><%= live_patch "Edit", to: Routes.setting_index_path(@socket, :edit, setting) %></span>
+          <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: setting.id, data: [confirm: "Are you sure?"] %></span>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<span><%= live_patch "New Setting", to: Routes.setting_index_path(@socket, :new) %></span>

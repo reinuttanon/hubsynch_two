@@ -17,6 +17,13 @@ defmodule HubPaymentsWeb.Router do
   scope "/", HubPaymentsWeb do
     pipe_through :browser
 
+    live "/settings", SettingLive.Index, :index
+    live "/settings/new", SettingLive.Index, :new
+    live "/settings/:id/edit", SettingLive.Index, :edit
+
+    live "/settings/:id", SettingLive.Show, :show
+    live "/settings/:id/show/edit", SettingLive.Show, :edit
+
     live "/", PageLive, :index
     live "/providers", ProviderLive.Index, :index
     live "/providers/new", ProviderLive.Index, :new
