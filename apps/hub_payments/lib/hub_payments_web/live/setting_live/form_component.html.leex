@@ -23,11 +23,11 @@
   <%= error_tag f, :active %>
 
   <%= label f, :type %>
-  <%= text_input f, :type %>
+  <%= select f, :type, types_list() %>
   <%= error_tag f, :type %>
 
   <%= label f, :env %>
-  <%= text_input f, :env %>
+  <%= select f, :env, envs_list() %>
   <%= error_tag f, :env %>
 
   <%= submit "Save", phx_disable_with: "Saving..." %>
