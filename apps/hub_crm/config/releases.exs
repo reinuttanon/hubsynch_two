@@ -28,7 +28,6 @@ config :hub_crm, HubCrm.Repo,
 #
 # If you are doing OTP releases, you need to instruct Phoenix
 # to start each relevant endpoint:
-#
 config :hub_crm, HubCrmWeb.Endpoint, server: true
 #
 # Then you can assemble a release by calling `mix release`.
