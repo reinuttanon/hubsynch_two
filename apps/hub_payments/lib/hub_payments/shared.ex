@@ -6,7 +6,7 @@ defmodule HubPayments.Shared do
   import Ecto.Query, warn: false
   alias HubPayments.Repo
 
-  alias HubPayments.Shared.Setting
+  alias HubPayments.Shared.{Setting, SettingServer}
 
   @doc """
   Returns the list of settings.
@@ -53,6 +53,7 @@ defmodule HubPayments.Shared do
     %Setting{}
     |> Setting.changeset(attrs)
     |> Repo.insert()
+    |> SettingServer.insert()
   end
 
   @doc """
@@ -71,6 +72,7 @@ defmodule HubPayments.Shared do
     setting
     |> Setting.changeset(attrs)
     |> Repo.update()
+    |> SettingServer.insert()
   end
 
   @doc """

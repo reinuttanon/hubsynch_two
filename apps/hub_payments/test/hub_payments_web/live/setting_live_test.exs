@@ -6,8 +6,15 @@ defmodule HubPaymentsWeb.SettingLiveTest do
   alias HubPayments.Shared
 
   @create_attrs params_for(:setting)
-  @update_attrs %{active: false, description: "some updated description", env: "staging", key: "some updated key", type: "file_path", value: "some updated value"}
-  @invalid_attrs %{description: nil, env: nil, key: nil, type: nil, value: nil}
+  @update_attrs %{
+    active: false,
+    description: "some updated description",
+    env: "staging",
+    key: "some updated key",
+    type: "file_path",
+    value: "some updated value"
+  }
+  @invalid_attrs %{description: nil, env: "development", key: nil, type: "secret", value: nil}
 
   defp fixture(:setting) do
     {:ok, setting} = Shared.create_setting(@create_attrs)
@@ -42,12 +49,16 @@ defmodule HubPaymentsWeb.SettingLiveTest do
 
       {:ok, val, html} =
         index_live
-        |> form("#setting-form", setting: %{active: true,
-        env: "development",
-        key: "some_key",
-        description: "some description",
-        type: "secret",
-        value: "key_value"})
+        |> form("#setting-form",
+          setting: %{
+            active: true,
+            env: "development",
+            key: "some_key",
+            description: "some description",
+            type: "secret",
+            value: "key_value"
+          }
+        )
         |> render_submit()
         |> follow_redirect(conn, Routes.setting_index_path(conn, :index))
 

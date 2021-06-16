@@ -11,6 +11,5 @@ defmodule HubPayments.Repo.Migrations.CreateProviders do
 
       timestamps()
     end
-
   end
 end

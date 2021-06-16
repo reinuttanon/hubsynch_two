@@ -40,6 +40,7 @@ defmodule HubPaymentsWeb.ConnCase do
       Ecto.Adapters.SQL.Sandbox.mode(HubPayments.Repo, {:shared, self()})
     end
 
+    on_exit(fn -> Memento.Table.clear(HubPayments.Shared.SettingRecord) end)
     {:ok, conn: Phoenix.ConnTest.build_conn()}
   end
 end

@@ -11,13 +11,15 @@ defmodule HubPaymentsWeb.ChargeView do
   end
 
   def render("charge.json", %{charge: charge}) do
-    %{id: charge.id,
+    %{
+      id: charge.id,
       reference: charge.reference,
       request_date: charge.request_date,
       process_date: charge.process_date,
       settle_date: charge.settle_date,
       money: charge.money,
       uuid: charge.uuid,
-      owner: charge.owner}
+      owner: charge.owner
+    }
   end
 end

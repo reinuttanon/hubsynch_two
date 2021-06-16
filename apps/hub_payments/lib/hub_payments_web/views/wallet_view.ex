@@ -11,9 +11,11 @@ defmodule HubPaymentsWeb.WalletView do
   end
 
   def render("wallet.json", %{wallet: wallet}) do
-    %{id: wallet.id,
+    %{
+      id: wallet.id,
       owner: wallet.owner,
       prefered_credit_card_uuid: wallet.prefered_credit_card_uuid,
-      uuid: wallet.uuid}
+      uuid: wallet.uuid
+    }
   end
 end

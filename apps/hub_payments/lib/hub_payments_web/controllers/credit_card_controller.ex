@@ -28,7 +28,8 @@ defmodule HubPaymentsWeb.CreditCardController do
   def update(conn, %{"id" => id, "credit_card" => credit_card_params}) do
     credit_card = Wallets.get_credit_card!(id)
 
-    with {:ok, %CreditCard{} = credit_card} <- Wallets.update_credit_card(credit_card, credit_card_params) do
+    with {:ok, %CreditCard{} = credit_card} <-
+           Wallets.update_credit_card(credit_card, credit_card_params) do
       render(conn, "show.json", credit_card: credit_card)
     end
   end
