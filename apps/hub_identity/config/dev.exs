@@ -1,9 +1,4 @@
 use Mix.Config
-
-# Configure the Repos to migrate, drop, etc
-config :hub_identity,
-  ecto_repos: [HubIdentity.Repo]
-
 # Configure your database
 config :hub_identity, HubIdentity.Repo,
   username: "postgres",

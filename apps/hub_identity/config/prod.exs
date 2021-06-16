@@ -1,9 +1,4 @@
 use Mix.Config
-
-# Configure the Repos to migrate, drop, etc
-config :hub_identity,
-  ecto_repos: [HubIdentity.Repo]
-
 # For production, don't forget to configure the url host
 # to something meaningful, Phoenix uses this information
 # when generating URLs.
@@ -14,9 +9,9 @@ config :hub_identity,
 # which you should run after static files are built and
 # before starting your production server.
 config :hub_identity, HubIdentityWeb.Endpoint,
-  url: [host: System.get_env("HOST"), scheme: "https", port: 443],
+  url: [host: System.get_env("HUBIDENTITY_HOST"), scheme: "https", port: 443],
   http: [
-    port: String.to_integer(System.get_env("PORT") || "4000"),
+    port: String.to_integer(System.get_env("HUBIDENTITY_PORT") || "4000"),
     transport_options: [socket_opts: [:inet6]]
   ],
   cache_static_manifest: "priv/static/cache_manifest.json"

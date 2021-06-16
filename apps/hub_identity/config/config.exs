@@ -6,6 +6,9 @@
 
 # General application configuration
 use Mix.Config
+# Configure the Repos to migrate, drop, etc
+config :hub_identity,
+  ecto_repos: [HubIdentity.Repo]
 
 # Configures the endpoint
 config :hub_identity, HubIdentityWeb.Endpoint,

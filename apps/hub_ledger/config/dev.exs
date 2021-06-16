@@ -1,8 +1,4 @@
 use Mix.Config
-# Configure the Repos to migrate, drop, etc
-config :hub_ledger,
-  ecto_repos: [HubLedger.Repo]
-
 # Configure your database
 config :hub_ledger, HubLedger.Repo,
   username: "postgres",
@@ -23,6 +19,7 @@ config :hub_ledger, HubLedgerWeb.Endpoint,
   debug_errors: true,
   code_reloader: true,
   check_origin: false,
+  secret_key_base: "pljvBt5UXkTkb7U87NYHyg9+4NBVmNTWJ3RfzCoxLrxnbtD0a3fHzTsownzxzfL8",
   watchers: [
     node: [
       "node_modules/webpack/bin/webpack.js",

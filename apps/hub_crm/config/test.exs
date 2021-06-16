@@ -1,9 +1,4 @@
 use Mix.Config
-
-# Configure the Repos to migrate, drop, etc
-config :hub_crm,
-  ecto_repos: [HubCrm.Repo]
-
 # Configure your database
 #
 # The MIX_TEST_PARTITION environment variable can be used

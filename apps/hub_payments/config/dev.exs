@@ -20,6 +20,7 @@ config :hub_payments, HubPaymentsWeb.Endpoint,
   debug_errors: true,
   code_reloader: true,
   check_origin: false,
+  secret_key_base: "Q+OP19O2U0NIS7k9U3NLm/zj66PK7tkUQokVLQXU3Qda4gwpgpLqyN6mx+cJj7ND",
   watchers: [
     node: [
       "node_modules/webpack/bin/webpack.js",

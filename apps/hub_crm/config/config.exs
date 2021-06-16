@@ -6,6 +6,9 @@
 
 # General application configuration
 use Mix.Config
+# Configure the Repos to migrate, drop, etc
+config :hub_crm,
+  ecto_repos: [HubCrm.Repo]
 
 # Configures the endpoint
 config :hub_crm, HubCrmWeb.Endpoint,

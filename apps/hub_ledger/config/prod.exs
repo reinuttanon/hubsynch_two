@@ -1,5 +1,4 @@
 use Mix.Config
-
 # For production, don't forget to configure the url host
 # to something meaningful, Phoenix uses this information
 # when generating URLs.
@@ -10,11 +9,19 @@ use Mix.Config
 # which you should run after static files are built and
 # before starting your production server.
 config :hub_ledger, HubLedgerWeb.Endpoint,
-  url: [host: "example.com", port: 80],
+  url: [host: System.get_env("HUBLEDGER_HOST"), scheme: "https", port: 443],
+  http: [
+    port: String.to_integer(System.get_env("HUBLEDGER_PORT") || "4001"),
+    transport_options: [socket_opts: [:inet6]]
+  ],
   cache_static_manifest: "priv/static/cache_manifest.json"
 
 # Do not print debug messages in production
-config :logger, level: :info
+config :logger,
+       :error_log,
+       path: "logs/crm_production.log",
+       level: :info
+
 config :hub_ledger, email: SendGrid.Mail
 
 # ## SSL Support
@@ -53,4 +60,8 @@ config :hub_ledger, email: SendGrid.Mail
 
 # Finally import the config/prod.secret.exs which loads secrets
 # and configuration from environment variables.
-import_config "prod.secret.exs"
+config :hub_ledger, email: SendGrid.Mail
+config :hub_ledger, hub_identity: HubIdentityElixir.HubIdentity
+config :hub_ledger, hub_identity_user: HubIdentityElixir.HubIdentity.User
+
+# import_config "prod.secret.exs"

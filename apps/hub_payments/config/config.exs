@@ -13,7 +13,6 @@ config :hub_payments,
 # Configures the endpoint
 config :hub_payments, HubPaymentsWeb.Endpoint,
   url: [host: "localhost"],
-  secret_key_base: "Q+OP19O2U0NIS7k9U3NLm/zj66PK7tkUQokVLQXU3Qda4gwpgpLqyN6mx+cJj7ND",
   render_errors: [view: HubPaymentsWeb.ErrorView, accepts: ~w(html json), layout: false],
   pubsub_server: HubPayments.PubSub,
   live_view: [signing_salt: "9MTqXf+6"]

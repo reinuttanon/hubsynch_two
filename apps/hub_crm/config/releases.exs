@@ -5,14 +5,14 @@
 import Config
 
 database_url =
-  System.get_env("DATABASE_URL") ||
+  System.get_env("HUBCRM_DATABASE_URL") ||
     raise """
     environment variable DATABASE_URL is missing.
     For example: ecto://USER:PASS@HOST/DATABASE
     """
 
 secret_key_base =
-  System.get_env("SECRET_KEY_BASE") ||
+  System.get_env("HUBCRM_SECRET_KEY_BASE") ||
     raise """
     environment variable HUBCRM_SECRET_KEY_BASE is missing.
     You can generate one by calling: mix phx.gen.secret
@@ -22,7 +22,7 @@ config :hub_crm, HubCrmWeb.Endpoint, secret_key_base: secret_key_base
 
 config :hub_crm, HubCrm.Repo,
   url: database_url,
-  pool_size: String.to_integer(System.get_env("REPO_POOL_SIZE") || "10")
+  pool_size: String.to_integer(System.get_env("HUBCRM_REPO_POOL_SIZE") || "10")
 
 # ## Using releases (Elixir v1.9+)
 #

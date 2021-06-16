@@ -1,10 +1,4 @@
 use Mix.Config
-# Configure the Repos to migrate, drop, etc
-### DO NOT include HubsynchRepo! This is READ ONLY ###
-### DO NOT include HubIdentityRepo! This is READ ONLY ###
-config :hub_crm,
-  ecto_repos: [HubCrm.Repo]
-
 # For production, don't forget to configure the url host
 # to something meaningful, Phoenix uses this information
 # when generating URLs.
@@ -15,9 +9,9 @@ config :hub_crm,
 # which you should run after static files are built and
 # before starting your production server.
 config :hub_crm, HubCrmWeb.Endpoint,
-  url: [host: System.get_env("HOST"), scheme: "https", port: 443],
+  url: [host: System.get_env("HUBCRM_HOST"), scheme: "https", port: 443],
   http: [
-    port: String.to_integer(System.get_env("PORT") || "4001"),
+    port: String.to_integer(System.get_env("HUBCRM_PORT") || "4001"),
     transport_options: [socket_opts: [:inet6]]
   ],
   cache_static_manifest: "priv/static/cache_manifest.json"
