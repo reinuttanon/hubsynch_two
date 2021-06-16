@@ -25,6 +25,7 @@ defmodule HubPayments.DataCase do
       import Ecto.Query
       import HubPayments.DataCase
       import HubPayments.Factory
+      require IEx
     end
   end
 

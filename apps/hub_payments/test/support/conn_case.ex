@@ -24,6 +24,7 @@ defmodule HubPaymentsWeb.ConnCase do
       import Phoenix.ConnTest
       import HubPaymentsWeb.ConnCase
       import HubPayments.Factory
+      require IEx
 
       alias HubPaymentsWeb.Router.Helpers, as: Routes
 

@@ -5,9 +5,9 @@ defmodule HubPaymentsWeb.SettingLiveTest do
 
   alias HubPayments.Shared
 
-  @create_attrs %{active: true, description: "some description", env: "some env", key: "some key", type: "some type", value: "some value"}
-  @update_attrs %{active: false, description: "some updated description", env: "some updated env", key: "some updated key", type: "some updated type", value: "some updated value"}
-  @invalid_attrs %{active: nil, description: nil, env: nil, key: nil, type: nil, value: nil}
+  @create_attrs params_for(:setting)
+  @update_attrs %{active: false, description: "some updated description", env: "staging", key: "some updated key", type: "file_path", value: "some updated value"}
+  @invalid_attrs %{description: nil, env: nil, key: nil, type: nil, value: nil}
 
   defp fixture(:setting) do
     {:ok, setting} = Shared.create_setting(@create_attrs)
@@ -26,7 +26,6 @@ defmodule HubPaymentsWeb.SettingLiveTest do
       {:ok, _index_live, html} = live(conn, Routes.setting_index_path(conn, :index))
 
       assert html =~ "Listing Settings"
-      assert html =~ setting.description
     end
 
     test "saves new setting", %{conn: conn} do
@@ -41,9 +40,14 @@ defmodule HubPaymentsWeb.SettingLiveTest do
              |> form("#setting-form", setting: @invalid_attrs)
              |> render_change() =~ "can&#39;t be blank"
 
-      {:ok, _, html} =
+      {:ok, val, html} =
         index_live
-        |> form("#setting-form", setting: @create_attrs)
+        |> form("#setting-form", setting: %{active: true,
+        env: "development",
+        key: "some_key",
+        description: "some description",
+        type: "secret",
+        value: "key_value"})
         |> render_submit()
         |> follow_redirect(conn, Routes.setting_index_path(conn, :index))
 
@@ -88,7 +92,7 @@ defmodule HubPaymentsWeb.SettingLiveTest do
       {:ok, _show_live, html} = live(conn, Routes.setting_show_path(conn, :show, setting))
 
       assert html =~ "Show Setting"
-      assert html =~ setting.description
+      assert html =~ setting.key
     end
 
     test "updates setting within modal", %{conn: conn, setting: setting} do

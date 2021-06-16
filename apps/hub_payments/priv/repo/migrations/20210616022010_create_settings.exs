@@ -13,5 +13,6 @@ defmodule HubPayments.Repo.Migrations.CreateSettings do
       timestamps()
     end
 
+    create unique_index(:settings, [:key, :env, :active])
   end
 end

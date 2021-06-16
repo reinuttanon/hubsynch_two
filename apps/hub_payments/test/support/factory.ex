@@ -46,6 +46,15 @@ defmodule HubPayments.Factory do
     }
   end
 
+  def setting_factory do
+    %HubPayments.Shared.Setting{
+      active: true,
+      env: "development",
+      key: sequence(:key, &"a_key#{&1}"),
+      type: "secret",
+      value: "key_value"
+    }
+  end
   def wallet_factory do
     %HubPayments.Wallets.Wallet{
       owner: %HubPayments.Embeds.Owner{
