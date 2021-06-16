@@ -14,7 +14,7 @@ defmodule HubPaymentsWeb.SettingLiveTest do
     type: "file_path",
     value: "some updated value"
   }
-  @invalid_attrs %{description: nil, env: nil, key: nil, type: nil, value: nil}
+  @invalid_attrs %{description: nil, env: "development", key: nil, type: "secret", value: nil}
 
   defp fixture(:setting) do
     {:ok, setting} = Shared.create_setting(@create_attrs)
