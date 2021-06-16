@@ -9,7 +9,6 @@ defmodule HubLedger.Application do
     children = [
       # Start the Ecto repositories
       HubLedger.Repo,
-      HubLedger.HubIdentityRepo,
       # Start the Telemetry supervisor
       HubLedgerWeb.Telemetry,
       # Start the PubSub system
