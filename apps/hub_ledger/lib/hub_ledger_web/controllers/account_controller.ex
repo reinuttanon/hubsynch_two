@@ -52,7 +52,7 @@ defmodule HubLedgerWeb.AccountController do
     end
   end
 
-  def delete(conn, %{"id" => id}) do
+  def delete(_conn, _) do
     # api_key = ClientServices.get_api_key!(id)
     # {:ok, _api_key} = ClientServices.delete_api_key(api_key)
 

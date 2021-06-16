@@ -75,7 +75,8 @@ defmodule HubCrm.Countries.CountryServer do
   defp seed_data do
     :ets.delete_all_objects(@table)
 
-    File.read!("apps/hub_crm/priv/repo/countries.txt")
+    Path.expand("../../../priv/repo/countries.txt", __DIR__)
+    |> File.read!()
     |> Jason.decode!()
     |> Task.async_stream(fn country -> create(country) end)
     |> Enum.map(fn {:ok, result} -> result end)
@@ -86,3 +87,5 @@ defmodule HubCrm.Countries.CountryServer do
     :ets.insert(@table, record)
   end
 end
+
+# "apps/hub_crm/priv/repo/countries.txt"

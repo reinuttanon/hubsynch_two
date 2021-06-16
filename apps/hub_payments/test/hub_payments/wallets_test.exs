@@ -6,34 +6,39 @@ defmodule HubPayments.WalletsTest do
   describe "wallets" do
     alias HubPayments.Wallets.Wallet
 
-    @valid_attrs %{owner: %{}, prefered_credit_card_uuid: "some prefered_credit_card_uuid", uuid: "some uuid"}
-    @update_attrs %{owner: %{}, prefered_credit_card_uuid: "some updated prefered_credit_card_uuid", uuid: "some updated uuid"}
+    @update_attrs %{
+      owner: %{object: "newOwner", uid: "new_12345"},
+      prefered_credit_card_uuid: "some updated prefered_credit_card_uuid"
+    }
     @invalid_attrs %{owner: nil, prefered_credit_card_uuid: nil, uuid: nil}
 
-    def wallet_fixture(attrs \\ %{}) do
-      {:ok, wallet} =
-        attrs
-        |> Enum.into(@valid_attrs)
-        |> Wallets.create_wallet()
-
-      wallet
-    end
-
     test "list_wallets/0 returns all wallets" do
-      wallet = wallet_fixture()
+      wallet = insert(:wallet)
       assert Wallets.list_wallets() == [wallet]
     end
 
     test "get_wallet!/1 returns the wallet with given id" do
-      wallet = wallet_fixture()
+      wallet = insert(:wallet)
       assert Wallets.get_wallet!(wallet.id) == wallet
     end
 
     test "create_wallet/1 with valid data creates a wallet" do
-      assert {:ok, %Wallet{} = wallet} = Wallets.create_wallet(@valid_attrs)
-      assert wallet.owner == %{}
-      assert wallet.prefered_credit_card_uuid == "some prefered_credit_card_uuid"
-      assert wallet.uuid == "some uuid"
+      assert {:ok, %Wallet{} = wallet} =
+               Wallets.create_wallet(%{
+                 owner: %{
+                   object: "HubIdentity.User",
+                   uid: "user_12345678"
+                 },
+                 prefered_credit_card_uuid: "cc_uuid"
+               })
+
+      assert wallet.owner == %HubPayments.Embeds.Owner{
+               object: "HubIdentity.User",
+               uid: "user_12345678"
+             }
+
+      assert wallet.prefered_credit_card_uuid == "cc_uuid"
+      assert wallet.uuid != nil
     end
 
     test "create_wallet/1 with invalid data returns error changeset" do
@@ -41,27 +46,32 @@ defmodule HubPayments.WalletsTest do
     end
 
     test "update_wallet/2 with valid data updates the wallet" do
-      wallet = wallet_fixture()
-      assert {:ok, %Wallet{} = wallet} = Wallets.update_wallet(wallet, @update_attrs)
-      assert wallet.owner == %{}
-      assert wallet.prefered_credit_card_uuid == "some updated prefered_credit_card_uuid"
-      assert wallet.uuid == "some updated uuid"
+      wallet = insert(:wallet)
+      assert {:ok, %Wallet{} = updated_wallet} = Wallets.update_wallet(wallet, @update_attrs)
+
+      assert updated_wallet.owner == %HubPayments.Embeds.Owner{
+               object: "newOwner",
+               uid: "new_12345"
+             }
+
+      assert updated_wallet.prefered_credit_card_uuid == "some updated prefered_credit_card_uuid"
+      assert updated_wallet.uuid == wallet.uuid
     end
 
     test "update_wallet/2 with invalid data returns error changeset" do
-      wallet = wallet_fixture()
+      wallet = insert(:wallet)
       assert {:error, %Ecto.Changeset{}} = Wallets.update_wallet(wallet, @invalid_attrs)
       assert wallet == Wallets.get_wallet!(wallet.id)
     end
 
     test "delete_wallet/1 deletes the wallet" do
-      wallet = wallet_fixture()
+      wallet = insert(:wallet)
       assert {:ok, %Wallet{}} = Wallets.delete_wallet(wallet)
       assert_raise Ecto.NoResultsError, fn -> Wallets.get_wallet!(wallet.id) end
     end
 
     test "change_wallet/1 returns a wallet changeset" do
-      wallet = wallet_fixture()
+      wallet = insert(:wallet)
       assert %Ecto.Changeset{} = Wallets.change_wallet(wallet)
     end
   end
@@ -69,9 +79,30 @@ defmodule HubPayments.WalletsTest do
   describe "credit_cards" do
     alias HubPayments.Wallets.CreditCard
 
-    @valid_attrs %{brand: "some brand", exp_month: "some exp_month", exp_year: "some exp_year", fingerprint: "some fingerprint", last_four: "some last_four", uuid: "some uuid"}
-    @update_attrs %{brand: "some updated brand", exp_month: "some updated exp_month", exp_year: "some updated exp_year", fingerprint: "some updated fingerprint", last_four: "some updated last_four", uuid: "some updated uuid"}
-    @invalid_attrs %{brand: nil, exp_month: nil, exp_year: nil, fingerprint: nil, last_four: nil, uuid: nil}
+    @valid_attrs %{
+      brand: "some brand",
+      exp_month: "some exp_month",
+      exp_year: "some exp_year",
+      fingerprint: "some fingerprint",
+      last_four: "some last_four",
+      uuid: "some uuid"
+    }
+    @update_attrs %{
+      brand: "some updated brand",
+      exp_month: "some updated exp_month",
+      exp_year: "some updated exp_year",
+      fingerprint: "some updated fingerprint",
+      last_four: "some updated last_four",
+      uuid: "some updated uuid"
+    }
+    @invalid_attrs %{
+      brand: nil,
+      exp_month: nil,
+      exp_year: nil,
+      fingerprint: nil,
+      last_four: nil,
+      uuid: nil
+    }
 
     def credit_card_fixture(attrs \\ %{}) do
       {:ok, credit_card} =
@@ -99,7 +130,7 @@ defmodule HubPayments.WalletsTest do
       assert credit_card.exp_year == "some exp_year"
       assert credit_card.fingerprint == "some fingerprint"
       assert credit_card.last_four == "some last_four"
-      assert credit_card.uuid == "some uuid"
+      assert credit_card.uuid != nil
     end
 
     test "create_credit_card/1 with invalid data returns error changeset" do
@@ -108,13 +139,15 @@ defmodule HubPayments.WalletsTest do
 
     test "update_credit_card/2 with valid data updates the credit_card" do
       credit_card = credit_card_fixture()
-      assert {:ok, %CreditCard{} = credit_card} = Wallets.update_credit_card(credit_card, @update_attrs)
+
+      assert {:ok, %CreditCard{} = credit_card} =
+               Wallets.update_credit_card(credit_card, @update_attrs)
+
       assert credit_card.brand == "some updated brand"
       assert credit_card.exp_month == "some updated exp_month"
       assert credit_card.exp_year == "some updated exp_year"
       assert credit_card.fingerprint == "some updated fingerprint"
       assert credit_card.last_four == "some updated last_four"
-      assert credit_card.uuid == "some updated uuid"
     end
 
     test "update_credit_card/2 with invalid data returns error changeset" do

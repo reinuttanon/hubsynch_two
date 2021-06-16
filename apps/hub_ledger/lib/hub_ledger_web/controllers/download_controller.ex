@@ -23,13 +23,13 @@ defmodule HubLedgerWeb.DownloadController do
 
   defp report(%{"accounts" => report_params}), do: Reports.accounts_report(report_params)
 
-  defp report_name(%{"accounts" => _report_params}), do: "AccountsReport.csv"
-
   defp report(%{"entries" => report_params}), do: Reports.entries_report(report_params)
 
-  defp report_name(%{"entries" => _report_params}), do: "EntriesReport.csv"
-
   defp report(%{"transactions" => report_params}), do: Reports.transactions_report(report_params)
+
+  defp report_name(%{"accounts" => _report_params}), do: "AccountsReport.csv"
+
+  defp report_name(%{"entries" => _report_params}), do: "EntriesReport.csv"
 
   defp report_name(%{"transactions" => _report_params}), do: "TransactionsReport.csv"
 end

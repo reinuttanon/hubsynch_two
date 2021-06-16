@@ -220,7 +220,7 @@ defmodule HubLedger.Users do
   """
   def get_access_request!(id), do: Repo.get!(AccessRequest, id)
 
-  def get_access_request(%{id: id}) do
+  def get_pending_access_request(%{id: id}) do
     query =
       from ar in AccessRequest,
         where: ar.id == ^id
@@ -228,7 +228,7 @@ defmodule HubLedger.Users do
     Repo.one(query)
   end
 
-  def get_pending_access_request(%{id: id}) do
+  def get_access_request(%{id: id}) do
     query =
       from ar in AccessRequest,
         where: ar.id == ^id

@@ -22,9 +22,4 @@ defmodule HubLedger.Reports.EntryFilters do
     from q in query,
       order_by: [desc: q.reported_date]
   end
-
-  def preload(query, preloads) do
-    from q in query,
-      preload: ^preloads
-  end
 end

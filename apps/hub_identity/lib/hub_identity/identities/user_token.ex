@@ -2,8 +2,6 @@ defmodule HubIdentity.Identities.UserToken do
   use Ecto.Schema
   import Ecto.Query
 
-  alias HubIdentity.Identities.Email
-
   @hash_algorithm :sha256
   @rand_size 32
 
@@ -152,19 +150,6 @@ defmodule HubIdentity.Identities.UserToken do
   def token_and_context_query(token, context) do
     from HubIdentity.Identities.UserToken, where: [token: ^token, context: ^context]
   end
-
-  @doc """
-  Gets all tokens for the given email for the given contexts.
-  """
-
-  # def email_and_contexts_query(email, :all) do
-  #   from t in HubIdentity.Identities.UserToken, where: t.email_id == ^email.id
-  # end
-
-  # def email_and_contexts_query(email, [_ | _] = contexts) do
-  #   from t in HubIdentity.Identities.UserToken,
-  #     where: t.email_id == ^email.id and t.context in ^contexts
-  # end
 
   @doc """
   Gets all tokens for the given user for the given contexts.

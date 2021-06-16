@@ -6,8 +6,6 @@ defmodule HubIdentityWeb.Browser.V1.UserController do
   alias HubIdentity.{Identities, Verifications}
   alias HubIdentity.Identities.User
 
-  import HubIdentityWeb.AuthenticationResponseHelper, only: [respond: 4]
-
   def new(conn, _params) do
     with %ClientService{} <- get_session(conn, :client_service) do
       changeset = User.web_registration_changeset(%User{}, %{})

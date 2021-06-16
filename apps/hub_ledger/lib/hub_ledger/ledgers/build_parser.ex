@@ -155,15 +155,13 @@ defmodule HubLedger.Ledgers.BuildParser do
 
   defp replace(attribute, [], _payload), do: attribute
 
-  @doc """
-  Replace a part of an attribute that is equals to a value with payload["value"].
+  # Replace a part of an attribute that is equals to a value with payload["value"].
 
-  ## Examples
+  # ## Examples
 
-      iex> replace("user_1234.purchase.company_app_id", ["company_app_id" | values], %{company_app_id: "app_12345"})
-      "user_1234.purchase.app_12345"
+  #     iex> replace("user_1234.purchase.company_app_id", ["company_app_id" | values], %{company_app_id: "app_12345"})
+  #     "user_1234.purchase.app_12345"
 
-  """
   defp replace(attribute, [value | values], payload) do
     case payload[value] do
       nil ->

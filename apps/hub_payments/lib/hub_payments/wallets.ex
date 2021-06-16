@@ -69,7 +69,7 @@ defmodule HubPayments.Wallets do
   """
   def update_wallet(%Wallet{} = wallet, attrs) do
     wallet
-    |> Wallet.changeset(attrs)
+    |> Wallet.update_changeset(attrs)
     |> Repo.update()
   end
 
@@ -165,7 +165,7 @@ defmodule HubPayments.Wallets do
   """
   def update_credit_card(%CreditCard{} = credit_card, attrs) do
     credit_card
-    |> CreditCard.changeset(attrs)
+    |> CreditCard.update_changeset(attrs)
     |> Repo.update()
   end
 

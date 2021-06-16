@@ -12,15 +12,6 @@ config :hub_ledger, HubLedger.Repo,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
 
-# Configuration for hub_identity database for Api Keys
-config :hub_ledger, HubLedger.HubIdentityRepo,
-  username: "postgres",
-  password: "postgres",
-  database: "hub_identity_dev",
-  hostname: "localhost",
-  show_sensitive_data_on_connection_error: true,
-  pool_size: 10
-
 # For development, we disable any cache and enable
 # debugging and code reloading.
 #

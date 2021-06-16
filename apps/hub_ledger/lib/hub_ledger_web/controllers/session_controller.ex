@@ -44,7 +44,7 @@ defmodule HubLedgerWeb.SessionController do
 
   defp get_google([]), do: {:errors, "no google url"}
 
-  defp get_google([%{"name" => "google", "request_url" => request_url} | tail]),
+  defp get_google([%{"name" => "google", "request_url" => request_url} | _tail]),
     do: {:ok, request_url}
 
   defp get_google([_head | tail]), do: get_google(tail)
