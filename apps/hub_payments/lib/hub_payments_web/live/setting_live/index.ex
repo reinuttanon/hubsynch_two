@@ -42,10 +42,10 @@ defmodule HubPaymentsWeb.SettingLive.Index do
        |> put_flash(:info, "Setting deleted successfully")
        |> assign(:settings, list_settings())}
 
-    {:error, _} ->
+    {:error, message} ->
       {:noreply,
        socket
-       |> put_flash(:error, "Setting must be inactive to delete")
+       |> put_flash(:error, message)
        |> assign(:settings, list_settings())}
       end
   end
