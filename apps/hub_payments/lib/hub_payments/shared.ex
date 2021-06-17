@@ -88,7 +88,10 @@ defmodule HubPayments.Shared do
 
   """
   def delete_setting(%Setting{} = setting) do
-    Repo.delete(setting)
+    case setting.active do
+      true -> {:error, "Setting must be inactive to delete"}
+      false -> Repo.delete(setting)
+    end
   end
 
   @doc """
