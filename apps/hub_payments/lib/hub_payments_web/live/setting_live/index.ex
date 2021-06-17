@@ -35,9 +35,19 @@ defmodule HubPaymentsWeb.SettingLive.Index do
   @impl true
   def handle_event("delete", %{"id" => id}, socket) do
     setting = Shared.get_setting!(id)
-    {:ok, _} = Shared.delete_setting(setting)
+    case Shared.delete_setting(setting) do
+    {:ok, _} ->
+      {:noreply,
+       socket
+       |> put_flash(:info, "Setting deleted successfully")
+       |> assign(:settings, list_settings())}
 
-    {:noreply, assign(socket, :settings, list_settings())}
+    {:error, _} ->
+      {:noreply,
+       socket
+       |> put_flash(:error, "Setting must be inactive to delete")
+       |> assign(:settings, list_settings())}
+      end
   end
 
   defp list_settings do
