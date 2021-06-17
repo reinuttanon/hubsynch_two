@@ -27,7 +27,7 @@ config :hub_payments, HubPaymentsWeb.Endpoint,
       "--mode",
       "development",
       "--watch-stdin",
-      cd: Path.expand("../assets", __DIR__)
+      cd: Path.expand("../../assets/assets", __DIR__)
     ]
   ]
 

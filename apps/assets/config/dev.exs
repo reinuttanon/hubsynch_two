@@ -1,12 +1,4 @@
 use Mix.Config
-# Configure your database
-config :hub_ledger, HubLedger.Repo,
-  username: "postgres",
-  password: "postgres",
-  database: "hub_ledger_dev",
-  hostname: "localhost",
-  show_sensitive_data_on_connection_error: true,
-  pool_size: 10
 
 # For development, we disable any cache and enable
 # debugging and code reloading.
@@ -14,19 +6,18 @@ config :hub_ledger, HubLedger.Repo,
 # The watchers configuration can be used to run external
 # watchers to your application. For example, we use it
 # with webpack to recompile .js and .css sources.
-config :hub_ledger, HubLedgerWeb.Endpoint,
-  http: [port: 4003],
+config :assets, AssetsWeb.Endpoint,
+  http: [port: 4008],
   debug_errors: true,
   code_reloader: true,
   check_origin: false,
-  secret_key_base: "pljvBt5UXkTkb7U87NYHyg9+4NBVmNTWJ3RfzCoxLrxnbtD0a3fHzTsownzxzfL8",
   watchers: [
     node: [
       "node_modules/webpack/bin/webpack.js",
       "--mode",
       "development",
       "--watch-stdin",
-      cd: Path.expand("../../assets/assets", __DIR__)
+      cd: Path.expand("../assets", __DIR__)
     ]
   ]
 
@@ -55,13 +46,13 @@ config :hub_ledger, HubLedgerWeb.Endpoint,
 # different ports.
 
 # Watch static and templates for browser reloading.
-config :hub_ledger, HubLedgerWeb.Endpoint,
+config :assets, AssetsWeb.Endpoint,
   live_reload: [
     patterns: [
       ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",
       ~r"priv/gettext/.*(po)$",
-      ~r"lib/hub_ledger_web/(live|views)/.*(ex)$",
-      ~r"lib/hub_ledger_web/templates/.*(eex)$"
+      ~r"lib/assets_web/(live|views)/.*(ex)$",
+      ~r"lib/assets_web/templates/.*(eex)$"
     ]
   ]
 
@@ -74,7 +65,3 @@ config :phoenix, :stacktrace_depth, 20
 
 # Initialize plugs at runtime for faster development compilation
 config :phoenix, :plug_init_mode, :runtime
-
-config :hub_ledger, email: HubLedger.Users.UserNotifier
-config :hub_ledger, hub_identity: HubIdentityElixir.HubIdentity
-config :hub_ledger, hub_identity_user: HubIdentityElixir.Users.User

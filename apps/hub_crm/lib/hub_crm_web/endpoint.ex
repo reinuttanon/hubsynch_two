@@ -22,7 +22,7 @@ defmodule HubCrmWeb.Endpoint do
   # when deploying your static files in production.
   plug Plug.Static,
     at: "/",
-    from: :hub_crm,
+    from: :assets,
     gzip: false,
     only: ~w(css fonts images js favicon.ico robots.txt)
 

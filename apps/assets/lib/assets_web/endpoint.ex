@@ -1,16 +1,16 @@
-defmodule HubPaymentsWeb.Endpoint do
-  use Phoenix.Endpoint, otp_app: :hub_payments
+defmodule AssetsWeb.Endpoint do
+  use Phoenix.Endpoint, otp_app: :assets
 
   # The session will be stored in the cookie and signed,
   # this means its contents can be read but not tampered with.
   # Set :encryption_salt if you would also like to encrypt it.
   @session_options [
     store: :cookie,
-    key: "_hub_payments_key",
-    signing_salt: "RBDzRVdY"
+    key: "_assets_key",
+    signing_salt: "0d/NDXNu"
   ]
 
-  socket "/socket", HubPaymentsWeb.UserSocket,
+  socket "/socket", AssetsWeb.UserSocket,
     websocket: true,
     longpoll: false
 
@@ -32,7 +32,6 @@ defmodule HubPaymentsWeb.Endpoint do
     socket "/phoenix/live_reload/socket", Phoenix.LiveReloader.Socket
     plug Phoenix.LiveReloader
     plug Phoenix.CodeReloader
-    plug Phoenix.Ecto.CheckRepoStatus, otp_app: :hub_payments
   end
 
   plug Phoenix.LiveDashboard.RequestLogger,
@@ -50,5 +49,5 @@ defmodule HubPaymentsWeb.Endpoint do
   plug Plug.MethodOverride
   plug Plug.Head
   plug Plug.Session, @session_options
-  plug HubPaymentsWeb.Router
+  plug AssetsWeb.Router
 end
