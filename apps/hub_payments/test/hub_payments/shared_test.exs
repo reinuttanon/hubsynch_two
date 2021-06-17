@@ -166,7 +166,7 @@ defmodule HubPayments.SharedTest do
 
     test "delete_setting/1 setting is not deleted if it is active" do
       setting = insert(:setting)
-      assert {:error, "Setting must be inactive to delete"} = Shared.delete_setting(setting)
+      assert {:error, "cannot delete an active setting"} = Shared.delete_setting(setting)
       assert setting == Shared.get_setting!(setting.id)
     end
 
