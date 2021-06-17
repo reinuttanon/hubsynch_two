@@ -164,8 +164,14 @@ defmodule HubPayments.SharedTest do
       assert setting == Shared.get_setting!(setting.id)
     end
 
-    test "delete_setting/1 deletes the setting" do
+    test "delete_setting/1 setting is not deleted if it is active" do
       setting = insert(:setting)
+      assert {:error, "Setting must be inactive to delete"} = Shared.delete_setting(setting)
+      assert setting == Shared.get_setting!(setting.id)
+    end
+
+    test "delete_setting/1 deletes the setting" do
+      {:ok, %Setting{} = setting} = Shared.create_setting(@update_attrs)
       assert {:ok, %Setting{}} = Shared.delete_setting(setting)
       assert_raise Ecto.NoResultsError, fn -> Shared.get_setting!(setting.id) end
     end
