@@ -87,9 +87,9 @@ defmodule HubPayments.Shared do
       {:error, %Ecto.Changeset{}}
 
   """
-  def delete_setting(%Setting{} = setting) do
-    Repo.delete(setting)
-  end
+  def delete_setting(%Setting{active: false} = setting), do: Repo.delete(setting)
+
+  def delete_setting(_setting), do: {:error, "cannot delete an active setting"}
 
   @doc """
   Returns an `%Ecto.Changeset{}` for tracking setting changes.

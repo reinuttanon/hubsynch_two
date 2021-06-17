@@ -88,8 +88,26 @@ defmodule HubPaymentsWeb.SettingLiveTest do
       assert html =~ "some updated description"
     end
 
-    test "deletes setting in listing", %{conn: conn, setting: setting} do
-      {:ok, index_live, _html} = live(conn, Routes.setting_index_path(conn, :index))
+    test "does not delete active setting in listing", %{conn: conn, setting: setting} do
+      {:ok, index_live, html} = live(conn, Routes.setting_index_path(conn, :index))
+
+      assert index_live |> element("#setting-#{setting.id} a", "Delete") |> render_click()
+      assert has_element?(index_live, "#setting-#{setting.id}")
+    end
+
+    test "delete inactive setting in listing", %{conn: conn, setting: setting} do
+      {:ok, index_live, html} = live(conn, Routes.setting_index_path(conn, :index))
+
+      assert index_live |> element("#setting-#{setting.id} a", "Edit") |> render_click() =~
+               "Edit Setting"
+
+      assert_patch(index_live, Routes.setting_index_path(conn, :edit, setting))
+
+      {:ok, index_live, html} =
+        index_live
+        |> form("#setting-form", setting: @update_attrs)
+        |> render_submit()
+        |> follow_redirect(conn, Routes.setting_index_path(conn, :index))
 
       assert index_live |> element("#setting-#{setting.id} a", "Delete") |> render_click()
       refute has_element?(index_live, "#setting-#{setting.id}")
