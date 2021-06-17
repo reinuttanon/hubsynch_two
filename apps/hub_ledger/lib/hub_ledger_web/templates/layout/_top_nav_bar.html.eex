@@ -35,13 +35,12 @@
         </div>
       </div>
     </div>
-    </div>
+  </div>
 
-    <div class="navbar-end">
-      <div class="navbar-item">
-        <div class="buttons">
-          <%= link "Log out", to: Routes.session_path(@conn, :log_out), class: "button is-link is-outlined" %>
-        </div>
+  <div class="navbar-end">
+    <div class="navbar-item">
+      <div class="buttons">
+        <%= link "Log out", to: Routes.session_path(@conn, :log_out), class: "button is-link is-outlined" %>
       </div>
     </div>
   </div>

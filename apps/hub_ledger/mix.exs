@@ -57,6 +57,7 @@ defmodule HubLedger.MixProject do
       {:csv, "~> 2.4"},
       {:hub_identity_elixir, "~> 0.1.60"},
       {:sendgrid, "~> 2.0"},
+      {:dashboard, in_umbrella: true},
       {:hub_identity, in_umbrella: true}
     ]
   end

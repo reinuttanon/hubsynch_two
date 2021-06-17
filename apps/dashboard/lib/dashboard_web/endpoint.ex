@@ -7,7 +7,7 @@ defmodule DashboardWeb.Endpoint do
   @session_options [
     store: :cookie,
     key: "_dashboard_key",
-    signing_salt: "NaVa+fYN"
+    signing_salt: "7stpPN1H"
   ]
 
   socket "/socket", DashboardWeb.UserSocket,

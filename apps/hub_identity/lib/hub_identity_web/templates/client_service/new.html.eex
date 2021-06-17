@@ -1,3 +1,3 @@
-<h1>New Client service</h1>
+<h1 class="is-size-2">New Client service</h1>
 
 <%= render "form.html", Map.put(assigns, :action, Routes.client_service_path(@conn, :create)) %>

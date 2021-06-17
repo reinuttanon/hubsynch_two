@@ -10,10 +10,10 @@ use Mix.Config
 # Configures the endpoint
 config :dashboard, DashboardWeb.Endpoint,
   url: [host: "localhost"],
-  secret_key_base: "SrBT/5hUtnwaPQGj0yWXYUX8VFfDvg0NZQ0ePjmzAUGPKElesMul+HgBjQ+Z98M9",
+  secret_key_base: "MZHmtHjHUpFWxUks7IjQFZCN+gx6bpMTvRd9NKGS8kjIq6Va6ngxwOV2SPGra66g",
   render_errors: [view: DashboardWeb.ErrorView, accepts: ~w(html json), layout: false],
   pubsub_server: Dashboard.PubSub,
-  live_view: [signing_salt: "ePZeCu+7"]
+  live_view: [signing_salt: "Px5/hgbj"]
 
 # Configures Elixir's Logger
 config :logger, :console,

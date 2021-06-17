@@ -1,8 +1,14 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="/dashboard">
-      <img src="<%= Routes.static_path(@conn, "/images/sideways_hub_identity_logo.png") %>" alt="HubIdentity logo" class="d-inline-block align-top">
+<nav class="navbar has-background-light" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a class="navbar-item" href="/">
+      <img src="<%= Routes.static_path(@conn, "/images/sideways_hub_identity_logo.png") %>" >
     </a>
-    <%= link "Log out", to: Routes.administrator_session_path(@conn, :delete), method: :delete, class: "nav-link" %>
+  </div>
+  <div class="navbar-end">
+    <div class="navbar-item">
+      <div class="buttons">
+        <%= link "Log out", to: Routes.administrator_session_path(@conn, :delete), method: :delete, class: "button is-link is-outlined" %>
+      </div>
+    </div>
   </div>
 </nav>

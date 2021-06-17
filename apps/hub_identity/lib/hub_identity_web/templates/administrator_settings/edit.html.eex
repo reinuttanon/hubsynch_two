@@ -1,61 +1,65 @@
-<h1>Settings</h1>
+<h1 class="is-size-2">Settings</h1>
 
-<h3>Change email</h3>
+<div class="box">
+  <h4 class="is-size-4">Change email</h4>
 
-<%= form_for @email_changeset, Routes.administrator_settings_path(@conn, :update), fn f -> %>
-  <%= if @email_changeset.action do %>
-    <div class="alert alert-danger">
-      <p>Oops, something went wrong! Please check the errors below.</p>
+  <%= form_for @email_changeset, Routes.administrator_settings_path(@conn, :update), fn f -> %>
+    <%= if @email_changeset.action do %>
+      <div class="alert alert-danger">
+        <p>Oops, something went wrong! Please check the errors below.</p>
+      </div>
+    <% end %>
+
+    <%= hidden_input f, :action, name: "action", value: "update_email" %>
+    <div class="field">
+      <%= label f, :email, class: "label" %>
+      <%= email_input f, :email, required: true, class: "input" %>
+      <%= error_tag f, :email %>
+    </div>
+
+    <div class="field">
+      <%= label f, :current_password, for: "current_password_for_email", class: "label" %>
+      <%= password_input f, :current_password, required: true, name: "current_password", id: "current_password_for_email", class: "input" %>
+      <%= error_tag f, :current_password %>
+    </div>
+
+    <div>
+      <%= submit "Change email", class: "button is-link" %>
     </div>
   <% end %>
+</div>
 
-  <%= hidden_input f, :action, name: "action", value: "update_email" %>
-  <div class="mb-3">
-    <%= label f, :email, class: "form-label" %>
-    <%= email_input f, :email, required: true, class: "form-control" %>
-    <%= error_tag f, :email %>
-  </div>
+<div class="box">
+  <h4 class="is-size-4">Change password</h4>
 
-  <div class="mb-3">
-    <%= label f, :current_password, for: "current_password_for_email", class: "form-label" %>
-    <%= password_input f, :current_password, required: true, name: "current_password", id: "current_password_for_email", class: "form-control" %>
-    <%= error_tag f, :current_password %>
-  </div>
+  <%= form_for @password_changeset, Routes.administrator_settings_path(@conn, :update), fn f -> %>
+    <%= if @password_changeset.action do %>
+      <div class="alert alert-danger">
+        <p>Oops, something went wrong! Please check the errors below.</p>
+      </div>
+    <% end %>
 
-  <div>
-    <%= submit "Change email", class: "btn btn-primary" %>
-  </div>
-<% end %>
+    <%= hidden_input f, :action, name: "action", value: "update_password", class: "label" %>
+    <div class="field">
+      <%= label f, :password, "New password", class: "label" %>
+      <%= password_input f, :password, required: true, class: "input" %>
+      <%= error_tag f, :password %>
+    </div>
 
-<h3>Change password</h3>
+    <div class="field">
+      <%= label f, :password_confirmation, "Confirm new password", class: "label" %>
+      <%= password_input f, :password_confirmation, required: true, class: "input" %>
+      <%= error_tag f, :password_confirmation %>
+    </div>
 
-<%= form_for @password_changeset, Routes.administrator_settings_path(@conn, :update), fn f -> %>
-  <%= if @password_changeset.action do %>
-    <div class="alert alert-danger">
-      <p>Oops, something went wrong! Please check the errors below.</p>
+    <div class="field">
+      <%= label f, :current_password, for: "current_password_for_password" , class: "label"%>
+      <%= password_input f, :current_password, required: true, name: "current_password", id: "current_password_for_password", class: "input" %>
+      <%= error_tag f, :current_password %>
+    </div>
+
+    <div>
+      <%= submit "Change password", class: "button is-link" %>
     </div>
   <% end %>
-
-  <%= hidden_input f, :action, name: "action", value: "update_password", class: "form-label" %>
-  <div class="mb-3">
-    <%= label f, :password, "New password" %>
-    <%= password_input f, :password, required: true, class: "form-control" %>
-    <%= error_tag f, :password %>
-  </div>
-
-  <div class="mb-3">
-    <%= label f, :password_confirmation, "Confirm new password", class: "form-label" %>
-    <%= password_input f, :password_confirmation, required: true, class: "form-control" %>
-    <%= error_tag f, :password_confirmation %>
-  </div>
-
-  <div class="mb-3">
-    <%= label f, :current_password, for: "current_password_for_password" , class: "form-label"%>
-    <%= password_input f, :current_password, required: true, name: "current_password", id: "current_password_for_password", class: "form-control" %>
-    <%= error_tag f, :current_password %>
-  </div>
-
-  <div>
-    <%= submit "Change password", class: "btn btn-primary" %>
-  </div>
-<% end %>
+</div>
