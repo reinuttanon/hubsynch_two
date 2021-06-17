@@ -16,16 +16,36 @@ config :hub_identity, HubIdentityWeb.Endpoint,
   ],
   cache_static_manifest: "priv/static/cache_manifest.json"
 
-# Do not print debug messages in production
-config :logger,
-       :error_log,
-       path: "logs/production.log",
-       level: :info
-
 config :hub_identity, redirect_host: "https://stage-identity.hubsynch.com"
 
 config :hub_identity, http: HTTPoison
 config :hub_identity, email: SendGrid.Mail
+
+identity_database_url =
+  System.get_env("HUBIDENTITY_DATABASE_URL") ||
+    raise """
+    environment variable HUBIDENTITY_DATABASE_URL is missing.
+    For example: ecto://USER:PASS@HOST/DATABASE
+    """
+
+secret_key_base =
+  System.get_env("HUBIDENTITY_SECRET_KEY_BASE") ||
+    raise """
+    environment variable SECRET_KEY_BASE is missing.
+    You can generate one by calling: mix phx.gen.secret
+    """
+
+config :hub_identity, HubIdentityWeb.Endpoint, secret_key_base: secret_key_base
+
+config :hub_identity, HubIdentity.Repo,
+  url: identity_database_url,
+  pool_size: String.to_integer(System.get_env("HUBIDENTITY_REPO_POOL_SIZE") || "10")
+
+# ## Using releases (Elixir v1.9+)
+#
+# If you are doing OTP releases, you need to instruct Phoenix
+# to start each relevant endpoint:
+config :hub_identity, HubIdentityWeb.Endpoint, server: true
 
 # ## SSL Support
 #

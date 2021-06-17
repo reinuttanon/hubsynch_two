@@ -17,32 +17,6 @@ config :hub_ledger, HubLedgerWeb.Endpoint,
   pubsub_server: HubLedger.PubSub,
   live_view: [signing_salt: "WipjU5gg"]
 
-# Configures Elixir's Logger
-config :logger, :console,
-  format: "$time $metadata[$level] $message\n",
-  metadata: [:request_id]
-
-# Use Jason for JSON parsing in Phoenix
-config :phoenix, :json_library, Jason
-
-# # Get your money right with config
-# config :money,
-#   default_currency: :JPY,
-#   separator: ",",
-#   fractional_unit: true,
-#   strip_insignificant_zeros: false,
-#   custom_currencies: [
-#     HIP: %{name: "Hivelocity Points", symbol: "HiP", exponent: 0, symbol_on_right: true}
-#   ]
-
-# Sendgrid config
-config :sendgrid,
-  api_key: {:system, "SENDGRID_API_KEY"}
-
-# Use Hub Identity Authentication
-config :hub_identity_elixir, :url, "https://stage-identity.hubsynch.com"
-config :hub_identity_elixir, :public_key, "pub_wr2EZlceaEjIJNnu21elGFCKIsNhZK8pTybrwBTKDGw"
-config :hub_identity_elixir, :private_key, System.get_env("HUBLEDGER_HUBIDENTITY_API_KEY")
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"

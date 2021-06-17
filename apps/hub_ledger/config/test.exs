@@ -11,17 +11,11 @@ config :hub_ledger, HubLedger.Repo,
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
 
-config :hub_ledger, HubLedger.HubIdentityRepo,
-  username: "postgres",
-  password: "postgres",
-  database: "hub_identity_test#{System.get_env("MIX_TEST_PARTITION")}",
-  hostname: "localhost",
-  pool: Ecto.Adapters.SQL.Sandbox
-
 # We don't run a server during test. If one is required,
 # you can enable the server option below.
 config :hub_ledger, HubLedgerWeb.Endpoint,
   http: [port: 4002],
+  secret_key_base: "pljvBt5UXkTkb7U87NYHyg9+4NBVmNTWJ3RfzCoxLrxnbtD0a3fHzTsownzxzfL8",
   server: false
 
 config :hub_ledger, hub_identity: HubLedger.HttpTester

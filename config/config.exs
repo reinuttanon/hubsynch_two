@@ -47,6 +47,17 @@ config :money,
     HIP: %{name: "Hivelocity Points", symbol: "HiP", exponent: 0, symbol_on_right: true}
   ]
 
+config :sendgrid,
+  api_key: {:system, "SENDGRID_API_KEY"}
+
+config :mnesia,
+  dir: '.mnesia/#{Mix.env()}/#{node()}'
+
+# Use Hub Identity Authentication
+config :hub_identity_elixir, :url, "https://stage-identity.hubsynch.com"
+config :hub_identity_elixir, :public_key, "pub_wr2EZlceaEjIJNnu21elGFCKIsNhZK8pTybrwBTKDGw"
+config :hub_identity_elixir, :private_key, System.get_env("HUBLEDGER_HUBIDENTITY_API_KEY")
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 # import_config "#{Mix.env()}.exs"

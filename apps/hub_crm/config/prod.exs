@@ -16,12 +16,31 @@ config :hub_crm, HubCrmWeb.Endpoint,
   ],
   cache_static_manifest: "priv/static/cache_manifest.json"
 
-# Do not print debug messages in production
-config :logger,
-       :error_log,
-       path: "logs/crm_production.log",
-       level: :info
+database_url =
+  System.get_env("HUBCRM_DATABASE_URL") ||
+    raise """
+    environment variable DATABASE_URL is missing.
+    For example: ecto://USER:PASS@HOST/DATABASE
+    """
 
+secret_key_base =
+  System.get_env("HUBCRM_SECRET_KEY_BASE") ||
+    raise """
+    environment variable HUBCRM_SECRET_KEY_BASE is missing.
+    You can generate one by calling: mix phx.gen.secret
+    """
+
+config :hub_crm, HubCrmWeb.Endpoint, secret_key_base: secret_key_base
+
+config :hub_crm, HubCrm.Repo,
+  url: database_url,
+  pool_size: String.to_integer(System.get_env("HUBCRM_REPO_POOL_SIZE") || "10")
+
+# ## Using releases (Elixir v1.9+)
+#
+# If you are doing OTP releases, you need to instruct Phoenix
+# to start each relevant endpoint:
+config :hub_crm, HubCrmWeb.Endpoint, server: true
 # ## SSL Support
 #
 # To get SSL working, you will need to add the `https` key

@@ -17,17 +17,6 @@ config :hub_payments, HubPaymentsWeb.Endpoint,
   pubsub_server: HubPayments.PubSub,
   live_view: [signing_salt: "9MTqXf+6"]
 
-# Configures Elixir's Logger
-config :logger, :console,
-  format: "$time $metadata[$level] $message\n",
-  metadata: [:request_id]
-
-# Use Jason for JSON parsing in Phoenix
-config :phoenix, :json_library, Jason
-
-config :mnesia,
-  dir: '.mnesia/#{Mix.env()}/#{node()}'
-
 # # Get your money right with config
 # config :money,
 #   default_currency: :JPY,
