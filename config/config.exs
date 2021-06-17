@@ -24,7 +24,7 @@ import Config
 # child application in their own app, but all other
 # dependencies, regardless if they belong to one or multiple
 # apps, should be configured in the umbrella to avoid confusion.
-import_config "../apps/assets/config/config.exs"
+import_config "../apps/dashboard/config/config.exs"
 import_config "../apps/hub_crm/config/config.exs"
 import_config "../apps/hub_identity/config/config.exs"
 import_config "../apps/hub_ledger/config/config.exs"

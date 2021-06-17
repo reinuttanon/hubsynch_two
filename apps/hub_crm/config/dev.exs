@@ -26,7 +26,7 @@ config :hub_crm, HubCrmWeb.Endpoint,
       "--mode",
       "development",
       "--watch-stdin",
-      cd: Path.expand("../../assets/assets", __DIR__)
+      cd: Path.expand("../../dashboard/assets", __DIR__)
     ]
   ]
 

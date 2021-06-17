@@ -1,17 +1,16 @@
-defmodule HubIdentityWeb.Endpoint do
-  @moduledoc false
-  use Phoenix.Endpoint, otp_app: :hub_identity
+defmodule DashboardWeb.Endpoint do
+  use Phoenix.Endpoint, otp_app: :dashboard
 
   # The session will be stored in the cookie and signed,
   # this means its contents can be read but not tampered with.
   # Set :encryption_salt if you would also like to encrypt it.
   @session_options [
     store: :cookie,
-    key: "_hub_identity_key",
-    signing_salt: "tsoT/T0X"
+    key: "_dashboard_key",
+    signing_salt: "NaVa+fYN"
   ]
 
-  socket "/socket", HubIdentityWeb.UserSocket,
+  socket "/socket", DashboardWeb.UserSocket,
     websocket: true,
     longpoll: false
 
@@ -33,7 +32,6 @@ defmodule HubIdentityWeb.Endpoint do
     socket "/phoenix/live_reload/socket", Phoenix.LiveReloader.Socket
     plug Phoenix.LiveReloader
     plug Phoenix.CodeReloader
-    plug Phoenix.Ecto.CheckRepoStatus, otp_app: :hub_identity
   end
 
   plug Phoenix.LiveDashboard.RequestLogger,
@@ -51,5 +49,5 @@ defmodule HubIdentityWeb.Endpoint do
   plug Plug.MethodOverride
   plug Plug.Head
   plug Plug.Session, @session_options
-  plug HubIdentityWeb.Router
+  plug DashboardWeb.Router
 end
