@@ -25,6 +25,7 @@ erl_crash.dump
 # Ignore .env files
 *.secret.exs
 .env*
+*certs/
 
 # Ignore mac os DS_Store
 *.DS_Store

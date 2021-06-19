@@ -23,10 +23,9 @@ defmodule HubPaymentsWeb.Router do
     plug :put_secure_browser_headers
   end
 
-  pipeline :api do
+  pipeline :auth_api do
     plug :accepts, ["json"]
     plug HubIdentityWeb.Authentication.ApiAuth, type: "private"
-  end
 
   scope "/", HubPaymentsWeb do
     pipe_through [:public_browser, :redirect_if_user_is_authenticated]
@@ -53,5 +52,11 @@ defmodule HubPaymentsWeb.Router do
 
     live "/providers/:id", ProviderLive.Show, :show
     live "/providers/:id/show/edit", ProviderLive.Show, :edit
+  end
+
+  scope "/api/v1", HubPaymentsWeb.Api.V1 do
+    pipe_through [:auth_api]
+
+    post "/payments/process", PaymentController, :process
   end
 end
