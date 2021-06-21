@@ -1,4 +1,4 @@
-<h1><%= @provider_config.name %></h1>
+<h3 class="is-size-3"><%= @provider_config.name %></h3>
 
 <ul>
 

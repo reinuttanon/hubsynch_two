@@ -9,7 +9,7 @@
       <div class="column is-one-quarter">
         <%= render "_admin_menu.html", assigns %>
       </div>
-      <div class="column">
+      <div class="column is-three-quarters">
         <%= @inner_content %>
       </div>
     </div>
