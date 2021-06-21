@@ -1,106 +1,128 @@
-<h2>Client Service Information and Settings</h2>
+<div class="hero">
+  <h2 class="is-size-2">Client Service Information and Settings</h2>
 
-<div class="card bg-light mb-3">
-  <div class="card-body">
-    <h5 class="card-title">Service Name</h5>
-    <h6 class="card-subtitle mb-2 font-weight-light">The name of your service.</h6>
-    <div class="card">
-      <div class="card-body">
-        <%= @client_service.name %>
+  <div class="card">
+    <div class="card-header has-background-link-light">
+      <h5 class="card-header-title">Service Name</h5>
+    </div>
+    <div class="card-content">
+      <div class="content">
+        <h6 class="is-size-6">The name of your service.</h6>
+        <p><%= @client_service.name %></p>
       </div>
     </div>
   </div>
-</div>
 
-<div class="card bg-light mb-3">
-  <div class="card-body">
-    <h5 class="card-title">Service Logo</h5>
-    <h6 class="card-subtitle mb-2 font-weight-light">The logo of your service.</h6>
-    <div style="text-align: center">
-      <div>
-        <img src="<%= @client_service.logo %>" style="height: 150px" alt="<%= @client_service.name %> logo">
+  <br/>
+
+  <div class="card">
+    <div class="card-header has-background-link-light">
+      <h5 class="card-header-title">Service Logo</h5>
+    </div>
+    <div class="card-content">
+      <div class="content">
+        <h6 class="is-size-6">The logo of your service.</h6>
+        <div style="text-align: center">
+          <div>
+            <img src="<%= @client_service.logo %>" style="height: 150px" alt="<%= @client_service.name %> logo">
+          </div>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<div class="card bg-light mb-3">
-  <div class="card-body">
-    <h5 class="card-title">Service Description</h5>
-    <h6 class="card-subtitle mb-2 font-weight-light">A brief description of what your service does.</h6>
-    <div class="card">
-      <div class="card-body">
-        <%= @client_service.description %>
+  <br/>
+
+  <div class="card">
+    <div class="card-header has-background-link-light">
+      <h5 class="card-header-title">Service Description</h5>
+    </div>
+    <div class="card-content">
+      <div class="content">
+        <h6 class="is-size-6">A brief description of what your service does.</h6>
+        <p><%= @client_service.description %></p>
       </div>
     </div>
   </div>
-</div>
 
-<div class="card bg-light mb-3">
-  <div class="card-body">
-    <h5 class="card-title">Service URL</h5>
-    <h6 class="card-subtitle mb-2 font-weight-light">The main page or home page of your applications website.</h6>
-    <div class="card">
-      <div class="card-body">
-        <%= @client_service.url %>
+  <br/>
+    
+  <div class="card">
+    <div class="card-header has-background-link-light">
+      <h5 class="card-header-title">Service URL</h5>
+    </div>
+    <div class="card-content">
+      <div class="content">
+        <h6 class="is-size-6">The main page or home page of your applications website.</h6>
+        <p><%= @client_service.url %></p>
       </div>
     </div>
   </div>
-</div>
 
-<div class="card bg-light mb-3">
-  <div class="card-body">
-    <h5 class="card-title">Service UID</h5>
-    <h6 class="card-subtitle mb-2 font-weight-light">The UID of this service for logs and other references.</h6>
-    <div class="card">
-      <div class="card-body">
-        <%= @client_service.uid %>
+  <br/>
+
+  <div class="card">
+    <div class="card-header has-background-link-light">
+      <h5 class="card-header-title">Service UID</h5>
+    </div>
+    <div class="card-content">
+      <div class="content">
+        <h6 class="is-size-6">The UID of this service for logs and other references.</h6>
+        <p><%= @client_service.uid %></p>
       </div>
     </div>
   </div>
-</div>
 
-<div class="card bg-light mb-3">
-  <div class="card-body">
-    <h5 class="card-title">Redirect URL</h5>
-    <h6 class="card-subtitle mb-2 font-weight-light">The URL a successfully authenticated user should be directed to after authentication at HubIdentity.</h6>
-    <div class="card">
-      <div class="card-body">
-        <%= @client_service.redirect_url %>
+  <br/>
+
+  <div class="card">
+    <div class="card-header has-background-link-light">
+      <h5 class="card-header-title">Redirect URL</h5>
+    </div>
+    <div class="card-content">
+      <div class="content">
+        <h6 class="is-size-6">The URL a successfully authenticated user should be directed to after authentication at HubIdentity.</h6>
+        <p><%= @client_service.redirect_url %></p>
       </div>
     </div>
   </div>
-</div>
 
-<div class="card bg-light mb-3">
-  <div class="card-body">
-    <h5 class="card-title">E-mail Confirmation Redirect URL</h5>
-    <h6 class="card-subtitle mb-2 font-weight-light">The URL the user should be redirected to after a user successfully confirms an email.</h6>
-    <div class="card">
-      <div class="card-body">
-        <%= @client_service.email_confirmation_redirect_url %>
+  <br/>
+
+  <div class="card">
+    <div class="card-header has-background-link-light">
+      <h5 class="card-header-title">E-mail Confirmation Redirect URL</h5>
+    </div>
+    <div class="card-content">
+      <div class="content">
+        <h6 class="is-size-6">The URL the user should be redirected to after a user successfully confirms an email.</h6>
+        <p><%= @client_service.email_confirmation_redirect_url %></p>
       </div>
     </div>
   </div>
-</div>
 
-<div class="card bg-light mb-3">
-  <div class="card-body">
-    <h5 class="card-title">Successful Password Change Confirmation Redirect URL</h5>
-    <h6 class="card-subtitle mb-2 font-weight-light">The URL the user should be redirected to after a user successfully confirms the passwords change by email.</h6>
-    <div class="card">
-      <div class="card-body">
-        <%= @client_service.pass_change_redirect_url %>
+  <br/>
+
+  <div class="card">
+    <div class="card-header has-background-link-light">
+      <h5 class="card-header-title">Successful Password Change Confirmation Redirect URL</h5>
+    </div>
+    <div class="card-content">
+      <div class="content">
+        <h6 class="is-size-6">The URL the user should be redirected to after a user successfully confirms the passwords change by email.</h6>
+        <p><%= @client_service.pass_change_redirect_url %></p>
       </div>
     </div>
   </div>
-</div>
 
-<div class="card bg-light mb-3">
-  <div class="card-body">
-    <h5 class="card-title">Refresh Token Delivery</h5>
-    <div class="card">
-      <div class="card-body">
+  <br/>
+
+  <div class="card">
+    <div class="card-header has-background-link-light">
+      <h5 class="card-header-title">Refresh Token Delivery</h5>
+    </div>
+    <div class="card-content">
+      <div class="content">
         <%= case @client_service.refresh_token do %>
           <% true -> %><p>Refresh Tokens will be generated with JWT Responses.</p>
           <% false -> %><p>Refresh Tokens will not be generated or sent.</p>
@@ -108,21 +130,27 @@
       </div>
     </div>
   </div>
-</div>
 
-<div class="card bg-light mb-3">
-  <div class="card-body">
-    <h5 class="card-title">Api Keys</h5>
-    <h6 class="card-subtitle mb-2 font-weight-light">The following keys are for authenticating your client service and using HubIdentity.</h6>
-    <p>Imoportant! Private keys should be kept secret end never used with client side code such as mobile apps or Javascript. For client side code please use the Public key. </p>
-    <div class="card">
-      <div class="card-body">
-        <table class="table table-striped">
+  <br/>
+
+  <div class="card">
+    <div class="card-header has-background-link-light">
+      <h5 class="card-header-title">Api Keys</h5>
+    </div>
+    <div class="card-content">
+      <div class="content">
+        <h6 class="is-size-6">
+          The following keys are for authenticating your client service and using HubIdentity.
+        </h6>
+        <p>
+          Imoportant! Private keys should be kept secret end never used with client side code such as mobile apps or Javascript. For client side code please use the Public key. 
+        </p>
+        <table class="table is-striped">
           <thead>
             <tr>
-              <th scope="col">Type</th>
-              <th scope="col">Data</th>
-              <th scope="col">Active</th>
+              <th>Type</th>
+              <th>Data</th>
+              <th>Active</th>
             </tr>
           </thead>
           <tbody>
@@ -135,36 +163,44 @@
             <% end %>
           </tbody>
         </table>
+        <span>
+          <%= link "Roll API keys", to: Routes.client_service_path(@conn, :roll_api_keys, @client_service), method: :post, data: [confirm: "Are you sure?"] %>
+        </span>
       </div>
     </div>
-    <span><%= link "Roll API keys", to: Routes.client_service_path(@conn, :roll_api_keys, @client_service), method: :post, data: [confirm: "Are you sure?"] %></span>
   </div>
-</div>
 
-<div class="card bg-light mb-3">
-  <div class="card-body">
-    <h5 class="card-title">Administrators</h5>
-    <h6 class="card-subtitle mb-2 font-weight-light">Administrators who have access to modify and view settings for this client service.</h6>
-    <div class="card">
-      <div class="card-body">
-        <table class="table table-striped">
+  <br/>
+
+  <div class="card">
+    <div class="card-header has-background-link-light">
+      <h5 class="card-header-title">Administrators</h5>
+    </div>
+    <div class="card-content">
+      <div class="content">
+        <h6 class="is-size-6">
+          Administrators who have access to modify and view settings for this client service.
+        </h6>
+        <table class="table is-striped">
           <thead>
-            <tr>
-              <th scope="col">Email</th>
-              <th scope="col"></th>
-            </tr>
-          </thead>
-          <tbody>
-            <%= for administrator <- @client_service.administrators do %>
-                <tr>
-                  <td><%= administrator.email %></td>
-                  <td><%= link "Remove", to: Routes.client_service_path(@conn, :remove_administrator, @client_service, %{administrator_id: administrator.id}), method: :post, data: [confirm: "Are you sure?"] %></td>
-                </tr>
-            <% end %>
-          </tbody>
-        </table>
+              <tr>
+                <th scope="col">Email</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <%= for administrator <- @client_service.administrators do %>
+                  <tr>
+                    <td><%= administrator.email %></td>
+                    <td><%= link "Remove", to: Routes.client_service_path(@conn, :remove_administrator, @client_service, %{administrator_id: administrator.id}), method: :post, data: [confirm: "Are you sure?"] %></td>
+                  </tr>
+              <% end %>
+            </tbody>
+          </table>
+          <span>
+            <%= link "Add Administrator", to: Routes.client_service_path(@conn, :add_administrator, @client_service) %>
+          </span>
       </div>
     </div>
-    <span><%= link "Add Administrator", to: Routes.client_service_path(@conn, :add_administrator, @client_service) %></span>
   </div>
 </div>

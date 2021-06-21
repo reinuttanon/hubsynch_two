@@ -26,7 +26,7 @@ config :hub_identity, HubIdentityWeb.Endpoint,
       "--mode",
       "development",
       "--watch-stdin",
-      cd: Path.expand("../assets", __DIR__)
+      cd: Path.expand("../../dashboard/assets", __DIR__)
     ]
   ]
 
@@ -58,7 +58,7 @@ config :hub_identity, HubIdentityWeb.Endpoint,
 config :hub_identity, HubIdentityWeb.Endpoint,
   live_reload: [
     patterns: [
-      ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",
+      ~r"../../../priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",
       ~r"priv/gettext/.*(po)$",
       ~r"lib/hub_identity_web/(live|views)/.*(ex)$",
       ~r"lib/hub_identity_web/templates/.*(eex)$"

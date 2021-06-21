@@ -1,12 +1,12 @@
 <h1>Client services</h1>
 
-<table class="table table-striped">
-  <thead class="thead-dark">
+<table class="table is-striped">
+  <thead>
     <tr>
-      <th scope="col"></th>
-      <th scope="col">Name</th>
-      <th scope="col">Url</th>
-      <th scope="col">Uid</th>
+      <th></th>
+      <th>Name</th>
+      <th>Url</th>
+      <th>Uid</th>
     </tr>
   </thead>
   <tbody>

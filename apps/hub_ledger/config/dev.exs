@@ -26,7 +26,7 @@ config :hub_ledger, HubLedgerWeb.Endpoint,
       "--mode",
       "development",
       "--watch-stdin",
-      cd: Path.expand("../assets", __DIR__)
+      cd: Path.expand("../../dashboard/assets", __DIR__)
     ]
   ]
 
@@ -77,4 +77,4 @@ config :phoenix, :plug_init_mode, :runtime
 
 config :hub_ledger, email: HubLedger.Users.UserNotifier
 config :hub_ledger, hub_identity: HubIdentityElixir.HubIdentity
-config :hub_ledger, hub_identity_user: HubIdentityElixir.HubIdentity.User
+config :hub_ledger, hub_identity_user: HubIdentityElixir.Users.User

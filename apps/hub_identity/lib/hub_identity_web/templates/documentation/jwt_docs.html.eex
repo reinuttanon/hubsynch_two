@@ -1,211 +1,200 @@
-<h2>JSON Web Tokens (JWT)</h2>
 
-<div class="card">
-  <div class="card-header">
-    <h3>What are JSON Web Tokens?</h3>
-  </div>
-  <div class="card-body">
-    <h4 class="card-subtitle">General Overview</h4>
-    <p class="card-text text-muted">
-      JSON Web Token (JWT) is a compact, URL-safe means of representing claims to be transferred between two parties.
-      The claims in a JWT are encoded as a JSON object that is used as the payload of a JSON Web Signature (JWS) structure or as the plaintext of a JSON Web Encryption (JWE) structure, enabling the claims to be digitally signed or integrity protected with a Message Authentication Code (MAC) and/or encrypted.
-     </p>
+  <h2 class="is-size-2">JSON Web Tokens (JWT)</h2>
+
+  <div class="box">
+    <h3 class="is-size-3">What are JSON Web Tokens?</h3>
+    <div class="box has-background-info-light">
+      <h4 class="is-size-4">General Overview</h4>
+      <p>
+        JSON Web Token (JWT) is a compact, URL-safe means of representing claims to be transferred between two parties.
+        The claims in a JWT are encoded as a JSON object that is used as the payload of a JSON Web Signature (JWS) structure or as the plaintext of a JSON Web Encryption (JWE) structure, enabling the claims to be digitally signed or integrity protected with a Message Authentication Code (MAC) and/or encrypted.
+       </p>
+     </div>
      <p>For more information please refer to <a href="https://tools.ietf.org/html/rfc7519">rfc 7519</a></p>
   </div>
-</div>
-<br/>
 
-<div class="card">
-  <div class="card-header">
-    <h3>Access Tokens</h3>
-  </div>
-  <div class="card-body">
-    <h4 class="card-subtitle">General Overview</h4>
-    <p class="card-text text-muted">
-      Access Tokens contain claims that can be used to identify or create users within your system.
-      Access Tokens cannot be revoked once issued so your application must ensure they are stored safely.
-      Because Access Tokens cannot be revoked they have a short expiration time.
-      Currently all HubIdentity Access Tokens will expire 1 hour after issue.
-    </p>
-    <h4 class="card-subtitle">Access Tokens using Open Authentication</h4>
-    <p class="card-text text-muted">
-      Once a user has successfully authenticated with one of the Providers (Google or Facebook) then according to Open Authentication specifications HubIdentity will send a redirect request back to your application.
-      The request will contain an Access Token in the headers with the Authorization name and a Refresh Token encoded into the URL.
-    </p>
-    <h5 class="card-subtitle">Example Header</h5>
-    <p class="card-text">
-      <div class="bg-light">
-        <code class="text-success">Authorization Bearer: <span class="text-danger">HubIdentity Access Token</span></code>
-      </div>
-    </p>
-    <h4 class="card-subtitle">Access Tokens using HubIdentity Authentication</h4>
-    <p class="card-text text-muted">
-      In order to authenticate users with HubIdentity the registered Client Service needs to make a POST request with the users email and password using a Public Key.
-      If successful HubIdentity will respond with a JSON response containing the Access Token and a Refresh Token.
-    </p>
-    <h5 class="card-subtitle">Example JSON body</h5>
-    <div class="bg-light">
+  <br/>
+
+  <div class="box">
+    <h3 class="is-size-3">Access Tokens</h3>
+    <div class="box has-background-info-light">
+      <h4 class="is-size-4">General Overview</h4>
+      <p>
+        Access Tokens contain claims that can be used to identify or create users within your system.
+        Access Tokens cannot be revoked once issued so your application must ensure they are stored safely.
+        Because Access Tokens cannot be revoked they have a short expiration time.
+        Currently all HubIdentity Access Tokens will expire 1 hour after issue.
+      </p>
+    </div>
+    <div class="box has-background-info-light">
+      <h4 class="is-size-4">Access Tokens using Open Authentication</h4>
+      <p>
+        Once a user has successfully authenticated with one of the Providers (Google or Facebook) then according to Open Authentication specifications HubIdentity will send a redirect request back to your application.
+        The request will contain an Access Token in the headers with the Authorization name and a Refresh Token encoded into the URL.
+      </p>
+      <h5 class="is-size-4">Example Header</h5>
+
+      <code class="text-success">Authorization Bearer: <span class="text-danger">HubIdentity Access Token</span></code>
+
+    </div>
+    <div class="box has-background-info-light">
+      <h4 class="is-size-4">Access Tokens using HubIdentity Authentication</h4>
+      <p>
+        In order to authenticate users with HubIdentity the registered Client Service needs to make a POST request with the users email and password using a Public Key.
+        If successful HubIdentity will respond with a JSON response containing the Access Token and a Refresh Token.
+      </p>
+      <h5 class="is-size-5">Example JSON body</h5>
       <pre>
         <code>
-  {
-    <span class="text-info">"access_token"</span>: <span class="text-danger">HubIdentity Access Token</span>,
-    <span class="text-info">"refresh_token"</span>: <span class="text-danger">HubIdentity Refresh Token</span>
-  }
+    {
+      <span class="has-text-info">"access_token"</span>: <span class="has-text-danger">HubIdentity Access Token</span>,
+      <span class="has-text-info">"refresh_token"</span>: <span class="has-text-danger">HubIdentity Refresh Token</span>
+    }
+        </code>
+      </pre>
+      <h5 class="is-size-5">Example Claims</h5>
+      <p>
+        The <span class="has-text-info">"sub"</span> claim will determine if the user is an <span class="has-text-danger">OauthUser</span> which authenticates with
+        one of the Open Authentication providers or a <span class="has-text-danger">User</span> which authenticates with an email and password.
+        This will be in the format of either: <span class="has-text-danger">Identities.User:users uid</span> or <span class="has-text-danger">Identities.OauthUser:users uid</span>
+      </p>
+      <p>
+        Below are claims that are stored inside HubIdentity issued Access Token with brief explanations.
+      </p>
+      <pre>
+        <code>
+    {
+      <span class="has-text-info">"aud"</span> => <span class="has-text-danger">Your application url is the Audience</span>,
+      <span class="has-text-info">"email"</span> => <span class="has-text-danger">The email of the authenticated user</span>,
+      <span class="has-text-info">"exp"</span> => <span class="has-text-danger">UTC Unix timestamp of when the token expires</span>,
+      <span class="has-text-info">"iat"</span> => <span class="has-text-danger">UTC Unix timestamp of when the token was issued</span>,
+      <span class="has-text-info">"iss"</span> => <span class="has-text-danger">"HubIdentity" is the issuer of the token</span>,
+      <span class="has-text-info">"jti"</span> => <span class="has-text-danger">A unique Identifier for the token</span>,
+      <span class="has-text-info">"nbf"</span> => <span class="has-text-danger">UTC Unix timestamp for the "Not before time" the token is valid</span>,
+      <span class="has-text-info">"owner_type"</span> => <span class="has-text-danger">Your Client Service can designate this from API or Webhook</span>,
+      <span class="has-text-info">"owner_uid"</span> => <span class="has-text-danger">Your Client Service can designate this from API or Webhook</span>,
+      <span class="has-text-info">"sub"</span> => <span class="has-text-danger">The HubIdentity system designated field to identify the user</span>,
+      <span class="has-text-info">"typ"</span> => <span class="has-text-danger">"access"</span>,
+      <span class="has-text-info">"uid"</span> => <span class="has-text-danger">The UID of the HubIdentity User or OauthUser record</span>
+    }
         </code>
       </pre>
     </div>
-    <h5 class="card-subtitle">Example Claims</h5>
-    <p class="card-text">
-      The <span class="text-info">"sub"</span> claim will determine if the user is an <span class="text-danger">OauthUser</span> which authenticates with
-      one of the Open Authentication providers or a <span class="text-danger">User</span> which authenticates with an email and password.
-      This will be in the format of either: <span class="text-danger">Identities.User:users uid</span> or <span class="text-danger">Identities.OauthUser:users uid</span>
-    </p>
-    <p class="card-text">
-      Below are claims that are stored inside HubIdentity issued Access Token with brief explanations.
-    </p>
-    <div class="bg-light">
-      <pre>
-        <code>
-  {
-    <span class="text-info">"aud"</span> => <span class="text-danger">Your application url is the Audience</span>,
-    <span class="text-info">"email"</span> => <span class="text-danger">The email of the authenticated user</span>,
-    <span class="text-info">"exp"</span> => <span class="text-danger">UTC Unix timestamp of when the token expires</span>,
-    <span class="text-info">"iat"</span> => <span class="text-danger">UTC Unix timestamp of when the token was issued</span>,
-    <span class="text-info">"iss"</span> => <span class="text-danger">"HubIdentity" is the issuer of the token</span>,
-    <span class="text-info">"jti"</span> => <span class="text-danger">A unique Identifier for the token</span>,
-    <span class="text-info">"nbf"</span> => <span class="text-danger">UTC Unix timestamp for the "Not before time" the token is valid</span>,
-    <span class="text-info">"owner_type"</span> => <span class="text-danger">Your Client Service can designate this from API or Webhook</span>,
-    <span class="text-info">"owner_uid"</span> => <span class="text-danger">Your Client Service can designate this from API or Webhook</span>,
-    <span class="text-info">"sub"</span> => <span class="text-danger">The HubIdentity system designated field to identify the user</span>,
-    <span class="text-info">"typ"</span> => <span class="text-danger">"access"</span>,
-    <span class="text-info">"uid"</span> => <span class="text-danger">The UID of the HubIdentity User or OauthUser record</span>
-  }
-        </code>
-      </pre>
-    </div>
   </div>
-</div>
 
-<br/>
+  <br/>
 
-<div class="card">
-  <div class="card-header">
-    <h3>Refresh Tokens</h3>
-  </div>
-  <div class="card-body">
-    <h4 class="card-subtitle mb-2">General Overview</h4>
-    <p class="card-text text-muted">
-      Refresh Tokens are used to generate a new Access Token.
-      Refresh Tokens also cannot be revoked therefore it is vital that they be stored securely on the server side, never the client.
-      Because Refresh Tokens cannot be revoked they have an expiration time.
-      Currently all HubIdentity Refresh Tokens will expire 12 hours after issue.
-     </p>
-     <h4 class="card-subtitle">Refresh Tokens using Open Authentication</h4>
-     <p class="card-text text-muted">
+  <div class="box">
+    <h3 class="is-size-3">Refresh Tokens</h3>
+    <div class="box has-background-info-light">
+      <h4 class="is-size-4">General Overview</h4>
+      <p>
+        Refresh Tokens are used to generate a new Access Token.
+        Refresh Tokens also cannot be revoked therefore it is vital that they be stored securely on the server side, never the client.
+        Because Refresh Tokens cannot be revoked they have an expiration time.
+        Currently all HubIdentity Refresh Tokens will expire 12 hours after issue.
+       </p>
+     </div>
+
+    <div class="box has-background-info-light">
+      <h4 class="is-size-4">Refresh Tokens using Open Authentication</h4>
+      <p>
        Once a user has successfully authenticated with one of the Providers (Google or Facebook) then according to Open Authentication specifications HubIdentity will send a redirect request back to your application.
        The request will contain an Access Token in the headers and a Refresh Token encoded into the URL.
-     <p>
-     <h5 class="card-subtitle">Example Encoded URL</h5>
-     <p class="card-text">
-       <div class="bg-light">
-         <pre>
- <code class="text-info">https://www.your_app.com/redirect/login?grant_type=refresh_token&refresh_token=</span><span class="text-danger">HubIdentity Refresh Token</span></code>
-         </pre>
-       </div>
-     </p>
-     <h4 class="card-subtitle">Refresh Tokens using HubIdentity Authentication</h4>
-     <p class="card-text text-muted">
-       In order to authenticate users with HubIdentity the registered Client Service needs to make a POST request with the users email and password using a Public Key.
-       If successful HubIdentity will respond with a JSON response containing the Access Token and a Refresh Token.
-     </p>
-     <h5 class="card-subtitle">Example JSON body</h5>
-     <div class="bg-light">
-       <pre>
-         <code>
-   {
-     <span class="text-info">"access_token"</span>: <span class="text-danger">HubIdentity Access Token</span>,
-     <span class="text-info">"refresh_token"</span>: <span class="text-danger">HubIdentity Refresh Token</span>
-   }
-         </code>
-       </pre>
-     </div>
-     <h5 class="card-subtitle">Example Claims</h5>
-     <p class="card-text">
-       Below are claims that are stored inside HubIdentity issued Refresh Token with brief explanations.
-     </p>
-     <div class="bg-light">
-       <pre>
-         <code>
-   {
-     <span class="text-info">"aud"</span> => <span class="text-danger">Your application url is the Audience</span>,
-     <span class="text-info">"exp"</span> => <span class="text-danger">UTC Unix timestamp of when the token expires</span>,
-     <span class="text-info">"iat"</span> => <span class="text-danger">UTC Unix timestamp of when the token was issued</span>,
-     <span class="text-info">"iss"</span> => <span class="text-danger">"HubIdentity" is the issuer of the token</span>,
-     <span class="text-info">"jti"</span> => <span class="text-danger">A unique Identifier for the token</span>,
-     <span class="text-info">"nbf"</span> => <span class="text-danger">UTC Unix timestamp for the "Not before time" the token is valid</span>,
-     <span class="text-info">"sub"</span> => <span class="text-danger">The HubIdentity system designated field to identify the user</span>,
-     <span class="text-info">"typ"</span> => <span class="text-danger">"access"</span>,
-   }
-         </code>
-       </pre>
-     </div>
-  </div>
-</div>
-<br/>
-<div class="card">
-  <div class="card-header">
-    <h3>Signature Verification</h3>
-  </div>
-  <div class="card-body">
-    <h4 class="card-subtitle mb-2">General Overview</h4>
-    <p class="card-text text-muted">
-      All JSON Web Tokens issued by HubIdentity are cryptographically signed using RS256 public key and private key pair.
-      The RSA keys used by HubIdentity rotate and therefore the key id is included in the JWT header under the <span class="text-info">"kid"</span> key.
-    </p>
-    <h4 class="card-subtitle mb-2">RSA Public Keys endpoint</h4>
-    <p class="card-text text-muted">
-      In order to get the proper key to verify the signature we reccomend using our Public Key Endpoint.
-      If the key is not listed there, then it is safe to assume the JWT did not originate from HubIdentity.
-    </p>
-    <h5 class="card-subtitle">Public Key endpoint URL</h5>
-    <p class="card-text">
-    <div class="bg-light">
+      </p>
+      <h5 class="is-size-5">Example Encoded URL</h5>
       <pre>
-<code class="text-info">https://stage-identity.hubsynch.com/api/v1/oauth/certs</code>
+        <code class="has-text-info">https://www.your_app.com/redirect/login?grant_type=refresh_token&refresh_token=<span class="has-text-danger">HubIdentity Refresh Token</span></code>
       </pre>
     </div>
-    <h5 class="card-subtitle">Sample Public Key JSON Response</h5>
-    <p class="card-text text-muted">
-      Below is a sample JSON response from our Public Key endpoint.
-      All cryptographic values are base 64 encoded.
-      For most decryption libraries the values under <span class="text-info">"e"</span> and <span class="text-info">"n"</span> keys are what is needed to verify the signature.
-    </p>
-    <div class="bg-light">
+
+    <div class="box has-background-info-light">
+      <h4 class="is-size-4">Refresh Tokens using HubIdentity Authentication</h4>
+      <p>
+       In order to authenticate users with HubIdentity the registered Client Service needs to make a POST request with the users email and password using a Public Key.
+       If successful HubIdentity will respond with a JSON response containing the Access Token and a Refresh Token.
+      </p>
+      <h5 class="is-size-5">Example JSON body</h5>
+      <pre>
+       <code>
+  {
+   <span class="has-text-info">"access_token"</span>: <span class="has-text-danger">HubIdentity Access Token</span>,
+   <span class="has-text-info">"refresh_token"</span>: <span class="has-text-danger">HubIdentity Refresh Token</span>
+  }
+       </code>
+      </pre>
+      <h5 class="is-size-5">Example Claims</h5>
+      <p>
+       Below are claims that are stored inside HubIdentity issued Refresh Token with brief explanations.
+      </p>
+      <pre>
+       <code>
+  {
+   <span class="has-text-info">"aud"</span> => <span class="has-text-danger">Your application url is the Audience</span>,
+   <span class="has-text-info">"exp"</span> => <span class="has-text-danger">UTC Unix timestamp of when the token expires</span>,
+   <span class="has-text-info">"iat"</span> => <span class="has-text-danger">UTC Unix timestamp of when the token was issued</span>,
+   <span class="has-text-info">"iss"</span> => <span class="has-text-danger">"HubIdentity" is the issuer of the token</span>,
+   <span class="has-text-info">"jti"</span> => <span class="has-text-danger">A unique Identifier for the token</span>,
+   <span class="has-text-info">"nbf"</span> => <span class="has-text-danger">UTC Unix timestamp for the "Not before time" the token is valid</span>,
+   <span class="has-text-info">"sub"</span> => <span class="has-text-danger">The HubIdentity system designated field to identify the user</span>,
+   <span class="has-text-info">"typ"</span> => <span class="has-text-danger">"access"</span>,
+  }
+       </code>
+      </pre>
+    </div>
+  </div>
+
+  <br/>
+
+  <div class="box">
+    <h3 class="is-size-3">Signature Verification</h3>
+    <div class="box has-background-info-light">
+      <h4 class="is-size-4">General Overview</h4>
+      <p>
+        All JSON Web Tokens issued by HubIdentity are cryptographically signed using RS256 public key and private key pair.
+        The RSA keys used by HubIdentity rotate and therefore the key id is included in the JWT header under the <span class="text-info">"kid"</span> key.
+      </p>
+    </div>
+
+    <div class="box has-background-info-light">
+      <h4 class="is-size-4">RSA Public Keys endpoint</h4>
+      <p>
+        In order to get the proper key to verify the signature we reccomend using our Public Key Endpoint.
+        If the key is not listed there, then it is safe to assume the JWT did not originate from HubIdentity.
+      </p>
+      <h5 class="is-size-4">Public Key endpoint URL</h5>
+      <pre>
+        <code class="text-info">https://stage-identity.hubsynch.com/api/v1/oauth/certs</code>
+      </pre>
+      <h5 class="is-size-5">Sample Public Key JSON Response</h5>
+      <p>
+        Below is a sample JSON response from our Public Key endpoint.
+        All cryptographic values are base 64 encoded.
+        For most decryption libraries the values under <span class="has-text-info">"e"</span> and <span class="has-text-info">"n"</span> keys are what is needed to verify the signature.
+      </p>
       <pre>
         <code>
   [
-      {
-          <span class="text-info">"alg"</span>: <span class="text-danger">"RS256"</span>,
-          <span class="text-info">"e"</span>: <span class="text-danger">"AQAB"</span>,
-          <span class="text-info">"expires"</span>: <span class="text-danger">UTC Unix timestamp of when the key expires</span>,
-          <span class="text-info">"kid"</span>: <span class="text-danger">"sEbtuNFADTfhkAxMAQXwAhKqjX12T3IrnudZ_lI-_kU"</span>,
-          <span class="text-info">"kty"</span>: <span class="text-danger">"RSA"</span>,
-          <span class="text-info">"n"</span>: <span class="text-danger">"3Bur9QTcP47eAri5Oxnu3f7UUx4vYfnkrTsfl3AMafDe060L2DyeN7ewl7MdwPUaPUUlERdj_pdgoEkrO2mSQey_BxtX5WqsqeVhRnoNTNrQ-fWLhhZml2-yo5C6Tahf9QZjrYWAofkO4gMN3_gXzbSwwCUkY7csPW8SXJejvl0KGKiBM3TYMQV9EEJ1KWwQ_G-lCHL06IygF8yL5jyJPgGd71NLaVEyoctM1WQBtfzsirEL9nJhFA41sRAKe69GeoL2PjiKnvzpxi4X2LDujmb42nUyArcS_NLfukFjwXja37M_03k2YNx8_-_YmtuYiUjYUVcx-eXbGHdafUCByQ"</span>,
-          <span class="text-info">"use"</span>: <span class="text-danger">"sig"</span>
-      },
-      {
-          <span class="text-info">"alg"</span>: <span class="text-danger">"RS256"</span>,
-          <span class="text-info">"e"</span>: <span class="text-danger">"AQAB"</span>,
-          <span class="text-info">"expires"</span>: <span class="text-danger">UTC Unix timestamp of when the key expires</span>,
-          <span class="text-info">"kid"</span>: <span class="text-danger">"j62WQD-W3HN7ARe4i9yqxi6IagsE_eLaIzWDhaFPRmQ"</span>,
-          <span class="text-info">"kty"</span>: <span class="text-danger">"RSA"</span>,
-          <span class="text-info">"n"</span>: <span class="text-danger">"vjAs4KQsHYstXSOGTJ0LDnkje5gh21Xnas0THSc6Bwdet2mXS12yieUBkQb7oirFoH8FQgi3wUy0oLIkcB7WjY0fpJTYzEbBIXuJRbXYFxdhvJB59uOP03M7a6LKo5rQgelXHffakFUPWqvhd_kxGD6X0W_z-OOvB7UyFx0BVWH2vNeTb3uCGuZnnvdujS6baLlap__We8M2njpb2H8tqNaIsyNfXQwL9WfgnWERKGoOqf-CFINmiOwCYyopzSg1U3WfoewTGzowJ28FtOL7NGJ6kCDiOz_Bf0a51tS4ts8x5XFyMjiqKyue6jHkt9qYjapsyZMMRi6wCVxsMcRd1Q"</span>,
-          <span class="text-info">"use"</span>: <span class="text-danger">"sig"</span>
-      }
+    {
+        <span class="has-text-info">"alg"</span>: <span class="has-text-danger">"RS256"</span>,
+        <span class="has-text-info">"e"</span>: <span class="has-text-danger">"AQAB"</span>,
+        <span class="has-text-info">"expires"</span>: <span class="has-text-danger">UTC Unix timestamp of when the key expires</span>,
+        <span class="has-text-info">"kid"</span>: <span class="has-text-danger">"sEbtuNFADTfhkAxMAQXwAhKqjX12T3IrnudZ_lI-_kU"</span>,
+        <span class="has-text-info">"kty"</span>: <span class="has-text-danger">"RSA"</span>,
+        <span class="has-text-info">"n"</span>: <span class="has-text-danger">"3Bur9QTcP47eAri5Oxnu3f7UUx4vYfnkrTsfl3AMafDe060L2DyeN7ewl7MdwPUaPUUlERdj_pdgoEkrO2mSQey_BxtX5WqsqeVhRnoNTNrQ-fWLhhZml2-yo5C6Tahf9QZjrYWAofkO4gMN3_gXzbSwwCUkY7csPW8SXJejvl0KGKiBM3TYMQV9EEJ1KWwQ_G-lCHL06IygF8yL5jyJPgGd71NLaVEyoctM1WQBtfzsirEL9nJhFA41sRAKe69GeoL2PjiKnvzpxi4X2LDujmb42nUyArcS_NLfukFjwXja37M_03k2YNx8_-_YmtuYiUjYUVcx-eXbGHdafUCByQ"</span>,
+        <span class="has-text-info">"use"</span>: <span class="has-text-danger">"sig"</span>
+    },
+    {
+        <span class="has-text-info">"alg"</span>: <span class="has-text-danger">"RS256"</span>,
+        <span class="has-text-info">"e"</span>: <span class="has-text-danger">"AQAB"</span>,
+        <span class="has-text-info">"expires"</span>: <span class="has-text-danger">UTC Unix timestamp of when the key expires</span>,
+        <span class="has-text-info">"kid"</span>: <span class="has-text-danger">"j62WQD-W3HN7ARe4i9yqxi6IagsE_eLaIzWDhaFPRmQ"</span>,
+        <span class="has-text-info">"kty"</span>: <span class="has-text-danger">"RSA"</span>,
+        <span class="has-text-info">"n"</span>: <span class="has-text-danger">"vjAs4KQsHYstXSOGTJ0LDnkje5gh21Xnas0THSc6Bwdet2mXS12yieUBkQb7oirFoH8FQgi3wUy0oLIkcB7WjY0fpJTYzEbBIXuJRbXYFxdhvJB59uOP03M7a6LKo5rQgelXHffakFUPWqvhd_kxGD6X0W_z-OOvB7UyFx0BVWH2vNeTb3uCGuZnnvdujS6baLlap__We8M2njpb2H8tqNaIsyNfXQwL9WfgnWERKGoOqf-CFINmiOwCYyopzSg1U3WfoewTGzowJ28FtOL7NGJ6kCDiOz_Bf0a51tS4ts8x5XFyMjiqKyue6jHkt9qYjapsyZMMRi6wCVxsMcRd1Q"</span>,
+        <span class="has-text-info">"use"</span>: <span class="has-text-danger">"sig"</span>
+    }
   ]
-            </code>
-          </pre>
-      </div>
-    </p>
+        </code>
+      </pre>
+    </div>
   </div>
-</div>

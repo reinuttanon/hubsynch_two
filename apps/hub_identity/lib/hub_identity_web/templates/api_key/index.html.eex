@@ -1,6 +1,6 @@
 <h1>Listing Api keys</h1>
 
-<table>
+<table class="table is-striped">
   <thead>
     <tr>
       <th>Data</th>

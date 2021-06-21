@@ -5,94 +5,72 @@
     </div>
   <% end %>
 
-  <div class="card bg-light mb-3">
-    <div class="card-body">
-      <h5 class="card-title">Service Information</h5>
-      <h6 class="card-subtitle mb-2 font-weight-light">General information about your application.</h6>
+  <div class="box">
+  
+    <h5 class="is-size-5">Service Information</h5>
+    <h6 class="is-size-6">General information about your application.</h6>
 
-      <div class="form-group row">
-        <%= label f, :name, class: "col-sm-2 col-form-label" %>
-        <div class="col-sm-10">
-          <%= text_input f, :name, class: "form-control" %>
-          <%= error_tag f, :name %>
-        </div>
-      </div>
+    <div class="field">
+      <%= label f, :name, class: "label" %>
+      <%= text_input f, :name, class: "input" %>
+      <%= error_tag f, :name %>
+    </div>
 
-      <div class="form-group row">
-        <%= label f, :url, class: "col-sm-2 col-form-label" %>
-        <div class="col-sm-10">
-          <%= text_input f, :url, class: "form-control" %>
-          <%= error_tag f, :url %>
-        </div>
-      </div>
+    <div class="field">
+      <%= label f, :url, class: "label" %>
+      <%= text_input f, :url, class: "input" %>
+      <%= error_tag f, :url %>
+    </div>
 
-      <div class="form-group row">
-        <%= label f, :logo, class: "col-sm-2 col-form-label" %>
-        <div class="col-sm-10">
-          <%= text_input f, :logo, class: "form-control" %>
-          <%= error_tag f, :logo %>
-        </div>
-      </div>
+    <div class="field">
+      <%= label f, :logo, class: "label" %>
+      <%= text_input f, :logo, class: "input" %>
+      <%= error_tag f, :logo %>
+    </div>
 
-      <div class="mb-3">
-        <%= label f, :description, class: "form-label" %>
-        <%= textarea f, :description, class: "form-control" %>
-        <%= error_tag f, :description %>
-      </div>
-
+    <div class="field">
+      <%= label f, :description, class: "label" %>
+      <%= textarea f, :description, class: "textarea" %>
+      <%= error_tag f, :description %>
     </div>
   </div>
 
-  <div class="card bg-light mb-3">
-    <div class="card-body">
-      <h5 class="card-title">Redirect Settings</h5>
-      <h6 class="card-subtitle mb-2 font-weight-light">The URL a successfully authenticated user should be directed to after authentication at HubIdentity.</h6>
+  <div class="box">
+    <h5 class="is-size-5">Redirect Settings</h5>
+    <h6 class="is-size-6">The URL a successfully authenticated user should be directed to after authentication at HubIdentity.</h6>
 
-      <div class="form-group row">
-        <div class="col-sm-10">
-          <%= text_input f, :redirect_url, class: "form-control" %>
-          <%= error_tag f, :redirect_url %>
-        </div>
-      </div>
+    <div class="field">
+      <%= text_input f, :redirect_url, class: "input" %>
+      <%= error_tag f, :redirect_url %>
+    </div>
 
-      <h6 class="card-subtitle mb-2 font-weight-light">The URL the user should be redirected to after a user successfully confirming an email.</h6>
+    <h6 class="is-size-6">The URL the user should be redirected to after a user successfully confirming an email.</h6>
 
-      <div class="form-group row">
-        <div class="col-sm-10">
-          <%= text_input f, :email_confirmation_redirect_url, class: "form-control" %>
-          <%= error_tag f, :email_confirmation_redirect_url %>
-        </div>
-      </div>
+    <div class="field">
+      <%= text_input f, :email_confirmation_redirect_url, class: "input" %>
+      <%= error_tag f, :email_confirmation_redirect_url %>
+    </div>
 
-      <h6 class="card-subtitle mb-2 font-weight-light">The URL the user should be redirected to after a user successfully changing their password.</h6>
+    <h6 class="is-size-6">The URL the user should be redirected to after a user successfully changing their password.</h6>
 
-      <div class="form-group row">
-        <div class="col-sm-10">
-          <%= text_input f, :pass_change_redirect_url, class: "form-control" %>
-          <%= error_tag f, :pass_change_redirect_url %>
-        </div>
-      </div>
-
+    <div class="field">
+      <%= text_input f, :pass_change_redirect_url, class: "input" %>
+      <%= error_tag f, :pass_change_redirect_url %>
     </div>
   </div>
 
-  <div class="card bg-light mb-3">
-    <div class="card-body">
-      <h5 class="card-title">Refresh Tokens</h5>
-      <h6 class="card-subtitle mb-2 font-weight-light">
-        When sending Jason Web Token (JWT) responses the default responses include a Refresh Token that can be used to generate new Access Tokens without having to re-authenticate the user. This may not be needed depending upon the application. It is reccomended to store Refresh Tokens safely and not generate them if they are not needed.
-      </h6>
+  <div class="box">
+    <h5 class="is-size-5">Refresh Tokens</h5>
+    <h6 class="is-size-6">
+      When sending Jason Web Token (JWT) responses the default responses include a Refresh Token that can be used to generate new Access Tokens without having to re-authenticate the user. This may not be needed depending upon the application. It is reccomended to store Refresh Tokens safely and not generate them if they are not needed.
+    </h6>
 
-      <div class="form-check">
-        <%= checkbox f, :refresh_token, class: "form-check-input" %>
-        <%= label f, "Include a Refresh Token in responses", class: "form-check-label" %>
-        <%= error_tag f, :refresh_token %>
-      </div>
-
-    </div>
+    <%= label f, "Include a Refresh Token in responses", class: "label" %>
+    <%= checkbox f, :refresh_token, class: "checkbox" %>
+    <%= error_tag f, :refresh_token %>
   </div>
 
   <div>
-    <%= submit "Save", class: "btn btn-primary" %>
+    <%= submit "Save", class: "button is-link" %>
   </div>
 <% end %>

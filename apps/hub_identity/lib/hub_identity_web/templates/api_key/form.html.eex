@@ -5,9 +5,9 @@
     </div>
   <% end %>
 
-  <div class="mb-3">
-    <%= label f, :type, class: "form-label" %>
-    <%= text_input f, :type, class: "form-control" %>
+  <div class="form">
+    <%= label f, :type, class: "label" %>
+    <%= text_input f, :type, class: "input" %>
     <%= error_tag f, :type %>
   </div>
 

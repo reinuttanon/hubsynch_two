@@ -5,49 +5,49 @@
     </div>
   <% end %>
 
-  <div class="mb-3">
-    <%= label f, :name, class: "form-label" %>
-    <%= text_input f, :name, class: "form-control" %>
+  <div class="field">
+    <%= label f, :name, class: "label" %>
+    <%= text_input f, :name, class: "input" %>
     <%= error_tag f, :name %>
   </div>
 
-  <div class="mb-3">
-    <%= label f, :access_token_url, class: "form-label" %>
-    <%= text_input f, :access_token_url, class: "form-control" %>
+  <div class="field">
+    <%= label f, :access_token_url, class: "label" %>
+    <%= text_input f, :access_token_url, class: "input" %>
     <%= error_tag f, :access_token_url %>
   </div>
 
-  <div class="mb-3">
-    <%= label f, :auth_url, class: "form-label" %>
-    <%= text_input f, :auth_url, class: "form-control" %>
+  <div class="field">
+    <%= label f, :auth_url, class: "label" %>
+    <%= text_input f, :auth_url, class: "input" %>
     <%= error_tag f, :auth_url %>
   </div>
 
-  <div class="mb-3">
-    <%= label f, :client_id, class: "form-label" %>
-    <%= text_input f, :client_id, class: "form-control" %>
+  <div class="field">
+    <%= label f, :client_id, class: "label" %>
+    <%= text_input f, :client_id, class: "input" %>
     <%= error_tag f, :client_id %>
   </div>
 
-  <div class="mb-3">
-    <%= label f, :client_secret, class: "form-label" %>
-    <%= text_input f, :client_secret, class: "form-control" %>
+  <div class="field">
+    <%= label f, :client_secret, class: "label" %>
+    <%= text_input f, :client_secret, class: "input" %>
     <%= error_tag f, :client_secret %>
   </div>
 
-  <div class="mb-3">
-    <%= label f, :scopes, class: "form-label" %>
-    <%= text_input f, :scopes, class: "form-control" %>
+  <div class="field">
+    <%= label f, :scopes, class: "label" %>
+    <%= text_input f, :scopes, class: "input" %>
     <%= error_tag f, :scopes %>
   </div>
 
-  <div class="mb-3">
-    <%= label f, :active, class: "form-label" %>
-    <%= checkbox f, :active, class: "form-control" %>
+  <div class="field">
+    <%= label f, :active, class: "label" %>
+    <%= checkbox f, :active, class: "checkbox" %>
     <%= error_tag f, :active %>
   </div>
 
   <div>
-    <%= submit "Save", class: "btn btn-primary" %>
+    <%= submit "Save", class: "button is-link" %>
   </div>
 <% end %>

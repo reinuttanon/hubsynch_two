@@ -1,25 +1,28 @@
-<%= @current_administrator.email %>
+<aside class="menu">
+  <p class="menu-label">
+    <%= @current_administrator.email %>
+  </p>
+  <ul class="menu-list">
+    <li><a href="/dashboard">Dashboard</a></li>
+    <li><%= link "Client Services", to: Routes.client_service_path(@conn, :index) %></li>
+    <%= if assigns[:client_service] do %>
 
-<nav class="nav flex-column">
-  <a class="nav-link" href="/dashboard">Dashboard</a>
-  <%= link "Client Services", to: Routes.client_service_path(@conn, :index), class: "nav-link" %>
-  <%= if assigns[:client_service] do %>
-    <nav class="nav flex-column">
-      <%= link @client_service.name, to: Routes.client_service_path(@conn, :show, @client_service), class: "nav-link ml-3 my-1" %>
-      <%= link "Edit #{@client_service.name}", to: Routes.client_service_path(@conn, :edit, @client_service), class: "nav-link ml-3 my-1" %>
-      <%= link "Add Administrator", to: Routes.client_service_path(@conn, :add_administrator, @client_service), class: "nav-link ml-3 my-1" %>
-      <%= link "Test Redirect", to: Routes.client_service_test_path(@conn, :redirect_test, @client_service), class: "nav-link ml-3 my-1" %>
-      <%= link "Roll API keys", to: Routes.client_service_path(@conn, :roll_api_keys, @client_service), method: :post, data: [confirm: "Are you sure?"], class: "nav-link ml-3 my-1 text-danger" %>
-      <%= link "Delete #{@client_service.name}", to: Routes.client_service_path(@conn, :delete, @client_service), method: :delete, data: [confirm: "Are you sure?"], class: "nav-link ml-3 my-1 text-danger" %>
-    </nav>
-  <% end %>
-  <%= if @current_administrator.system == true do %>
-    <%= link "Administrators", to: Routes.administrator_path(@conn, :index), class: "nav-link" %>
-    <%= link "OpenAuth Providers", to: Routes.provider_config_path(@conn, :index), class: "nav-link" %>
-  <% end %>
-  <a class="nav-link" href="/dashboard">Oauth Users</a>
-  <a class="nav-link" href="/dashboard">Users</a>
-  <%= link "Settings", to: Routes.administrator_settings_path(@conn, :edit), class: "nav-link" %>
-  <p>Documentation</p>
-  <%= link "JSON Web Tokens", to: Routes.documentation_path(@conn, :jwt_docs), class: "nav-link" %>
-</nav>
+        <li><%= link @client_service.name, to: Routes.client_service_path(@conn, :show, @client_service) %></li>
+        <li><%= link "Edit #{@client_service.name}", to: Routes.client_service_path(@conn, :edit, @client_service) %></li>
+        <li><%= link "Add Administrator", to: Routes.client_service_path(@conn, :add_administrator, @client_service) %></li>
+        <li><%= link "Test Redirect", to: Routes.client_service_test_path(@conn, :redirect_test, @client_service) %></li>
+        <li><%= link "Roll API keys", to: Routes.client_service_path(@conn, :roll_api_keys, @client_service), method: :post, data: [confirm: "Are you sure?"] %></li>
+        <li><%= link "Delete #{@client_service.name}", to: Routes.client_service_path(@conn, :delete, @client_service), method: :delete, data: [confirm: "Are you sure?"] %></li>
+
+    <% end %>
+    <%= if @current_administrator.system == true do %>
+      <li><%= link "Administrators", to: Routes.administrator_path(@conn, :index) %></li>
+      <li><%= link "OpenAuth Providers", to: Routes.provider_config_path(@conn, :index) %></li>
+    <% end %>
+    <li><%= link "Settings", to: Routes.administrator_settings_path(@conn, :edit) %></li>
+  </ul>
+  <p class="menu-label">Documentation</p>
+  <ul class="menu-list">
+    <li><%= link "JSON Web Tokens", to: Routes.documentation_path(@conn, :jwt_docs) %></li>
+  </ul>
+</aside>
