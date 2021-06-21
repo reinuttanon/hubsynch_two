@@ -16,6 +16,20 @@ config :dashboard, DashboardWeb.Endpoint,
 # Do not print debug messages in production
 config :logger, level: :info
 
+secret_key_base =
+  System.get_env("DASHBOARD_SECRET_KEY_BASE") ||
+    raise """
+    environment variable SECRET_KEY_BASE is missing.
+    You can generate one by calling: mix phx.gen.secret
+    """
+
+config :dashboard, DashboardWeb.Endpoint,
+  http: [
+    port: String.to_integer(System.get_env("DASHBOARD_PORT") || "D4000"),
+    transport_options: [socket_opts: [:inet6]]
+  ],
+  secret_key_base: secret_key_base
+
 # ## SSL Support
 #
 # To get SSL working, you will need to add the `https` key
@@ -50,6 +64,8 @@ config :logger, level: :info
 #
 # Check `Plug.SSL` for all available options in `force_ssl`.
 
-# Finally import the config/prod.secret.exs which loads secrets
-# and configuration from environment variables.
-import_config "prod.secret.exs"
+## Server 
+# If you are doing OTP releases, you need to instruct Phoenix
+# to start each relevant endpoint:
+#
+#     config :dashboard, DashboardWeb.Endpoint, server: true
