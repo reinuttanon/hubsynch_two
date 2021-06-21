@@ -3,6 +3,16 @@ defmodule HubLedgerWeb.Router do
 
   import HubLedgerWeb.Authentication.UserAuth
 
+  pipeline :public_browser do
+    plug :accepts, ["html"]
+    plug :fetch_session
+    plug :fetch_live_flash
+    plug :put_root_layout, {HubLedgerWeb.LayoutView, :root}
+    plug :protect_from_forgery
+    plug :put_secure_browser_headers
+    plug :fetch_current_ledger_user
+  end
+
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
@@ -19,14 +29,12 @@ defmodule HubLedgerWeb.Router do
     plug HubIdentityWeb.Authentication.ApiAuth, type: "private"
   end
 
-  pipeline :public_browser do
-    plug :accepts, ["html"]
-    plug :fetch_session
-    plug :fetch_live_flash
-    plug :put_root_layout, {HubLedgerWeb.LayoutView, :root}
-    plug :protect_from_forgery
-    plug :put_secure_browser_headers
-    plug :fetch_current_ledger_user
+  scope "/", HubLedgerWeb do
+    pipe_through [:public_browser, :redirect_if_user_is_authenticated]
+    get "/", PageController, :index
+    get "/sessions/index", SessionController, :index
+    get "/sessions/new", SessionController, :new
+    get "/sessions/log_in", SessionController, :create
   end
 
   scope "/", HubLedgerWeb do
@@ -52,14 +60,6 @@ defmodule HubLedgerWeb.Router do
     get "/ledger_dashboard", DashboardController, :index
 
     get "/users/confirm", UserConfirmationController, :confirm
-  end
-
-  scope "/", HubLedgerWeb do
-    pipe_through [:public_browser, :redirect_if_user_is_authenticated]
-    get "/", PageController, :index
-    get "/sessions/index", SessionController, :index
-    get "/sessions/new", SessionController, :new
-    get "/sessions/log_in", SessionController, :create
   end
 
   scope "/api/v1", HubLedgerWeb.Api.V1, as: :api_v1 do
