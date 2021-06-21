@@ -8,7 +8,7 @@ defmodule HubLedger.ReleaseTasks do
   ## Examples
     _build/prod/rel/hub_crm/bin/hub_crm eval "HubLedger.Release.migrate"
   """
-  @app :hubsynch_two
+  @app :hub_ledger
 
   def migrate do
     load_app()
