@@ -38,7 +38,7 @@ Ensure you have the environmental variables installed.
 
 - _build/prod/rel/hub_identity/bin/hub_identity start
 ### To connect to remotely to a running server
-- _build/prod/rel/hub_identity/bin/hub_identity remote
+- _build/prod/rel/hubsynch_two/bin/hubsynch_two remote
 
 ### Server Environment
 Application is currently running as a service with systemctl, the file is located at /etc/systemd/system/hub_identity.service

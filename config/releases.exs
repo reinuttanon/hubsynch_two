@@ -49,8 +49,7 @@ config :hub_identity, HubIdentityWeb.Endpoint,
   http: [
     port: String.to_integer(System.get_env("HUBIDENTITY_PORT") || "4000"),
     transport_options: [socket_opts: [:inet6]]
-  ],
-  cache_static_manifest: "priv/static/cache_manifest.json"
+  ]
 
 config :hub_identity, redirect_host: "https://stage-identity.hubsynch.com"
 
@@ -81,8 +80,7 @@ config :hub_ledger, HubLedgerWeb.Endpoint,
   http: [
     port: String.to_integer(System.get_env("HUBLEDGER_PORT") || "4001"),
     transport_options: [socket_opts: [:inet6]]
-  ],
-  cache_static_manifest: "priv/static/cache_manifest.json"
+  ]
 
 database_url =
   System.get_env("HUBLEDGER_DATABASE_URL") ||
@@ -110,8 +108,7 @@ config :hub_payments, HubPaymentsWeb.Endpoint,
   http: [
     port: String.to_integer(System.get_env("HUBPAYMENTS_PORT") || "4001"),
     transport_options: [socket_opts: [:inet6]]
-  ],
-  cache_static_manifest: "priv/static/cache_manifest.json"
+  ]
 
 database_url =
   System.get_env("HUBPAYMENTS_DATABASE_URL") ||
