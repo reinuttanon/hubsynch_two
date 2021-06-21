@@ -8,7 +8,7 @@ defmodule HubIdentity.ReleaseTasks do
   ## Examples
     _build/prod/rel/hub_identity/bin/hub_identity eval "HubIdentity.Release.migrate"
   """
-  @app :hubsynch_two
+  @app :hub_identity
 
   def migrate do
     load_app()

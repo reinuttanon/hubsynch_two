@@ -31,9 +31,10 @@ Ensure you have the environmental variables installed.
 - mix release
 
 ### Database migrations after release
--  _build/prod/rel/hubsynch_two/bin/hubsynch_two eval "HubCrm.Release.migrate"
--  _build/prod/rel/hubsynch_two/bin/hubsynch_two eval "HubIdentity.Release.migrate"
--  _build/prod/rel/hubsynch_two/bin/hubsynch_two eval "HubIdentity.Release.migrate"
+-  _build/prod/rel/hubsynch_two/bin/hubsynch_two eval "HubCrm.ReleaseTasks.migrate"
+-  _build/prod/rel/hubsynch_two/bin/hubsynch_two eval "HubIdentity.ReleaseTasks.migrate"
+-  _build/prod/rel/hubsynch_two/bin/hubsynch_two eval "HubLedger.ReleaseTasks.migrate"
+-  _build/prod/rel/hubsynch_two/bin/hubsynch_two eval "HubPayments.ReleaseTasks.migrate"
 
 - _build/prod/rel/hub_identity/bin/hub_identity start
 ### To connect to remotely to a running server
