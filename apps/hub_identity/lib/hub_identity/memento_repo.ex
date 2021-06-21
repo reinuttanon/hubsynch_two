@@ -174,7 +174,7 @@ defmodule HubIdentity.MementoRepo do
     {:ok, record}
   end
 
-  def create_table(table, opts \\ []) do
+  def create_table(table, opts \\ [{:ram_copies, [node() | Node.list()]}]) do
     case Memento.Table.create(table, opts) do
       :ok -> :ok
       {:error, {:already_exists, _}} -> :ok
@@ -182,8 +182,29 @@ defmodule HubIdentity.MementoRepo do
       {:error, msg} -> {:error, msg}
     end
   end
+
+  # def setup(nodes \\ [node() | Node.list()]) do
+  # :ok = File.mkdir_p!(@path)
+
+  # Create the Schema
+  # Memento.stop()
+  # Memento.Schema.create(nodes)
+  # Memento.start()
+
+  # with [:ok] <- create_tables(nodes),
+  #      :ok <- :mnesia.wait_for_tables(@disk_tables) do
+  #   :ok
+  # end
+  # end
+
+  # defp create_tables(nodes) do
+  #   Enum.map(@disk_tables, fn table -> create_table(table, disc_copies: nodes) end)
+  #   |> Enum.uniq()
+  # end
 end
 
+# Memento.add_nodes(Node.list())
+# Memento.info
 # Creates the Mnesia Database for `Que` on disk
 # This creates the Schema, Database and Tables for
 # Que Jobs on disk for the specified erlang nodes so
@@ -211,22 +232,3 @@ end
 # iex(my_app@node_x)2> HubIdentity.MementoRepo.setup(nodes)
 # :ok
 # ```
-
-# def setup(nodes \\ [node()]) do
-#   :ok = File.mkdir_p!(@path)
-
-#   # Create the Schema
-#   Memento.stop()
-#   Memento.Schema.create(nodes)
-#   Memento.start()
-
-#   with [:ok] <- create_tables(nodes),
-#        :ok <- :mnesia.wait_for_tables(@disk_tables) do
-#     :ok
-#   end
-# end
-
-# defp create_tables(nodes) do
-#   Enum.map(@disk_tables, fn table -> create_table(table, disc_copies: nodes) end)
-#   |> Enum.uniq()
-# end

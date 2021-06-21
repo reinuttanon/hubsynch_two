@@ -25,6 +25,7 @@ import Config
 # dependencies, regardless if they belong to one or multiple
 # apps, should be configured in the umbrella to avoid confusion.
 import_config "../apps/dashboard/config/config.exs"
+import_config "../apps/hub_cluster/config/config.exs"
 import_config "../apps/hub_crm/config/config.exs"
 import_config "../apps/hub_identity/config/config.exs"
 import_config "../apps/hub_ledger/config/config.exs"
@@ -57,8 +58,18 @@ config :mnesia,
 # Use Hub Identity Authentication
 config :hub_identity_elixir, :url, "https://stage-identity.hubsynch.com"
 config :hub_identity_elixir, :public_key, "pub_wr2EZlceaEjIJNnu21elGFCKIsNhZK8pTybrwBTKDGw"
-# config :hub_identity_elixir, :private_key, System.get_env("HUBLEDGER_HUBIDENTITY_API_KEY")
-config :hub_identity_elixir, :private_key, "prv_8LLU2MLOEhorgagSmKz0zTpwwkjcvfSXsF-dtCmB1E8"
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 # import_config "#{Mix.env()}.exs"
+
+config :hub_identity_elixir, :private_key, System.get_env("HUBLEDGER_HUBIDENTITY_API_KEY")
+
+# config :libcluster,
+#   topologies: [
+#     example: [
+#       # The selected clustering strategy. Required.
+#       strategy: Cluster.Strategy.Epmd,
+#       # Configuration for the provided strategy. Optional.
+#       config: [hosts: [:"a@Erins-MacBook-Pro.local", :"b@Erins-MacBook-Pro.local"]]
+#     ]
+#   ]

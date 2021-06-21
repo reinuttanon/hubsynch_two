@@ -15,7 +15,7 @@ config :hub_ledger, HubLedger.Repo,
 # watchers to your application. For example, we use it
 # with webpack to recompile .js and .css sources.
 config :hub_ledger, HubLedgerWeb.Endpoint,
-  http: [port: 4003],
+  http: [port: String.to_integer(System.get_env("HUBLEDGER_PORT") || "4003")],
   debug_errors: true,
   code_reloader: true,
   check_origin: false,
