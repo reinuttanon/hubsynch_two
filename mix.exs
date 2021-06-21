@@ -7,7 +7,19 @@ defmodule HubsynchTwo.MixProject do
       version: "0.1.0",
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+      releases: [
+        hubsynch_two: [
+          version: "0.0.1",
+          applications: [
+            dashboard: :permanent,
+            hub_crm: :permanent,
+            hub_identity: :permanent,
+            hub_ledger: :permanent,
+            hub_payments: :permanent
+          ]
+        ]
+      ]
     ]
   end
 
