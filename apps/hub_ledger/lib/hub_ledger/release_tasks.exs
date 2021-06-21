@@ -1,4 +1,4 @@
-defmodule HubCrm.Release do
+defmodule HubLedger.ReleaseTasks do
   @doc """
   Release tasks.
 
@@ -6,9 +6,9 @@ defmodule HubCrm.Release do
   to migrate databases.
 
   ## Examples
-    _build/prod/rel/hub_crm/bin/hub_crm eval "HubCrm.Release.migrate"
+    _build/prod/rel/hub_crm/bin/hub_crm eval "HubLedger.Release.migrate"
   """
-  @app :hub_crm
+  @app :hubsynch_two
 
   def migrate do
     load_app()
@@ -24,7 +24,7 @@ defmodule HubCrm.Release do
   end
 
   defp repos do
-    [HubCrm.Repo]
+    [HubLedger.Repo]
   end
 
   defp load_app do

@@ -25,10 +25,16 @@ For production deployment run these commands in a Linux or Mac machine with Elix
 Ensure you have the environmental variables installed.
 
 - set -a; source .env.prod;
-- npm run deploy --prefix ./assets
+- cd apps/dashboard && npm run deploy --prefix ./assets
 - mix phx.digest
+- cd ../..
 - mix release
-- _build/prod/rel/hub_identity/bin/hub_identity eval "HubIdentity.Release.migrate"
+
+### Database migrations after release
+-  _build/prod/rel/hubsynch_two/bin/hubsynch_two eval "HubCrm.Release.migrate"
+-  _build/prod/rel/hubsynch_two/bin/hubsynch_two eval "HubIdentity.Release.migrate"
+-  _build/prod/rel/hubsynch_two/bin/hubsynch_two eval "HubIdentity.Release.migrate"
+
 - _build/prod/rel/hub_identity/bin/hub_identity start
 ### To connect to remotely to a running server
 - _build/prod/rel/hub_identity/bin/hub_identity remote

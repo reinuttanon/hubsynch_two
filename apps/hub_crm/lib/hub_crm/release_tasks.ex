@@ -1,4 +1,4 @@
-defmodule HubIdentity.Release do
+defmodule HubCrm.ReleaseTasks do
   @doc """
   Release tasks.
 
@@ -6,9 +6,9 @@ defmodule HubIdentity.Release do
   to migrate databases.
 
   ## Examples
-    _build/prod/rel/hub_identity/bin/hub_identity eval "HubIdentity.Release.migrate"
+    _build/prod/rel/hub_crm/bin/hub_crm eval "HubCrm.Release.migrate"
   """
-  @app :hub_identity
+  @app :hubsynch_two
 
   def migrate do
     load_app()
@@ -24,7 +24,7 @@ defmodule HubIdentity.Release do
   end
 
   defp repos do
-    Application.fetch_env!(@app, :ecto_repos)
+    [HubCrm.Repo]
   end
 
   defp load_app do
