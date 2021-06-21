@@ -15,11 +15,44 @@ defmodule HubPayments.Providers.MockHttp do
     end
   end
 
+  def post(
+        "https://stage-vault.hubsynch.com/api/v1/providers/process" <> _url,
+        _body,
+        _headers,
+        _options
+      ) do
+    {:ok, %HTTPoison.Response{status_code: 200, body: vault_success_body()}}
+  end
+
+  def post(
+        "https://sandbox.paygent.co.jp/n/card/request" <> _url,
+        _body,
+        _headers,
+        _options
+      ) do
+    {:ok, %HTTPoison.Response{status_code: 200, body: paygent_success_body()}}
+  end
+
   def post(_url, _body, _headers, _options), do: {:error, "bad request"}
 
   defp paygent_success_body do
     "\r\nresult=0\r\npayment_id=26505142\r\ntrading_id=\r\nissur_class=1\r\nacq_id=50001\r\nacq_name=NICOS\r\nissur_name=ﾋﾞｻﾞ\r\nfc_auth_umu=\r\ndaiko_code=\r\ncard_shu_code=\r\nk_card_name=\r\nissur_id=\r\nattempt_kbn=\r\nfingerprint=fvryIbkXNqjADaNqIRvpdcf5BDbhYQJhBsybDua0RGGVliC0QWHcXXTy6N7YeaUV\r\nmasked_card_number=************0000\r\ncard_valid_term=0122\r\nout_acs_html="
     |> Codepagex.from_string!("VENDORS/MICSFT/WINDOWS/CP932")
+  end
+
+  defp paygent_success_capture_body do
+    "\r\nresult=0\r\npayment_id=26505142\r\ntrading_id=\r\nissur_class=1\r\nacq_id=50001\r\nacq_name=NICOS\r\nissur_name=ﾋﾞｻﾞ\r\nfc_auth_umu=\r\ndaiko_code=\r\ncard_shu_code=\r\nk_card_name=\r\nissur_id=\r\nattempt_kbn=\r\nfingerprint=fvryIbkXNqjADaNqIRvpdcf5BDbhYQJhBsybDua0RGGVliC0QWHcXXTy6N7YeaUV\r\nmasked_card_number=************0000\r\ncard_valid_term=0122\r\nout_acs_html="
+  end
+
+  defp vault_success_body do
+    %{
+      provider: "paygent",
+      response:
+        "\r\nresult=0\r\npayment_id=26505142\r\ntrading_id=\r\nissur_class=1\r\nacq_id=50001\r\nacq_name=NICOS\r\nissur_name=ﾋﾞｻﾞ\r\nfc_auth_umu=\r\ndaiko_code=\r\ncard_shu_code=\r\nk_card_name=\r\nissur_id=\r\nattempt_kbn=\r\nfingerprint=fvryIbkXNqjADaNqIRvpdcf5BDbhYQJhBsybDua0RGGVliC0QWHcXXTy6N7YeaUV\r\nmasked_card_number=************0000\r\ncard_valid_term=0122\r\nout_acs_html=",
+      type: "authorization",
+      uid: "vault_record_531914f6-7e21-4753-b2ee-4809a6540882"
+    }
+    |> Jason.encode!()
   end
 
   defp paygent_headers do
@@ -41,7 +74,7 @@ defmodule HubPayments.Providers.MockHttp do
 <sps-api-response id="ST02-00101-101">\
 <res_result>OK</res_result>\
 <res_sps_transaction_id>X1234567890123456789012345678901</res_sps_transaction_id>\
-<res_process_date>20120620144317</res_process_date>\ 
+<res_process_date>20120620144317</res_process_date>\
 <res_date>20120620144318</res_date>\
 </sps-api-response>)
   end

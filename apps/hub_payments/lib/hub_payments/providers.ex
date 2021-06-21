@@ -118,8 +118,7 @@ defmodule HubPayments.Providers do
       })
 
     {:ok, response, data} = Paygent.Server.capture(request)
-    require IEx
-    IEx.pry()
+
     update_message(capture_message, %{response: response, data: data})
   end
 

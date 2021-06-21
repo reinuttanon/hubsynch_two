@@ -7,18 +7,58 @@ defmodule HubPaymentsWeb.FallbackController do
   use HubPaymentsWeb, :controller
 
   # This clause handles errors returned by Ecto's insert/update/delete.
-  def call(conn, {:error, %Ecto.Changeset{} = changeset}) do
+
+  def call(conn, {:error, %{entry: entry, transactions: transactions}}) do
+    transactions_errors = Enum.map(transactions, fn changeset -> changeset_errors(changeset) end)
+
     conn
-    |> put_status(:unprocessable_entity)
-    |> put_view(HubPaymentsWeb.ChangesetView)
-    |> render("error.json", changeset: changeset)
+    |> put_status(400)
+    |> put_view(HubPaymentsWeb.Api.V1.FallbackView)
+    |> render("error.json", %{
+      error: %{entry: changeset_errors(entry), transactions: transactions_errors}
+    })
   end
 
-  # This clause is an example of how to handle resources that cannot be found.
-  def call(conn, {:error, :not_found}) do
+  def call(conn, {:error, %{transactions: transactions}}) do
+    transactions_errors = Enum.map(transactions, fn changeset -> changeset_errors(changeset) end)
+
     conn
-    |> put_status(:not_found)
-    |> put_view(HubPaymentsWeb.ErrorView)
-    |> render(:"404")
+    |> put_status(400)
+    |> put_view(HubPaymentsWeb.Api.V1.FallbackView)
+    |> render("error.json", %{error: %{transactions: transactions_errors}})
   end
+
+  def call(conn, {:error, %Ecto.Changeset{} = changeset}) do
+    conn
+    |> put_status(400)
+    |> put_view(HubPaymentsWeb.Api.V1.FallbackView)
+    |> render("error.json", %{error: changeset_errors(changeset)})
+  end
+
+  def call(conn, {:error, message}) do
+    conn
+    |> put_status(400)
+    |> put_view(HubPaymentsWeb.Api.V1.FallbackView)
+    |> render("error.json", %{error: message})
+  end
+
+  def call(conn, _message) do
+    conn
+    |> send_resp(400, "bad request")
+    |> halt()
+  end
+
+  defp changeset_errors(%Ecto.Changeset{} = changeset) do
+    Ecto.Changeset.traverse_errors(changeset, fn {msg, opts} ->
+      Enum.reduce(opts, msg, fn {key, value}, acc ->
+        String.replace(acc, "%{#{key}}", strigify(value))
+      end)
+    end)
+  end
+
+  defp changeset_errors(message), do: %{detail: message}
+
+  defp strigify([:address]), do: ""
+
+  defp strigify(value), do: to_string(value)
 end

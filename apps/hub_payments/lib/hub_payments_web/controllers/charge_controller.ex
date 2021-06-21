@@ -4,8 +4,6 @@ defmodule HubPaymentsWeb.ChargeController do
   alias HubPayments.Payments
   alias HubPayments.Payments.Charge
 
-  action_fallback HubPaymentsWeb.FallbackController
-
   def index(conn, _params) do
     charges = Payments.list_charges()
     render(conn, "index.json", charges: charges)

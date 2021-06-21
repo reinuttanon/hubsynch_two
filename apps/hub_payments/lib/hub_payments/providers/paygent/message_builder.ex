@@ -31,10 +31,11 @@ defmodule HubPayments.Providers.Paygent.MessageBuilder do
     |> Jason.encode()
   end
 
+  def build_authorization(_, _), do: {:error, "Invalid charge values"}
+
   def build_authorization(
         %Charge{money: money},
         %CreditCard{
-          uuid: uuid,
           exp_month: exp_month,
           exp_year: exp_year
         },
@@ -59,6 +60,8 @@ defmodule HubPayments.Providers.Paygent.MessageBuilder do
     |> Jason.encode()
   end
 
+  def build_authorization(_, _, _), do: {:error, "Invalid charge values"}
+
   def build_capture(%Charge{money: money}, %Message{data: data}) do
     request_values = [
       {"merchant_id", @merchant_id},
@@ -72,6 +75,8 @@ defmodule HubPayments.Providers.Paygent.MessageBuilder do
 
     {:ok, url_encode(request_values)}
   end
+
+  def build_capture(_, _), do: {:error, "Invalid charge values"}
 
   defp url_encode(values, encoded \\ "")
 

@@ -1,5 +1,6 @@
 defmodule HubPaymentsWeb.LiveHelpers do
   import Phoenix.LiveView.Helpers
+
   @doc """
   Renders a component inside the `HubPaymentsWeb.ModalComponent` component.
 
@@ -20,7 +21,7 @@ defmodule HubPaymentsWeb.LiveHelpers do
     live_component(socket, HubPaymentsWeb.ModalComponent, modal_opts)
   end
 
-  def types_list, do: HubPayments.Shared.Setting.types
+  def types_list, do: HubPayments.Shared.Setting.types()
 
-  def envs_list, do: HubPayments.Shared.Setting.envs
+  def envs_list, do: HubPayments.Shared.Setting.envs()
 end

@@ -32,10 +32,11 @@ defmodule HubPayments.Factory do
 
   def message_factory do
     %HubPayments.Providers.Message{
-      data: %{value: "one"},
+      data: %{value: "one", payment_id: "somepayment_id"},
       type: "authorization",
       request: "<xml>these are the droids your looking for</xml>",
-      provider: build(:provider)
+      provider: build(:provider),
+      owner: %{object: "HubPayments.Charge", uid: Ecto.UUID.generate()}
     }
   end
 

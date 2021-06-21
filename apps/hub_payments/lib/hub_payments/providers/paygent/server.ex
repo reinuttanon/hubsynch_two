@@ -4,7 +4,7 @@ defmodule HubPayments.Providers.Paygent.Server do
   @cacertfile Application.get_env(:hub_vault, :paygent_cacertfile)
   @certfile Application.get_env(:hub_vault, :paygent_certfile)
   # @http Application.get_env(:hub_vault, :http_module)
-  @http HTTPoison
+  @http Application.get_env(:hub_payments, :http_module)
   @password Application.get_env(:hub_vault, :paygent_password)
   @url Application.get_env(:hub_vault, :paygent_url)
 

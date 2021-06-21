@@ -4,8 +4,6 @@ defmodule HubPaymentsWeb.CreditCardController do
   alias HubPayments.Wallets
   alias HubPayments.Wallets.CreditCard
 
-  action_fallback HubPaymentsWeb.FallbackController
-
   def index(conn, _params) do
     credit_cards = Wallets.list_credit_cards()
     render(conn, "index.json", credit_cards: credit_cards)

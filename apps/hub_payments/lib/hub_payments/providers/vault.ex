@@ -2,7 +2,7 @@ defmodule HubPayments.Providers.Vault do
   alias HubPayments.Providers
 
   # @http Application.get_env(:hub_vault, :http_module)
-  @http HTTPoison
+  @http Application.get_env(:hub_payments, :http_module)
   @url "https://stage-vault.hubsynch.com/api/v1/providers/process"
   @vault_api_key "x6669hwJUcPDv28gDDYoQb9lxv4Cwb4XY12X5isI7ker31N4eYoBY3pUTdJtZX9z"
 

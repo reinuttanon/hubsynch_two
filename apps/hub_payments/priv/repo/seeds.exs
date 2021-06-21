@@ -67,3 +67,9 @@ settings = [
 for setting <- settings do
   Shared.create_setting(setting)
 end
+
+HubPayments.Providers.create_provider(%{
+  name: "paygent",
+  credentials: %{},
+  url: "https://sandbox.paygent.co.jp/n/card/request"
+})

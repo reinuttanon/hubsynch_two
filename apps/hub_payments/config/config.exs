@@ -17,6 +17,7 @@ config :hub_payments, HubPaymentsWeb.Endpoint,
   pubsub_server: HubPayments.PubSub,
   live_view: [signing_salt: "9MTqXf+6"]
 
+config :hub_payments, :http_module, HTTPoison
 # # Get your money right with config
 # config :money,
 #   default_currency: :JPY,

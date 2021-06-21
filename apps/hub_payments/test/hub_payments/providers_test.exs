@@ -2,6 +2,7 @@ defmodule HubPayments.ProvidersTest do
   use HubPayments.DataCase
 
   alias HubPayments.Providers
+  alias HubPayments.Providers.Message
 
   describe "providers" do
     alias HubPayments.Providers.Provider
@@ -57,6 +58,29 @@ defmodule HubPayments.ProvidersTest do
     test "update_provider/2 with invalid data returns error changeset" do
       provider = insert(:provider)
       assert {:error, %Ecto.Changeset{}} = Providers.update_provider(provider, @invalid_attrs)
+    end
+
+    test "process_authorization/4 with valid data returns authorization response" do
+      provider = insert(:provider, name: "paygent")
+      charge = insert(:charge)
+      credit_card = insert(:credit_card)
+
+      {:ok, %Message{} = message} =
+        Providers.process_authorization(provider, charge, credit_card, "token_uid")
+
+      assert message.data.payment_id == "26505142"
+      assert message.type == "authorization"
+    end
+
+    test "process_capture/2 with valid data returns capture response" do
+      provider = insert(:provider, name: "paygent")
+      charge = insert(:charge)
+      message = insert(:message)
+
+      {:ok, %Message{} = message} = Providers.process_capture(charge, provider, message)
+
+      assert message.data.payment_id == "26505142"
+      assert message.type == "capture"
     end
 
     test "delete_provider/1 deletes the provider" do

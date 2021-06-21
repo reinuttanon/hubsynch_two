@@ -40,6 +40,12 @@ defmodule HubPaymentsWeb.ConnCase do
       Ecto.Adapters.SQL.Sandbox.mode(HubPayments.Repo, {:shared, self()})
     end
 
+    HubPayments.Providers.create_provider(%{
+      name: "paygent",
+      credentials: %{},
+      url: "https://sandbox.paygent.co.jp/n/card/request"
+    })
+
     on_exit(fn -> Memento.Table.clear(HubPayments.Shared.SettingRecord) end)
     {:ok, conn: Phoenix.ConnTest.build_conn()}
   end
