@@ -35,3 +35,6 @@ erl_crash.dump
 
 # Ignore certs dir
 apps/hub_payments/priv/certs/*
+
+# Ignore static assets
+apps/dashboard/priv/static/*
