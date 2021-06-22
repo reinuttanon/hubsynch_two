@@ -1,7 +1,6 @@
 defmodule HubPayments.Shared.SettingServerTest do
   use HubPayments.DataCase
 
-  alias HubPayments.Shared
   alias HubPayments.Shared.{SettingRecord, SettingServer}
 
   @records [

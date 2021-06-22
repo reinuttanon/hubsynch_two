@@ -5,11 +5,15 @@ defmodule HubPaymentsWeb.Api.V1.PaymentControllerTest do
 
   describe "process/2" do
     test "charge payment with valid data returns success and charge uuid" do
-      conn =
+      response =
         build_api_conn()
         |> post("/api/v1/payments/process", charge_token_body())
+        |> json_response(200)
 
-      assert response(conn, 200) =~ "Payment successful"
+      assert response["amount"] == 34567
+      assert response["charge_uuid"] != nil
+      assert response["currency"] == "JPY"
+      assert response["result"] == "Payment successful"
     end
 
     test "with a nil token_uid returns error" do
@@ -50,12 +54,7 @@ defmodule HubPaymentsWeb.Api.V1.PaymentControllerTest do
         "charge" =>
           %{
             "card" => card,
-            "card_uuid" => card_uuid,
-            "authorization" => %{
-              "user_uuid" => user_uuid,
-              "code" => code,
-              "reference" => reference
-            }
+            "card_uuid" => card_uuid
           } = charge_params
       } = charge_uid_body()
 

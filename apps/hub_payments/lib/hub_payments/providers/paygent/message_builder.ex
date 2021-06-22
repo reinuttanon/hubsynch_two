@@ -3,9 +3,10 @@ defmodule HubPayments.Providers.Paygent.MessageBuilder do
   alias HubPayments.Providers.Message
   alias HubPayments.Wallets.CreditCard
 
-  @merchant_id "21220"
-  @connect_id "hivelocity2test"
-  @connect_password "2jjK9F2ast4NkBHS"
+  @merchant_id Application.get_env(:hub_payments, :merchant_id)
+  @connect_id Application.get_env(:hub_payments, :connect_id)
+  @connect_password Application.get_env(:hub_payments, :connect_password)
+
 
   def build_authorization(%Charge{money: money}, %CreditCard{
         uuid: uuid,
