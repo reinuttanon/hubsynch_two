@@ -28,7 +28,7 @@ Ensure you have the environmental variables installed.
 - cd apps/dashboard && npm run deploy --prefix ./assets
 - mix phx.digest
 - cd ../..
-- mix release
+- mix release hubsynch_two_a
 
 ### Database migrations after release
 -  _build/prod/rel/hubsynch_two/bin/hubsynch_two eval "HubCrm.ReleaseTasks.migrate"

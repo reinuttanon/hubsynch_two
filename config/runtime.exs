@@ -140,9 +140,17 @@ config :kernel,
              ]}
           ]},
          case System.get_env("RELEASE_NAME") do
-           "hubsynch_two_a" -> {:sync_nodes_mandatory, [:"hubsynch_two_b@ip-10-11-10-198", :"hubsynch_two_c@ip-10-11-10-198"]}
-           "hubsynch_two_b" -> {:sync_nodes_mandatory, [:"hubsynch_two_a@ip-10-11-10-198" :"hubsynch_two_c@ip-10-11-10-198"]}
-           "hubsynch_two_c" -> {:sync_nodes_mandatory, [:"hubsynch_two_a@ip-10-11-10-198" :"hubsynch_two_b@ip-10-11-10-198"]}
+           "hubsynch_two_a" ->
+             {:sync_nodes_mandatory,
+              [:"hubsynch_two_b@ip-10-11-10-198", :"hubsynch_two_c@ip-10-11-10-198"]}
+
+           "hubsynch_two_b" ->
+             {:sync_nodes_mandatory,
+              [:"hubsynch_two_a@ip-10-11-10-198", :"hubsynch_two_c@ip-10-11-10-198"]}
+
+           "hubsynch_two_c" ->
+             {:sync_nodes_mandatory,
+              [:"hubsynch_two_a@ip-10-11-10-198", :"hubsynch_two_b@ip-10-11-10-198"]}
          end,
          {:sync_nodes_timeout, 5000}
        ]
