@@ -128,3 +128,11 @@ config :hub_payments, HubPaymentsWeb.Endpoint, secret_key_base: secret_key_base
 config :hub_payments, HubPayments.Repo,
   url: database_url,
   pool_size: String.to_integer(System.get_env("HUBPAYMENTS_POOL_SIZE") || "10")
+
+config :libcluster,
+  topologies: [
+    localhost: [
+      strategy: Cluster.Strategy.Epmd,
+      config: [hosts: [String.to_atom(System.get_env("VAULT_NODE_NAME") || "vault@localhost")]]
+    ]
+  ]
