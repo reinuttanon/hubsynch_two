@@ -6,7 +6,9 @@ defmodule HubPayments.Providers do
   import Ecto.Query, warn: false
   alias HubPayments.Repo
 
-  alias HubPayments.Providers.Provider
+  alias HubPayments.Providers.{Paygent, Provider, Vault}
+  alias HubPayments.Payments.Charge
+  alias HubPayments.Wallets.CreditCard
 
   @doc """
   Returns the list of providers.
@@ -36,6 +38,14 @@ defmodule HubPayments.Providers do
 
   """
   def get_provider!(id), do: Repo.get!(Provider, id)
+
+  def get_provider(%{name: name}) do
+    query =
+      from p in Provider,
+        where: p.name == ^name
+
+    Repo.one(query)
+  end
 
   @doc """
   Creates a provider.
@@ -71,6 +81,45 @@ defmodule HubPayments.Providers do
     provider
     |> Provider.update_changeset(attrs)
     |> Repo.update()
+  end
+
+  def process_authorization(
+        %Provider{id: id, name: "paygent"},
+        %Charge{uuid: charge_uuid} = charge,
+        %CreditCard{} = credit_card,
+        token_uid
+      ) do
+    with {:ok, request} <-
+           Paygent.MessageBuilder.build_authorization(charge, credit_card, token_uid),
+         {:ok, message} <-
+           create_message(%{
+             provider_id: id,
+             request: request,
+             type: "authorization",
+             owner: %{object: "HubPayments.Charge", uid: charge_uuid}
+           }),
+         {:ok, response, data} <- Vault.authorize(request, "paygent") do
+      update_message(message, %{response: response, data: data})
+    end
+  end
+
+  def process_capture(charge, %Provider{id: id, name: "paygent"}, message) do
+    {:ok, request} = Paygent.MessageBuilder.build_capture(charge, message)
+
+    {:ok, capture_message} =
+      create_message(%{
+        provider_id: id,
+        request: request,
+        type: "capture",
+        owner: %{
+          object: message.owner.object,
+          uid: message.owner.uid
+        }
+      })
+
+    {:ok, response, data} = Paygent.Server.capture(request)
+
+    update_message(capture_message, %{response: response, data: data})
   end
 
   @doc """

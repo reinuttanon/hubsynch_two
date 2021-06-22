@@ -7,6 +7,8 @@ defmodule HubPayments.Payments do
   alias HubPayments.Repo
 
   alias HubPayments.Payments.Charge
+  alias HubPayments.Wallets.CreditCard
+  alias HubPayments.Providers.Provider
 
   @doc """
   Returns the list of charges.
@@ -49,6 +51,13 @@ defmodule HubPayments.Payments do
       {:error, %Ecto.Changeset{}}
 
   """
+  def create_charge(charge_params, %Provider{id: provider_id}, %CreditCard{id: credit_card_id}) do
+    charge_params
+    |> Map.put("provider_id", provider_id)
+    |> Map.put("credit_card_id", credit_card_id)
+    |> create_charge()
+  end
+
   def create_charge(attrs \\ %{}) do
     %Charge{}
     |> Charge.changeset(attrs)

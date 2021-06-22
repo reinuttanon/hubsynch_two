@@ -17,6 +17,8 @@ defmodule HubPaymentsWeb.ConnCase do
 
   use ExUnit.CaseTemplate
 
+  @repos [HubPayments.Repo, HubIdentity.Repo]
+
   using do
     quote do
       # Import conveniences for testing with connections
@@ -34,11 +36,19 @@ defmodule HubPaymentsWeb.ConnCase do
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(HubPayments.Repo)
+    for repo <- @repos do
+      :ok = Ecto.Adapters.SQL.Sandbox.checkout(repo)
 
-    unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(HubPayments.Repo, {:shared, self()})
+      unless tags[:async] do
+        Ecto.Adapters.SQL.Sandbox.mode(repo, {:shared, self()})
+      end
     end
+
+    HubPayments.Providers.create_provider(%{
+      name: "paygent",
+      credentials: %{},
+      url: "https://sandbox.paygent.co.jp/n/card/request"
+    })
 
     on_exit(fn -> Memento.Table.clear(HubPayments.Shared.SettingRecord) end)
     {:ok, conn: Phoenix.ConnTest.build_conn()}

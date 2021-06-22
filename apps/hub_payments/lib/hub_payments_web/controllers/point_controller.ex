@@ -4,8 +4,6 @@ defmodule HubPaymentsWeb.PointController do
   alias HubPayments.Payments
   alias HubPayments.Payments.Point
 
-  action_fallback HubPaymentsWeb.FallbackController
-
   def index(conn, _params) do
     points = Payments.list_points()
     render(conn, "index.json", points: points)

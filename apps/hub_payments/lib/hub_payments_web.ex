@@ -24,6 +24,8 @@ defmodule HubPaymentsWeb do
       import Plug.Conn
       import HubPaymentsWeb.Gettext
       alias HubPaymentsWeb.Router.Helpers, as: Routes
+
+      action_fallback HubPaymentsWeb.FallbackController
     end
   end
 

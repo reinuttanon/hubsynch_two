@@ -6,9 +6,39 @@ defmodule HubCrm.IdentitiesTest do
   describe "users" do
     alias HubCrm.Identities.User
 
-    @valid_attrs %{first_name: "some first_name", first_name_kana: "some first_name_kana", first_name_roman: "some first_name_roman", gender: "some gender", hub_identity_uid: "some hub_identity_uid", last_name: "some last_name", last_name_kana: "some last_name_kana", last_name_roman: "some last_name_roman", occupation: "some occupation"}
-    @update_attrs %{first_name: "some updated first_name", first_name_kana: "some updated first_name_kana", first_name_roman: "some updated first_name_roman", gender: "some updated gender", hub_identity_uid: "some updated hub_identity_uid", last_name: "some updated last_name", last_name_kana: "some updated last_name_kana", last_name_roman: "some updated last_name_roman", occupation: "some updated occupation"}
-    @invalid_attrs %{first_name: nil, first_name_kana: nil, first_name_roman: nil, gender: nil, hub_identity_uid: nil, last_name: nil, last_name_kana: nil, last_name_roman: nil, occupation: nil}
+    @valid_attrs %{
+      first_name: "some first_name",
+      first_name_kana: "some first_name_kana",
+      first_name_roman: "some first_name_roman",
+      gender: "some gender",
+      hub_identity_uid: "some hub_identity_uid",
+      last_name: "some last_name",
+      last_name_kana: "some last_name_kana",
+      last_name_roman: "some last_name_roman",
+      occupation: "some occupation"
+    }
+    @update_attrs %{
+      first_name: "some updated first_name",
+      first_name_kana: "some updated first_name_kana",
+      first_name_roman: "some updated first_name_roman",
+      gender: "some updated gender",
+      hub_identity_uid: "some updated hub_identity_uid",
+      last_name: "some updated last_name",
+      last_name_kana: "some updated last_name_kana",
+      last_name_roman: "some updated last_name_roman",
+      occupation: "some updated occupation"
+    }
+    @invalid_attrs %{
+      first_name: nil,
+      first_name_kana: nil,
+      first_name_roman: nil,
+      gender: nil,
+      hub_identity_uid: nil,
+      last_name: nil,
+      last_name_kana: nil,
+      last_name_roman: nil,
+      occupation: nil
+    }
 
     def user_fixture(attrs \\ %{}) do
       {:ok, user} =
@@ -81,9 +111,36 @@ defmodule HubCrm.IdentitiesTest do
   describe "addresses" do
     alias HubCrm.Identities.Address
 
-    @valid_attrs %{address_1: "some address_1", address_2: "some address_2", address_3: "some address_3", address_4: "some address_4", address_5: "some address_5", country: "some country", default: true, postal_code: "some postal_code"}
-    @update_attrs %{address_1: "some updated address_1", address_2: "some updated address_2", address_3: "some updated address_3", address_4: "some updated address_4", address_5: "some updated address_5", country: "some updated country", default: false, postal_code: "some updated postal_code"}
-    @invalid_attrs %{address_1: nil, address_2: nil, address_3: nil, address_4: nil, address_5: nil, country: nil, default: nil, postal_code: nil}
+    @valid_attrs %{
+      address_1: "some address_1",
+      address_2: "some address_2",
+      address_3: "some address_3",
+      address_4: "some address_4",
+      address_5: "some address_5",
+      country: "some country",
+      default: true,
+      postal_code: "some postal_code"
+    }
+    @update_attrs %{
+      address_1: "some updated address_1",
+      address_2: "some updated address_2",
+      address_3: "some updated address_3",
+      address_4: "some updated address_4",
+      address_5: "some updated address_5",
+      country: "some updated country",
+      default: false,
+      postal_code: "some updated postal_code"
+    }
+    @invalid_attrs %{
+      address_1: nil,
+      address_2: nil,
+      address_3: nil,
+      address_4: nil,
+      address_5: nil,
+      country: nil,
+      default: nil,
+      postal_code: nil
+    }
 
     def address_fixture(attrs \\ %{}) do
       {:ok, address} =

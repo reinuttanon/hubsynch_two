@@ -1,5 +1,5 @@
 defmodule HubPayments.SharedTest do
-  use HubPayments.DataCase
+  use HubPayments.DataCase, async: true
 
   alias HubPayments.Shared
 

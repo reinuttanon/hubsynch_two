@@ -5,6 +5,8 @@ defmodule HubPayments.Payments.Charge do
   alias HubPayments.Embeds.Owner
 
   schema "charges" do
+    field :amount, :integer, virtual: true
+    field :currency, :string, virtual: true
     field :money, Money.Ecto.Map.Type
     field :process_date, :utc_datetime
     field :reference, :string
@@ -23,8 +25,9 @@ defmodule HubPayments.Payments.Charge do
   @doc false
   def changeset(charge, attrs) do
     charge
-    |> cast(attrs, [:credit_card_id, :money, :provider_id, :reference])
+    |> cast(attrs, [:amount, :currency, :credit_card_id, :money, :provider_id, :reference])
     |> cast_embed(:owner, with: &Owner.changeset/2)
+    |> make_money()
     |> validate_required([:credit_card_id, :money, :provider_id])
     |> foreign_key_constraint(:credit_card_id)
     |> foreign_key_constraint(:provider_id)
@@ -38,6 +41,13 @@ defmodule HubPayments.Payments.Charge do
     |> cast_embed(:owner, with: &Owner.changeset/2)
     |> validate_required([:credit_card_id, :money, :provider_id])
   end
+
+  # test for nil values!!
+  defp make_money(%Ecto.Changeset{changes: %{amount: amount, currency: currency}} = changeset) do
+    put_change(changeset, :money, Money.new(amount, currency))
+  end
+
+  defp make_money(changeset), do: changeset
 
   defp now do
     DateTime.utc_now()

@@ -5,8 +5,8 @@ defmodule HubPayments.Repo.Migrations.CreateMessages do
     create table(:messages) do
       add :type, :string
       add :owner, :map, default: %{}
-      add :request, :string
-      add :response, :string
+      add :request, :text
+      add :response, :text
       add :data, :map, default: %{}
       add :provider_id, references(:providers, on_delete: :nothing)
 

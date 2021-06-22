@@ -189,17 +189,47 @@ defmodule HubIdentity.Verifications do
     iex> validate_code(code, user, client_service, reference)
     {:error, "max attempts reached"}
   """
-  def validate_code(code, user, client_service, reference) do
+  def validate_code(
+        code,
+        %User{uid: user_uid},
+        %ClientService{uid: client_service_uid},
+        reference
+      ) do
+    validate_code(code, user_uid, client_service_uid, reference)
+  end
+
+  def validate_code(
+        code,
+        user_uid,
+        %ClientService{uid: client_service_uid},
+        reference
+      )
+      when is_binary(user_uid) do
+    validate_code(code, user_uid, client_service_uid, reference)
+  end
+
+  def validate_code(
+        code,
+        %User{uid: user_uid},
+        client_service_uid,
+        reference
+      )
+      when is_binary(client_service_uid) do
+    validate_code(code, user_uid, client_service_uid, reference)
+  end
+
+  def validate_code(code, user_uid, client_service_uid, reference)
+      when is_binary(user_uid) and is_binary(client_service_uid) do
     query = [
-      {:==, :user_uid, user.uid},
+      {:==, :user_uid, user_uid},
       {:==, :code, code},
-      {:==, :client_service_uid, client_service.uid},
+      {:==, :client_service_uid, client_service_uid},
       {:==, :reference, reference}
     ]
 
     case MementoRepo.withdraw(VerificationCode, query) do
       {:ok, %VerificationCode{}} -> {:ok, "verification success"}
-      _ -> VerificationCode.handle_attempts(reference, user.uid, client_service.uid)
+      _ -> VerificationCode.handle_attempts(reference, user_uid, client_service_uid)
     end
   end
 
