@@ -31,3 +31,6 @@ erl_crash.dump
 
 # Ignore node modules
 *node_modules/
+
+# Ignore certs dir
+apps/hub_payments/priv/certs/*
