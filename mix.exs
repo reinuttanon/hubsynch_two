@@ -10,7 +10,6 @@ defmodule HubsynchTwo.MixProject do
       deps: deps(),
       releases: [
         hubsynch_two: [
-          version: "0.0.1",
           applications: [
             dashboard: :permanent,
             hub_crm: :permanent,

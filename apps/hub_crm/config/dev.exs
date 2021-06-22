@@ -15,7 +15,7 @@ config :hub_crm, HubCrm.Repo,
 # watchers to your application. For example, we use it
 # with webpack to recompile .js and .css sources.
 config :hub_crm, HubCrmWeb.Endpoint,
-  http: [port: 4001],
+  http: [port: String.to_integer(System.get_env("HUBCRM_PORT") || "4001")],
   debug_errors: true,
   code_reloader: true,
   check_origin: false,

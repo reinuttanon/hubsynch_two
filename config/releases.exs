@@ -1,5 +1,4 @@
 import Config
-
 # Dashboard runtime variables
 secret_key_base =
   System.get_env("DASHBOARD_SECRET_KEY_BASE") ||
