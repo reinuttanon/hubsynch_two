@@ -9,28 +9,7 @@ defmodule HubsynchTwo.MixProject do
       aliases: aliases(),
       deps: deps(),
       releases: [
-        hubsynch_two_a: [
-          reboot_system_after_config: true,
-          applications: [
-            dashboard: :permanent,
-            hub_crm: :permanent,
-            hub_identity: :permanent,
-            hub_ledger: :permanent,
-            hub_payments: :permanent
-          ]
-        ],
-        hubsynch_two_b: [
-          reboot_system_after_config: true,
-          applications: [
-            dashboard: :permanent,
-            hub_crm: :permanent,
-            hub_identity: :permanent,
-            hub_ledger: :permanent,
-            hub_payments: :permanent
-          ]
-        ],
-        hubsynch_two_c: [
-          reboot_system_after_config: true,
+        hubsynch_two: [
           applications: [
             dashboard: :permanent,
             hub_crm: :permanent,

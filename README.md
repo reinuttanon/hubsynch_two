@@ -19,6 +19,15 @@ To start Hubsync 2.0 services:
 
 Now you can use the api at [`localhost:4001`](http://localhost:4001).
 
+## Localhost deployment with vault
+After initial setup this can be run with vault using Erlang Distributed Protocol by first starting the Vault with:
+`iex --sname vault@localhost mix phx.server`
+Then start hubsynch_two with:
+`iex --sname hubsynch_two@localhost mix phx.server`
+To confirm once you are in an iex shell (using `-S`) run the following command:
+`Node.list()`
+You should see `[:vault@localhost]` or `[:hubsynch_two@localhost]` depending on which server your iex shell is connected to.
+
 ## Production deployment
 Currently using Elixir 1.11.2 (compiled with Erlang/OTP 23)
 For production deployment run these commands in a Linux or Mac machine with Elixir and Erlang installed.
@@ -28,7 +37,7 @@ Ensure you have the environmental variables installed.
 - cd apps/dashboard && npm run deploy --prefix ./assets
 - mix phx.digest
 - cd ../..
-- mix release hubsynch_two_a
+- mix release
 
 ### Database migrations after release
 -  _build/prod/rel/hubsynch_two/bin/hubsynch_two eval "HubCrm.ReleaseTasks.migrate"

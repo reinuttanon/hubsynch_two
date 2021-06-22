@@ -15,8 +15,8 @@ config :hub_crm, HubCrm.Repo,
 # you can enable the server option below.
 config :hub_crm, HubCrmWeb.Endpoint,
   http: [port: 4003],
-  server: false,
-  secret_key_base: "o7GhEKUlQU4YAnDTBbSzBcSq0J4D7DBWSUdwBtL2PJf33gMUFTKopy/ZFFE1gOhl"
+  secret_key_base: "o7GhEKUlQU4YAnDTBbSzBcSq0J4D7DBWSUdwBtL2PJf33gMUFTKopy/ZFFE1gOhl",
+  server: false
 
 # Print only warnings and errors during test
 config :logger, level: :warn
