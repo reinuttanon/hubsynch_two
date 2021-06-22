@@ -1,12 +1,12 @@
 defmodule HubPayments.Providers.Paygent.Server do
   alias HubPayments.Providers.Paygent.{MessageBuilder, ResponseParser}
 
-  @cacertfile Application.get_env(:hub_vault, :paygent_cacertfile)
-  @certfile Application.get_env(:hub_vault, :paygent_certfile)
-  # @http Application.get_env(:hub_vault, :http_module)
+  @cacertfile Application.get_env(:hub_payments, :paygent_cacertfile)
+  @certfile Application.get_env(:hub_payments, :paygent_certfile)
+  # @http Application.get_env(:hub_payments, :http_module)
   @http Application.get_env(:hub_payments, :http_module)
-  @password Application.get_env(:hub_vault, :paygent_password)
-  @url Application.get_env(:hub_vault, :paygent_url)
+  @password Application.get_env(:hub_payments, :paygent_password)
+  @url Application.get_env(:hub_payments, :paygent_url)
 
   def capture(message) do
     "#{@url}?#{message}"

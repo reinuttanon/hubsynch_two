@@ -2,10 +2,10 @@ defmodule HubPayments.Providers.SBPS.Server do
   import HubPayments.Providers.ResponseParser, only: [parse_response: 2]
   alias HubPayments.Providers.SBPS.MessageBuilder
 
-  @basic_id Application.get_env(:hub_vault, :sbps_basic_id)
-  @hash_key Application.get_env(:hub_vault, :sbps_hash_key)
-  @http Application.get_env(:hub_vault, :http_module)
-  @url Application.get_env(:hub_vault, :sbps_url)
+  @basic_id Application.get_env(:hub_payments, :sbps_basic_id)
+  @hash_key Application.get_env(:hub_payments, :sbps_hash_key)
+  @http Application.get_env(:hub_payments, :http_module)
+  @url Application.get_env(:hub_payments, :sbps_url)
 
   def authorize(request_values) do
     body = MessageBuilder.build_authorization(request_values)
