@@ -7,7 +7,6 @@ defmodule HubPayments.Providers.Paygent.MessageBuilder do
   @connect_id Application.get_env(:hub_payments, :connect_id)
   @connect_password Application.get_env(:hub_payments, :connect_password)
 
-
   def build_authorization(%Charge{money: money}, %CreditCard{
         uuid: uuid,
         exp_month: exp_month,

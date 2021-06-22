@@ -55,7 +55,7 @@ defmodule HubPayments.Payments do
     charge_params
     |> Map.put("provider_id", provider_id)
     |> Map.put("credit_card_id", credit_card_id)
-    |> create_charge
+    |> create_charge()
   end
 
   def create_charge(attrs \\ %{}) do
