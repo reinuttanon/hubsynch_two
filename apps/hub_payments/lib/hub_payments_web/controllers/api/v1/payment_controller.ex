@@ -50,7 +50,6 @@ end
 #   charge: %{
 #     amount: 34567,
 #     currency: "JPY",
-#     reference: "optional",
 #     owner: %{
 #       object: "HubPayments.Wallet",
 #       uid: "wallet_uuuid"
