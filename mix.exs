@@ -9,8 +9,25 @@ defmodule HubsynchTwo.MixProject do
       aliases: aliases(),
       deps: deps(),
       releases: [
-        hubsynch_two: [
-          version: "0.0.1",
+        hubsynch_two_a: [
+          applications: [
+            dashboard: :permanent,
+            hub_crm: :permanent,
+            hub_identity: :permanent,
+            hub_ledger: :permanent,
+            hub_payments: :permanent
+          ]
+        ],
+        hubsynch_two_b: [
+          applications: [
+            dashboard: :permanent,
+            hub_crm: :permanent,
+            hub_identity: :permanent,
+            hub_ledger: :permanent,
+            hub_payments: :permanent
+          ]
+        ],
+        hubsynch_two_c: [
           applications: [
             dashboard: :permanent,
             hub_crm: :permanent,
@@ -29,9 +46,7 @@ defmodule HubsynchTwo.MixProject do
   #
   # Run "mix help deps" for examples and options.
   defp deps do
-    [
-      {:libcluster, "~> 3.3"}
-    ]
+    []
   end
 
   # Aliases are shortcuts or tasks specific to the current project.

@@ -73,3 +73,5 @@ config :hub_identity_elixir, :private_key, System.get_env("HUBLEDGER_HUBIDENTITY
 #       config: [hosts: [:"a@Erins-MacBook-Pro.local", :"b@Erins-MacBook-Pro.local"]]
 #     ]
 #   ]
+
+import_config "#{System.get_env("RELEASE_NODE")}_config.exs"

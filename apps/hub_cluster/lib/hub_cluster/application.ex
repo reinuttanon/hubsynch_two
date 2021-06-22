@@ -7,9 +7,9 @@ defmodule HubCluster.Application do
 
   def start(_type, _args) do
     topologies = [
-      example: [
+      localhost: [
         strategy: Cluster.Strategy.Epmd,
-        config: [hosts: [:"hub_vault@ip-10-11-10-198"]]
+        config: [hosts: [:hub_vault]]
       ]
     ]
 
