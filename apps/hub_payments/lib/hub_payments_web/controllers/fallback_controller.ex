@@ -8,26 +8,6 @@ defmodule HubPaymentsWeb.FallbackController do
 
   # This clause handles errors returned by Ecto's insert/update/delete.
 
-  def call(conn, {:error, %{entry: entry, transactions: transactions}}) do
-    transactions_errors = Enum.map(transactions, fn changeset -> changeset_errors(changeset) end)
-
-    conn
-    |> put_status(400)
-    |> put_view(HubPaymentsWeb.Api.V1.FallbackView)
-    |> render("error.json", %{
-      error: %{entry: changeset_errors(entry), transactions: transactions_errors}
-    })
-  end
-
-  def call(conn, {:error, %{transactions: transactions}}) do
-    transactions_errors = Enum.map(transactions, fn changeset -> changeset_errors(changeset) end)
-
-    conn
-    |> put_status(400)
-    |> put_view(HubPaymentsWeb.Api.V1.FallbackView)
-    |> render("error.json", %{error: %{transactions: transactions_errors}})
-  end
-
   def call(conn, {:error, %Ecto.Changeset{} = changeset}) do
     conn
     |> put_status(400)
@@ -35,7 +15,7 @@ defmodule HubPaymentsWeb.FallbackController do
     |> render("error.json", %{error: changeset_errors(changeset)})
   end
 
-  def call(conn, {:error, message}) do
+  def call(conn, {:error, message}) when is_binary(message) do
     conn
     |> put_status(400)
     |> put_view(HubPaymentsWeb.Api.V1.FallbackView)

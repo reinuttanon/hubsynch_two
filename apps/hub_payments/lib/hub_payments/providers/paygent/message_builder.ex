@@ -33,6 +33,8 @@ defmodule HubPayments.Providers.Paygent.MessageBuilder do
 
   def build_authorization(_, _), do: {:error, "Invalid charge values"}
 
+  def build_authorization(_, _, nil), do: {:error, "Token should not be nil"}
+
   def build_authorization(
         %Charge{money: money},
         %CreditCard{

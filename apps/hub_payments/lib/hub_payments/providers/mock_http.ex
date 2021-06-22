@@ -17,11 +17,22 @@ defmodule HubPayments.Providers.MockHttp do
 
   def post(
         "https://stage-vault.hubsynch.com/api/v1/providers/process" <> _url,
-        _body,
+        body,
         _headers,
         _options
       ) do
-    {:ok, %HTTPoison.Response{status_code: 200, body: vault_success_body()}}
+    {:ok, map_body} = Jason.decode(body)
+
+    case map_body["values"]["card_number"] do
+      "valid_token" ->
+        {:ok, %HTTPoison.Response{status_code: 200, body: vault_success_body()}}
+
+      "valid_card_uuid" ->
+        {:ok, %HTTPoison.Response{status_code: 200, body: vault_success_body()}}
+
+      _ ->
+        {:ok, %HTTPoison.Response{status_code: 200, body: vault_failure_body()}}
+    end
   end
 
   def post(
@@ -49,6 +60,17 @@ defmodule HubPayments.Providers.MockHttp do
       provider: "paygent",
       response:
         "\r\nresult=0\r\npayment_id=26505142\r\ntrading_id=\r\nissur_class=1\r\nacq_id=50001\r\nacq_name=NICOS\r\nissur_name=ﾋﾞｻﾞ\r\nfc_auth_umu=\r\ndaiko_code=\r\ncard_shu_code=\r\nk_card_name=\r\nissur_id=\r\nattempt_kbn=\r\nfingerprint=fvryIbkXNqjADaNqIRvpdcf5BDbhYQJhBsybDua0RGGVliC0QWHcXXTy6N7YeaUV\r\nmasked_card_number=************0000\r\ncard_valid_term=0122\r\nout_acs_html=",
+      type: "authorization",
+      uid: "vault_record_531914f6-7e21-4753-b2ee-4809a6540882"
+    }
+    |> Jason.encode!()
+  end
+
+  defp vault_failure_body do
+    %{
+      provider: "paygent",
+      response:
+        "\r\nresult=1\r\npayment_id=\r\ntrading_id=\r\nissur_class=1\r\nacq_id=50001\r\nacq_name=NICOS\r\nissur_name=ﾋﾞｻﾞ\r\nfc_auth_umu=\r\ndaiko_code=\r\ncard_shu_code=\r\nk_card_name=\r\nissur_id=\r\nattempt_kbn=\r\nfingerprint=fvryIbkXNqjADaNqIRvpdcf5BDbhYQJhBsybDua0RGGVliC0QWHcXXTy6N7YeaUV\r\nmasked_card_number=************0000\r\ncard_valid_term=0122\r\nout_acs_html=",
       type: "authorization",
       uid: "vault_record_531914f6-7e21-4753-b2ee-4809a6540882"
     }

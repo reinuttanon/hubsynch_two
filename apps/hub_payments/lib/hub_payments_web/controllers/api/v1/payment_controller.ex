@@ -12,18 +12,8 @@ defmodule HubPaymentsWeb.Api.V1.PaymentController do
            Providers.process_authorization(provider, charge, credit_card, token_uuid),
          {:ok, _message} <- Providers.process_capture(charge, provider, message) do
       render(conn, "success.json", %{charge_uuid: charge.uuid})
-      # charge
     end
   end
-
-  # find provider => default to paygent
-  # send message to vault
-  # save card data
-  #  process response
-  #  save vault uuid t/f
-  #### send capture
-  #### process captrue response
-  #### return result
 
   def process(conn, %{
         "charge" =>
@@ -47,15 +37,6 @@ defmodule HubPaymentsWeb.Api.V1.PaymentController do
            Providers.process_authorization(provider, charge, credit_card, card_uuid),
          {:ok, _message} <- Providers.process_capture(charge, provider, message) do
       render(conn, "success.json", %{charge_uuid: charge.uuid})
-
-      # with %ClientService{uid: cleint_service_uid} <- get_session(conn, :client_service) do
-      # verify auth with hubidentity
-      # find provider => default to paygent
-      # send message to vault
-      # process response
-      #### send capture
-      #### process captrue response
-      #### return result
     end
   end
 

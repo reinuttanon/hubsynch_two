@@ -12,6 +12,39 @@ defmodule HubPaymentsWeb.Api.V1.PaymentControllerTest do
       assert response(conn, 200) =~ "Payment successful"
     end
 
+    test "with a nil token_uid returns error" do
+      charge = %{charge_token_body().charge | token_uid: nil}
+
+      response =
+        build_api_conn()
+        |> post("/api/v1/payments/process", %{charge: charge})
+        |> json_response(400)
+
+      assert response["error"] == "Token should not be nil"
+    end
+
+    test "with nil amount returns error" do
+      charge = %{charge_token_body().charge | amount: nil}
+
+      response =
+        build_api_conn()
+        |> post("/api/v1/payments/process", %{charge: charge})
+        |> json_response(400)
+
+      assert response["error"]["money"] == ["can't be blank"]
+    end
+
+    test "with invalid token returns failure" do
+      charge = %{charge_token_body().charge | token_uid: "invalid_token"}
+
+      response =
+        build_api_conn()
+        |> post("/api/v1/payments/process", %{charge: charge})
+        |> json_response(400)
+
+      assert response["error"] == "failure result 1"
+    end
+
     test "charge payment with valid card_uuid returns success and charge uuid" do
       %{
         "charge" =>
@@ -59,7 +92,7 @@ defmodule HubPaymentsWeb.Api.V1.PaymentControllerTest do
           object: "HubPayments.Wallet",
           uid: "wallet_uuuid"
         },
-        token_uid: "token_uuid",
+        token_uid: "valid_token",
         card: %{
           brand: "visa",
           exp_month: "05",
@@ -81,7 +114,7 @@ defmodule HubPaymentsWeb.Api.V1.PaymentControllerTest do
           "object" => "HubPayments.Wallet",
           "uid" => "wallet_uuuid"
         },
-        "card_uuid" => "vault_record_bcaf6604-5eb7-4110-b1ff-582935f488aa",
+        "card_uuid" => "valid_card_uuid",
         "card" => %{
           "fingerprint" => "fingerprint",
           "last_four" => "1111",

@@ -66,7 +66,13 @@ defmodule HubPayments.ProvidersTest do
       credit_card = insert(:credit_card)
 
       {:ok, %Message{} = message} =
-        Providers.process_authorization(provider, charge, credit_card, "token_uid")
+        Providers.process_authorization(provider, charge, credit_card, "valid_token")
+
+      assert message.data.payment_id == "26505142"
+      assert message.type == "authorization"
+
+      {:ok, %Message{} = message} =
+        Providers.process_authorization(provider, charge, credit_card, "valid_card_uuid")
 
       assert message.data.payment_id == "26505142"
       assert message.type == "authorization"

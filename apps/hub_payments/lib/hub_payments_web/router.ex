@@ -10,7 +10,7 @@ defmodule HubPaymentsWeb.Router do
     plug :put_root_layout, {HubPaymentsWeb.LayoutView, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
-    plug :fetch_current_ledger_user
+    # plug :fetch_current_ledger_user
   end
 
   pipeline :browser do
@@ -19,16 +19,19 @@ defmodule HubPaymentsWeb.Router do
     plug :fetch_live_flash
     plug :put_root_layout, {HubPaymentsWeb.LayoutView, :root}
     plug :protect_from_forgery
-    plug HubPaymentsWeb.Authentication.UserAuth
+    # plug HubPaymentsWeb.Authentication.UserAuth
     plug :put_secure_browser_headers
   end
 
   pipeline :auth_api do
     plug :accepts, ["json"]
     plug HubIdentityWeb.Authentication.ApiAuth, type: "private"
+  end
 
   scope "/", HubPaymentsWeb do
-    pipe_through [:public_browser, :redirect_if_user_is_authenticated]
+    # pipe_through [:public_browser, :redirect_if_user_is_authenticated]
+
+    pipe_through :public_browser
     get "/", PageController, :index
     # get "/sessions/index", SessionController, :index
     # get "/sessions/new", SessionController, :new
