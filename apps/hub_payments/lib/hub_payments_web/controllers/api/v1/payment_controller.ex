@@ -20,7 +20,6 @@ defmodule HubPaymentsWeb.Api.V1.PaymentController do
   def process(conn, %{
         "charge" =>
           %{
-            "card" => card,
             "card_uuid" => card_uuid,
             "authorization" => %{
               "user_uuid" => user_uuid,
@@ -33,11 +32,11 @@ defmodule HubPaymentsWeb.Api.V1.PaymentController do
          {:ok, _} <-
            HubIdentity.Verifications.validate_code(code, user_uuid, client_service, reference),
          provider <- Providers.get_provider(%{name: "paygent"}),
-         {:ok, credit_card} <- Wallets.create_credit_card(card),
+         {:ok, credit_card} <- Wallets.get_credit_card(%{uuid: card_uuid}),
          {:ok, %Charge{money: %Money{amount: amount, currency: currency}} = charge} <-
            Payments.create_charge(charge_params, provider, credit_card),
          {:ok, message} <-
-           Providers.process_authorization(provider, charge, credit_card, card_uuid),
+           Providers.process_authorization(provider, charge, credit_card),
          {:ok, _message} <- Providers.process_capture(charge, provider, message) do
       render(conn, "success.json", %{charge_uuid: charge.uuid, amount: amount, currency: currency})
     end
@@ -66,7 +65,7 @@ end
 #   charge: %{
 #     amount: 34567,
 #     currency: "JPY",
-#     reference: "optional",
+#     reference: "reference",
 #     owner: %{
 #       object: "HubPayments.Wallet",
 #       uid: "wallet_uuuid"
@@ -77,6 +76,6 @@ end
 #       exp_month: "12",
 #       exp_year: "2023",
 #       brand: "visa",
-#       reference: "card-fingerprint"
+#       fingerprint: "card-fingerprint"
 #     }
 # }

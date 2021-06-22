@@ -9,6 +9,7 @@ defmodule HubPayments.Repo.Migrations.CreateCreditCards do
       add :fingerprint, :string
       add :last_four, :string
       add :uuid, :string
+      add :vault_uuid, :string
       add :wallet_id, references(:wallets, on_delete: :nothing)
 
       timestamps()

@@ -133,6 +133,14 @@ defmodule HubPayments.Wallets do
   """
   def get_credit_card!(id), do: Repo.get!(CreditCard, id)
 
+  def get_credit_card(%{uuid: uuid}) do
+    query =
+      from c in CreditCard,
+        where: c.uuid == ^uuid
+
+    Repo.one(query)
+  end
+
   @doc """
   Creates a credit_card.
 

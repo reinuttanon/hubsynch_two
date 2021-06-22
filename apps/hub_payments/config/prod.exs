@@ -51,3 +51,4 @@ config :hub_payments, :paygent_url, "https://sandbox.paygent.co.jp/n/card/reques
 #       force_ssl: [hsts: true]
 #
 # Check `Plug.SSL` for all available options in `force_ssl`.
+import_config "prod.secret.exs"
