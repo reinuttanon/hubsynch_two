@@ -12,6 +12,7 @@ defmodule HubsynchTwo.MixProject do
         hubsynch_two: [
           applications: [
             dashboard: :permanent,
+            hub_cluster: :permanent,
             hub_crm: :permanent,
             hub_identity: :permanent,
             hub_ledger: :permanent,
