@@ -63,15 +63,3 @@ config :hub_identity_elixir, :public_key, "pub_wr2EZlceaEjIJNnu21elGFCKIsNhZK8pT
 # import_config "#{Mix.env()}.exs"
 
 config :hub_identity_elixir, :private_key, System.get_env("HUBLEDGER_HUBIDENTITY_API_KEY")
-
-# config :libcluster,
-#   topologies: [
-#     example: [
-#       # The selected clustering strategy. Required.
-#       strategy: Cluster.Strategy.Epmd,
-#       # Configuration for the provided strategy. Optional.
-#       config: [hosts: [:"a@Erins-MacBook-Pro.local", :"b@Erins-MacBook-Pro.local"]]
-#     ]
-#   ]
-
-import_config "#{System.get_env("RELEASE_NODE")}_config.exs"

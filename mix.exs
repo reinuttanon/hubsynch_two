@@ -10,6 +10,7 @@ defmodule HubsynchTwo.MixProject do
       deps: deps(),
       releases: [
         hubsynch_two_a: [
+          reboot_system_after_config: true,
           applications: [
             dashboard: :permanent,
             hub_crm: :permanent,
@@ -19,6 +20,7 @@ defmodule HubsynchTwo.MixProject do
           ]
         ],
         hubsynch_two_b: [
+          reboot_system_after_config: true,
           applications: [
             dashboard: :permanent,
             hub_crm: :permanent,
@@ -28,6 +30,7 @@ defmodule HubsynchTwo.MixProject do
           ]
         ],
         hubsynch_two_c: [
+          reboot_system_after_config: true,
           applications: [
             dashboard: :permanent,
             hub_crm: :permanent,

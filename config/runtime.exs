@@ -1,5 +1,4 @@
 import Config
-
 # Dashboard runtime variables
 secret_key_base =
   System.get_env("DASHBOARD_SECRET_KEY_BASE") ||
@@ -129,3 +128,15 @@ config :hub_payments, HubPaymentsWeb.Endpoint, secret_key_base: secret_key_base
 config :hub_payments, HubPayments.Repo,
   url: database_url,
   pool_size: String.to_integer(System.get_env("HUBPAYMENTS_POOL_SIZE") || "10")
+
+config :kernel,
+       [
+         {:distributed,
+          [{:hubsynch_two_a, 5000, [:hubsynch_two_a, {:hubsynch_two_b, :hubsynch_two_c}]}]},
+         case System.get_env("RELEASE_NAME") do
+           "hubsynch_two_a" -> {:sync_nodes_mandatory, [:hubsynch_two_b, :hubsynch_two_c]}
+           "hubsynch_two_b" -> {:sync_nodes_mandatory, [:hubsynch_two_a, :hubsynch_two_c]}
+           "hubsynch_two_c" -> {:sync_nodes_mandatory, [:hubsynch_two_a, :hubsynch_two_b]}
+         end,
+         {:sync_nodes_timeout, 5000}
+       ]
