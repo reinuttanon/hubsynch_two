@@ -135,7 +135,19 @@ defmodule HubPayments.WalletsTest do
         })
 
       refute credit_card.valid?
-      assert credit_card.errors == [exp_month: {"Exp month must be a number", []}]
+      assert credit_card.errors == [
+        {
+          :exp_month,
+          {
+            "is invalid",
+            [
+              {:validation, :inclusion},
+              {:enum, ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"]}
+            ]
+          }
+        },
+        {:exp_month, {"should be %{count} character(s)", [count: 2, validation: :length, kind: :is, type: :string]}}
+      ]
 
       {:error, credit_card} =
         Wallets.create_credit_card(%{
@@ -149,24 +161,15 @@ defmodule HubPayments.WalletsTest do
         })
 
       refute credit_card.valid?
-      assert credit_card.errors == [exp_month: {"Exp month must be a between 01 and 12", []}]
-
-      {:error, credit_card} =
-        Wallets.create_credit_card(%{
-          brand: "visa",
-          exp_month: "12",
-          exp_year: "10",
-          fingerprint: "some_fingerprint",
-          last_four: "1111",
-          vault_uuid: "some_vault_uuid",
-          wallet_id: wallet.id
-        })
-
-      refute credit_card.valid?
-
       assert credit_card.errors == [
-               exp_month: {"Exp year must be greater than or equals to the current year", []}
-             ]
+        exp_month: {
+          "is invalid",
+          [
+            validation: :inclusion,
+            enum: ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"]
+          ]
+        }
+      ]
 
       {:error, credit_card} =
         Wallets.create_credit_card(%{
@@ -180,7 +183,19 @@ defmodule HubPayments.WalletsTest do
         })
 
       refute credit_card.valid?
-      assert credit_card.errors == [exp_month: {"Exp year must be a number", []}]
+      assert credit_card.errors == [
+        {
+          :exp_year,
+          {
+            "is invalid",
+            [
+              {:validation, :inclusion},
+              {:enum, Enum.map(00..99, fn x -> String.slice("0#{x}", -2..-1) end)}
+            ]
+          }
+        },
+        {:exp_year, {"should be %{count} character(s)", [count: 2, validation: :length, kind: :is, type: :string]}}
+      ]
     end
   end
 
