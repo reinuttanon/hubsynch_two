@@ -37,6 +37,14 @@ defmodule HubPayments.Wallets do
   """
   def get_wallet!(id), do: Repo.get!(Wallet, id)
 
+  def get_wallet(%{uuid: uuid}) do
+    query =
+      from w in Wallet,
+        where: w.uuid == ^uuid
+
+    Repo.one(query)
+  end
+
   def get_wallet(%{owner: %{object: object, uid: uid}}) do
     query =
       from w in Wallet,
@@ -163,6 +171,11 @@ defmodule HubPayments.Wallets do
       {:error, %Ecto.Changeset{}}
 
   """
+  def create_credit_card(attrs, wallet_id) do
+    Map.put(attrs, "wallet_id", wallet_id)
+    |> create_credit_card()
+  end
+
   def create_credit_card(attrs \\ %{}) do
     %CreditCard{}
     |> CreditCard.changeset(attrs)
