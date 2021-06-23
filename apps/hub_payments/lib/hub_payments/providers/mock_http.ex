@@ -86,8 +86,8 @@ defmodule HubPayments.Providers.MockHttp do
   end
 
   defp sbps_options do
-    basic_id = Application.get_env(:hub_vault, :sbps_basic_id)
-    hash_key = Application.get_env(:hub_vault, :sbps_hash_key)
+    basic_id = Application.get_env(:hub_payments, :sbps_basic_id)
+    hash_key = Application.get_env(:hub_payments, :sbps_hash_key)
     [hackney: [basic_auth: {basic_id, hash_key}]]
   end
 
