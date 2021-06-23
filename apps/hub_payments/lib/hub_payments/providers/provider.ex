@@ -22,7 +22,7 @@ defmodule HubPayments.Providers.Provider do
 
   def update_changeset(provider, attrs) do
     provider
-    |> cast(attrs, [:name, :credentials, :url])
+    |> cast(attrs, [:active, :name, :credentials, :url])
     |> validate_required([:name, :credentials, :url])
   end
 end

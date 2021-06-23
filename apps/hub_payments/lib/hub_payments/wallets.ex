@@ -133,10 +133,12 @@ defmodule HubPayments.Wallets do
   """
   def get_credit_card!(id), do: Repo.get!(CreditCard, id)
 
-  def get_credit_card(%{uuid: uuid}) do
+  def get_credit_card(%{uuid: uuid, owner: %{object: object, uid: uid}}) do
     query =
       from c in CreditCard,
-        where: c.uuid == ^uuid
+        where: c.uuid == ^uuid,
+        join: w in Wallet,
+        where: fragment("owner->>'object' = ? AND owner->>'uid' = ?", ^object, ^uid)
 
     Repo.one(query)
   end
