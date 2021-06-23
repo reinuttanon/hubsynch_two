@@ -8,16 +8,26 @@ defmodule HubPayments.Providers.Paygent.MessageBuilderTest do
   describe "build_authorization/2" do
     test "returns jason message using card uid with valid Charge and CreditCard" do
       charge = insert(:charge)
-      credit_card = insert(:credit_card)
+      credit_card = insert(:credit_card, %{vault_uuid: "vault_uuid"})
 
-      {:ok, message} = MessageBuilder.build_authorization(charge, credit_card)
+      message = MessageBuilder.build_authorization(charge, credit_card)
 
-      assert message ==
-               "{\"provider\":\"paygent\",\"type\":\"authorization\",\"values\":{\"3dsecure_ryaku\":\"1\",\"card_number\":\"#{
-                 credit_card.uuid
-               }\",\"card_valid_term\":\"#{credit_card.exp_month <> credit_card.exp_year}\",\"connect_id\":\"some_connect_id\",\"connect_password\":\"some_connect_password\",\"merchant_id\":\"some_merchant_id\",\"payment_amount\":#{
-                 charge.money.amount
-               },\"payment_class\":\"10\",\"telegram_kind\":\"020\",\"telegram_version\":\"1.0\"}}"
+      assert message == %{
+               "provider" => "paygent",
+               "type" => "authorization",
+               "values" => %{
+                 "3dsecure_ryaku" => "1",
+                 "card_number" => "vault_uuid",
+                 "card_valid_term" => "0123",
+                 "connect_id" => "some_connect_id",
+                 "connect_password" => "some_connect_password",
+                 "merchant_id" => "some_merchant_id",
+                 "payment_amount" => 10000,
+                 "payment_class" => "10",
+                 "telegram_kind" => "020",
+                 "telegram_version" => "1.0"
+               }
+             }
     end
 
     test "returns error with invalid value" do
@@ -31,14 +41,24 @@ defmodule HubPayments.Providers.Paygent.MessageBuilderTest do
       charge = insert(:charge)
       credit_card = insert(:credit_card)
 
-      {:ok, message} = MessageBuilder.build_authorization(charge, credit_card, "token_uid")
+      message = MessageBuilder.build_authorization(charge, credit_card, "token_uid")
 
-      assert message ==
-               "{\"provider\":\"paygent\",\"type\":\"authorization\",\"values\":{\"3dsecure_ryaku\":\"1\",\"card_number\":\"token_uid\",\"card_valid_term\":\"#{
-                 credit_card.exp_month <> credit_card.exp_year
-               }\",\"connect_id\":\"some_connect_id\",\"connect_password\":\"some_connect_password\",\"merchant_id\":\"some_merchant_id\",\"payment_amount\":#{
-                 charge.money.amount
-               },\"payment_class\":\"10\",\"telegram_kind\":\"020\",\"telegram_version\":\"1.0\"}}"
+      assert message == %{
+               "provider" => "paygent",
+               "type" => "authorization",
+               "values" => %{
+                 "3dsecure_ryaku" => "1",
+                 "card_number" => "token_uid",
+                 "card_valid_term" => "0123",
+                 "connect_id" => "some_connect_id",
+                 "connect_password" => "some_connect_password",
+                 "merchant_id" => "some_merchant_id",
+                 "payment_amount" => 10000,
+                 "payment_class" => "10",
+                 "telegram_kind" => "020",
+                 "telegram_version" => "1.0"
+               }
+             }
     end
 
     test "returns error with invalid value" do

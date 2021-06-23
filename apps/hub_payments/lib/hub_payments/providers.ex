@@ -86,15 +86,36 @@ defmodule HubPayments.Providers do
   def process_authorization(
         %Provider{id: id, name: "paygent"},
         %Charge{uuid: charge_uuid} = charge,
-        %CreditCard{} = credit_card,
-        token_uid
+        %CreditCard{} = credit_card
       ) do
-    with {:ok, request} <-
-           Paygent.MessageBuilder.build_authorization(charge, credit_card, token_uid),
+    with %{"provider" => "paygent"} = request <-
+           Paygent.MessageBuilder.build_authorization(charge, credit_card),
+         {:ok, request_json} <- Jason.encode(request),
          {:ok, message} <-
            create_message(%{
              provider_id: id,
-             request: request,
+             request: request_json,
+             type: "authorization",
+             owner: %{object: "HubPayments.Charge", uid: charge_uuid}
+           }),
+         {:ok, response, data} <- Vault.authorize(request, "paygent") do
+      update_message(message, %{response: response, data: data})
+    end
+  end
+
+  def process_authorization(
+        %Provider{id: id, name: "paygent"},
+        %Charge{uuid: charge_uuid} = charge,
+        %CreditCard{} = credit_card,
+        token_uid
+      ) do
+    with %{"provider" => "paygent"} = request <-
+           Paygent.MessageBuilder.build_authorization(charge, credit_card, token_uid),
+         {:ok, request_json} <- Jason.encode(request),
+         {:ok, message} <-
+           create_message(%{
+             provider_id: id,
+             request: request_json,
              type: "authorization",
              owner: %{object: "HubPayments.Charge", uid: charge_uuid}
            }),

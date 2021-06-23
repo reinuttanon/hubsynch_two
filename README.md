@@ -21,9 +21,9 @@ Now you can use the api at [`localhost:4001`](http://localhost:4001).
 
 ## Localhost deployment with vault
 After initial setup this can be run with vault using Erlang Distributed Protocol by first starting the Vault with:
-`iex --sname vault@localhost mix phx.server`
+`iex --sname vault@localhost -S mix phx.server`
 Then start hubsynch_two with:
-`iex --sname hubsynch_two@localhost mix phx.server`
+`iex --sname hubsynch_two@localhost -S mix phx.server`
 To confirm once you are in an iex shell (using `-S`) run the following command:
 `Node.list()`
 You should see `[:vault@localhost]` or `[:hubsynch_two@localhost]` depending on which server your iex shell is connected to.
