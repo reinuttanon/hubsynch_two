@@ -15,8 +15,13 @@ config :hub_payments, :sbps_url, "https://stbfep.sps-system.com/api/xmlapi.do"
 
 config :hub_payments, :paygent_cacertfile, "priv/certs/curl-ca-bundle20160624.crt"
 config :hub_payments, :paygent_certfile, "priv/certs/Mdev-20180516_client_cert.pem"
+config :hub_payments, :merchant_id, System.get_env("PAYGENT_MERCHANT_ID")
+config :hub_payments, :connect_id, System.get_env("PAYGENT_CONNECT_ID")
+config :hub_payments, :connect_password, System.get_env("PAYGENT_CONNECT_PASSWORD")
 config :hub_payments, :paygent_password, System.get_env("PAYGENT_PASSWORD")
 config :hub_payments, :paygent_url, "https://sandbox.paygent.co.jp/n/card/request"
+
+config :hub_payments, vault_rpc: true
 
 # ## SSL Support
 #

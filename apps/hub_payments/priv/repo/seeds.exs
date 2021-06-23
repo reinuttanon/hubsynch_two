@@ -68,8 +68,35 @@ for setting <- settings do
   Shared.create_setting(setting)
 end
 
-HubPayments.Providers.create_provider(%{
+paygent = %{
   name: "paygent",
   credentials: %{},
   url: "https://sandbox.paygent.co.jp/n/card/request"
+}
+
+case HubPayments.Providers.get_provider(%{name: paygent.name}) do
+  nil -> HubPayments.Providers.create_provider(paygent)
+  _ -> nil
+end
+
+wallet_params = %{
+  owner: %{
+    object: "HubIdentity.User",
+    uid: "user_12345678"
+  }
+}
+
+{:ok, wallet} =
+  case HubPayments.Wallets.get_wallet(%{owner: wallet_params.owner}) do
+    [] -> HubPayments.Wallets.create_wallet(wallet_params)
+    [found | _] -> {:ok, found}
+  end
+
+HubPayments.Wallets.create_credit_card(%{
+  brand: "visa",
+  exp_month: "01",
+  exp_year: "23",
+  fingerprint: "this is a long fingerprint with a swirl",
+  last_four: "4321",
+  wallet_id: wallet.id
 })
