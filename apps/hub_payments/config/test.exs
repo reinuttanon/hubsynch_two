@@ -45,3 +45,5 @@ config :hub_payments, :http_module, HubPayments.Providers.MockHttp
 config :hub_payments, :merchant_id, "some_merchant_id"
 config :hub_payments, :connect_id, "some_connect_id"
 config :hub_payments, :connect_password, "some_connect_password"
+
+config :hub_payments, vault_rpc: false

@@ -79,19 +79,43 @@ defmodule HubPayments.WalletsTest do
 
   describe "list_credit_cards/0" do
     test "returns all credit cards" do
-      new_credit_card = insert(:credit_card)
-      [credit_card] = Wallets.list_credit_cards()
+      credit_card = insert(:credit_card)
+      [found_credit_card] = Wallets.list_credit_cards()
 
-      assert new_credit_card = credit_card
+      assert found_credit_card.uuid == credit_card.uuid
     end
   end
 
   describe "get_credit_cards!/1" do
     test "returns the credit_cards with given id" do
-      new_credit_cards = insert(:credit_card)
-      credit_cards = Wallets.get_credit_card!(new_credit_cards.id)
+      credit_card = insert(:credit_card)
+      found_credit_card = Wallets.get_credit_card!(credit_card.id)
 
-      assert new_credit_cards = credit_cards
+      assert found_credit_card.uuid == credit_card.uuid
+    end
+  end
+
+  describe "get_credit_cards/1" do
+    test "with valid uuid and owner returns the card" do
+      wallet = insert(:wallet)
+      credit_card = insert(:credit_card, wallet: wallet)
+      found_card = Wallets.get_credit_card(%{uuid: credit_card.uuid, owner: wallet.owner})
+      assert found_card.id == credit_card.id
+    end
+
+    test "with invalid uuid returns nil" do
+      wallet = insert(:wallet)
+      assert Wallets.get_credit_card(%{uuid: "invalid_uuid", owner: wallet.owner}) == nil
+    end
+
+    test "with invalid owner returns nil" do
+      wallet = insert(:wallet)
+      credit_card = insert(:credit_card, wallet: wallet)
+
+      assert Wallets.get_credit_card(%{
+               uuid: credit_card.uuid,
+               owner: %{object: "HubIdentity.User", uid: "wrong_uuid"}
+             }) == nil
     end
   end
 
@@ -219,6 +243,17 @@ defmodule HubPayments.WalletsTest do
       assert updated_credit_card.vault_uuid == "updated_vault_uuid"
       assert updated_credit_card.wallet_id == wallet.id
       assert updated_credit_card.uuid != nil
+    end
+
+    test "with invalid data returns error changeset" do
+      credit_card = insert(:credit_card)
+
+      assert {:error, %Ecto.Changeset{}} =
+               Wallets.update_credit_card(credit_card, %{
+                 brand: nil,
+                 exp_month: nil,
+                 exp_year: nil
+               })
     end
   end
 

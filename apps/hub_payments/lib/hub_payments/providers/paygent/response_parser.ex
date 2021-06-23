@@ -20,6 +20,15 @@ defmodule HubPayments.Providers.Paygent.ResponseParser do
     {:error, :authorization_fail}
   end
 
+  def parse_response({:ok, %{"response" => response}}) do
+    fields = String.split(response, "\r\n")
+
+    with {:ok, "success"} <- success(fields),
+         {:ok, data} <- get_data(fields) do
+      {:ok, response, data}
+    end
+  end
+
   def parse_response({:error, reason}) do
     Logger.error(%{provider: "paygent", error: reason})
     {:error, :unknown_token_failure}

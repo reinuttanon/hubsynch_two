@@ -32,7 +32,11 @@ defmodule HubPaymentsWeb.Api.V1.PaymentController do
          {:ok, _} <-
            HubIdentity.Verifications.validate_code(code, user_uuid, client_service, reference),
          provider <- Providers.get_provider(%{name: "paygent"}),
-         {:ok, credit_card} <- Wallets.get_credit_card(%{uuid: card_uuid}),
+         {:ok, credit_card} <-
+           Wallets.get_credit_card(%{
+             uuid: card_uuid,
+             owner: %{object: "HubIdentity.User", uid: user_uuid}
+           }),
          {:ok, %Charge{money: %Money{amount: amount, currency: currency}} = charge} <-
            Payments.create_charge(charge_params, provider, credit_card),
          {:ok, message} <-

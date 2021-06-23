@@ -1,6 +1,6 @@
 defmodule HubPayments.Providers.SBPS.MessageBuilder do
-  @key Application.get_env(:hub_vault, :sbps_key)
-  @iv Application.get_env(:hub_vault, :sbps_iv)
+  @key Application.get_env(:hub_payments, :sbps_key)
+  @iv Application.get_env(:hub_payments, :sbps_iv)
 
   def build_authorization(%{"cc_number" => vault_record_uid} = raw_request_values) do
     # with %VaultRecord{encrypted_data: pan} <- Tokens.get_vault_record(%{uid: vault_record_uid}),
@@ -124,7 +124,7 @@ defmodule HubPayments.Providers.SBPS.MessageBuilder do
   end
 
   defp hash_key,
-    do: System.get_env("SBPS_HASH_KEY") || Application.get_env(:hub_vault, :sbps_hash_key)
+    do: System.get_env("SBPS_HASH_KEY") || Application.get_env(:hub_payments, :sbps_hash_key)
 
   defp message_values(%{"security_code" => security_code} = request_values)
        when is_binary(security_code) do

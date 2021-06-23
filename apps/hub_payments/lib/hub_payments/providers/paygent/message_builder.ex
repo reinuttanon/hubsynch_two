@@ -8,10 +8,11 @@ defmodule HubPayments.Providers.Paygent.MessageBuilder do
   @connect_password Application.get_env(:hub_payments, :connect_password)
 
   def build_authorization(%Charge{money: money}, %CreditCard{
-        uuid: uuid,
+        vault_uuid: vault_uuid,
         exp_month: exp_month,
         exp_year: exp_year
-      }) do
+      })
+      when is_binary(vault_uuid) do
     %{
       "provider" => "paygent",
       "type" => "authorization",
@@ -22,18 +23,15 @@ defmodule HubPayments.Providers.Paygent.MessageBuilder do
         "telegram_kind" => "020",
         "telegram_version" => "1.0",
         "payment_amount" => money.amount,
-        "card_number" => uuid,
+        "card_number" => vault_uuid,
         "card_valid_term" => exp_month <> exp_year,
         "payment_class" => "10",
         "3dsecure_ryaku" => "1"
       }
     }
-    |> Jason.encode()
   end
 
   def build_authorization(_, _), do: {:error, "Invalid charge values"}
-
-  def build_authorization(_, _, nil), do: {:error, "Token should not be nil"}
 
   def build_authorization(
         %Charge{money: money},
@@ -42,7 +40,8 @@ defmodule HubPayments.Providers.Paygent.MessageBuilder do
           exp_year: exp_year
         },
         token_uuid
-      ) do
+      )
+      when is_binary(token_uuid) do
     %{
       "provider" => "paygent",
       "type" => "authorization",
@@ -59,8 +58,9 @@ defmodule HubPayments.Providers.Paygent.MessageBuilder do
         "3dsecure_ryaku" => "1"
       }
     }
-    |> Jason.encode()
   end
+
+  def build_authorization(_, _, nil), do: {:error, "Token should not be nil"}
 
   def build_authorization(_, _, _), do: {:error, "Invalid charge values"}
 
