@@ -4,6 +4,7 @@ defmodule HubPaymentsWeb.Api.V1.PaymentController do
   alias HubIdentity.ClientServices.ClientService
   alias HubPayments.Payments.Charge
   alias HubPayments.{Wallets, Payments, Providers}
+  alias HubPayments.Wallets.CreditCard
 
   def process(conn, %{"charge" => %{"token_uid" => token_uuid, "card" => card} = charge_params}) do
     with provider <- Providers.get_provider(%{name: "paygent"}),
@@ -32,7 +33,7 @@ defmodule HubPaymentsWeb.Api.V1.PaymentController do
          {:ok, _} <-
            HubIdentity.Verifications.validate_code(code, user_uuid, client_service, reference),
          provider <- Providers.get_provider(%{name: "paygent"}),
-         {:ok, credit_card} <-
+         %CreditCard{} = credit_card <-
            Wallets.get_credit_card(%{
              uuid: card_uuid,
              owner: %{object: "HubIdentity.User", uid: user_uuid}
