@@ -2,6 +2,8 @@ defmodule HubPayments.Wallets.CreditCard do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @months ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"]
+
   schema "credit_cards" do
     field :brand, :string
     field :exp_month, :string
@@ -31,8 +33,7 @@ defmodule HubPayments.Wallets.CreditCard do
     |> validate_required([:brand, :exp_month, :exp_year, :fingerprint, :last_four])
     |> validate_length(:exp_month, is: 2)
     |> validate_length(:exp_year, is: 2)
-    |> validate_inclusion(:exp_month, Enum.map(1..12, fn x -> String.slice("0#{x}", -2..-1) end))
-    |> validate_inclusion(:exp_year, Enum.map(00..99, fn x -> String.slice("0#{x}", -2..-1) end))
+    |> validate_inclusion(:exp_month, @months)
     |> put_change(:uuid, Ecto.UUID.generate())
   end
 
@@ -47,8 +48,9 @@ defmodule HubPayments.Wallets.CreditCard do
       :vault_uuid,
       :wallet_id
     ])
-    |> validate_inclusion(:exp_month, Enum.map(1..12, fn x -> String.slice("0#{x}", -2..-1) end))
-    |> validate_inclusion(:exp_year, Enum.map(0..99, fn x -> String.slice("0#{x}", -2..-1) end))
+    |> validate_length(:exp_month, is: 2)
+    |> validate_length(:exp_year, is: 2)
+    |> validate_inclusion(:exp_month, @months)
     |> validate_required([:brand, :exp_month, :exp_year, :fingerprint, :last_four])
   end
 end
