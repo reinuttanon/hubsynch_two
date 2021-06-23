@@ -40,6 +40,13 @@ defmodule HubPayments.Factory do
     }
   end
 
+  def owner_factory do
+    %{
+      object: "some_object",
+      uid: "some_owner_uid"
+    }
+  end
+
   def point_factory do
     %HubPayments.Payments.Point{
       money: Money.new(10_000, :JPY),
