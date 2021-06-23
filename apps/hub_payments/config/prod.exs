@@ -18,6 +18,8 @@ config :hub_payments, :paygent_certfile, "priv/certs/Mdev-20180516_client_cert.p
 config :hub_payments, :paygent_password, System.get_env("PAYGENT_PASSWORD")
 config :hub_payments, :paygent_url, "https://sandbox.paygent.co.jp/n/card/request"
 
+config :hub_payments, vault_rpc: true
+
 # ## SSL Support
 #
 # To get SSL working, you will need to add the `https` key

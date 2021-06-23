@@ -5,7 +5,19 @@ defmodule HubPayments.Providers.Vault do
   @url "https://stage-vault.hubsynch.com/api/v1/providers/process"
   @vault_api_key "x6669hwJUcPDv28gDDYoQb9lxv4Cwb4XY12X5isI7ker31N4eYoBY3pUTdJtZX9z"
 
-  def authorize(message, "paygent") do
+  def authorize(message, provider) do
+    case Application.get_env(:hub_payments, :vault_rpc) do
+      true -> rpc_authorize(message, provider)
+      false -> api_authorize(message, provider)
+    end
+  end
+
+  defp rpc_authorize(message, provider) do
+    :erpc.call(vault_node, HubVault, :process, [message])
+    |> Providers.Paygent.ResponseParser.parse_response()
+  end
+
+  defp api_authorize(message, "paygent") do
     encoded = Jason.encode!(message)
 
     @url
@@ -20,10 +32,7 @@ defmodule HubPayments.Providers.Vault do
     ]
   end
 
-  # def authorize(message, provider) do
-  #   case Application.get_env(:hub_payments, :http_module) do
-  #   end
-  # end
+  defp vault_node, do: String.to_atom(System.get_env("VAULT_NODE_NAME") || "vault@localhost")
 end
 
 # request example

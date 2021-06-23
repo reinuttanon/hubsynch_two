@@ -37,6 +37,14 @@ defmodule HubPayments.Wallets do
   """
   def get_wallet!(id), do: Repo.get!(Wallet, id)
 
+  def get_wallet(%{owner: %{object: object, uid: uid}}) do
+    query =
+      from w in Wallet,
+        where: fragment("owner->>'object' = ? AND owner->>'uid' = ?", ^object, ^uid)
+
+    Repo.all(query)
+  end
+
   @doc """
   Creates a wallet.
 
