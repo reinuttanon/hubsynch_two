@@ -7,11 +7,15 @@ defmodule HubPayments.Providers.Paygent.MessageBuilder do
   @connect_id Application.get_env(:hub_payments, :connect_id)
   @connect_password Application.get_env(:hub_payments, :connect_password)
 
-  def build_authorization(%Charge{money: money}, %CreditCard{
-        vault_uuid: vault_uuid,
-        exp_month: exp_month,
-        exp_year: exp_year
-      })
+  def build_authorization(
+        %Charge{money: money},
+        %CreditCard{
+          vault_uuid: vault_uuid,
+          exp_month: exp_month,
+          exp_year: exp_year
+        },
+        nil
+      )
       when is_binary(vault_uuid) do
     %{
       "provider" => "paygent",
@@ -30,8 +34,6 @@ defmodule HubPayments.Providers.Paygent.MessageBuilder do
       }
     }
   end
-
-  def build_authorization(_, _), do: {:error, "Invalid charge values"}
 
   def build_authorization(
         %Charge{money: money},

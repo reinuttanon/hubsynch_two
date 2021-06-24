@@ -10,7 +10,7 @@ defmodule HubPayments.Providers.Paygent.MessageBuilderTest do
       charge = insert(:charge)
       credit_card = insert(:credit_card, %{vault_uuid: "vault_uuid"})
 
-      message = MessageBuilder.build_authorization(charge, credit_card)
+      message = MessageBuilder.build_authorization(charge, credit_card, nil)
 
       assert message == %{
                "provider" => "paygent",
@@ -31,7 +31,7 @@ defmodule HubPayments.Providers.Paygent.MessageBuilderTest do
     end
 
     test "returns error with invalid value" do
-      {:error, message} = MessageBuilder.build_authorization("charge", "credit_card")
+      {:error, message} = MessageBuilder.build_authorization("charge", "credit_card", "")
       assert message == "Invalid charge values"
     end
   end
