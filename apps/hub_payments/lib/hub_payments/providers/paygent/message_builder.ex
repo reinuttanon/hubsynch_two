@@ -3,7 +3,7 @@ defmodule HubPayments.Providers.Paygent.MessageBuilder do
   alias HubPayments.Providers.Message
   alias HubPayments.Wallets.CreditCard
 
-  @merchant_id Application.get_env(:hub_payments, :merchant_id)
+  @merchant_id Application.get_env(:hub_payments, :paygent_merchant_id)
   @connect_id Application.get_env(:hub_payments, :connect_id)
   @connect_password Application.get_env(:hub_payments, :connect_password)
 

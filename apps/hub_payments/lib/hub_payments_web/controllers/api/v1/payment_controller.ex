@@ -6,7 +6,7 @@ defmodule HubPaymentsWeb.Api.V1.PaymentController do
   alias HubPayments.{Wallets, Payments, Providers}
   alias HubPayments.Wallets.CreditCard
 
-  def process(conn, %{"charge" => %{"token_uid" => token_uuid, "card" => card} = charge_params}) do
+  def process(conn, %{"provider" => "paygent", "charge" => %{"token_uid" => token_uuid, "card" => card} = charge_params}) do
     with provider <- Providers.get_provider(%{name: "paygent"}),
          {:ok, credit_card} <- Wallets.create_credit_card(card),
          {:ok, %Charge{money: %Money{amount: amount, currency: currency}} = charge} <-
@@ -42,6 +42,23 @@ defmodule HubPaymentsWeb.Api.V1.PaymentController do
          {:ok, message} <-
            Providers.process_charge(provider, charge, credit_card) do
       render(conn, "success.json", %{charge_uuid: charge.uuid, amount: amount, currency: currency})
+    end
+  end
+
+  def process(conn, %{
+        "provider" => "sbps",
+        "cvv" => cvv,
+        "charge" => %{"token_uid" => token_uuid, "card" => card} = charge_params
+      }) do
+    with provider <- Providers.get_provider(%{name: "sbps"}),
+         {:ok, credit_card} <- Wallets.create_credit_card(card),
+         {:ok, %Charge{money: %Money{amount: amount, currency: currency}} = charge} <-
+           Payments.create_charge(charge_params, provider, credit_card)do
+            res =
+              Providers.process_authorization(provider, charge, credit_card, token_uuid, cvv)
+  require IEx;
+  IEx.pry()
+              render(conn, "success.json", %{charge_uuid: charge.uuid, amount: amount, currency: currency})
     end
   end
 

@@ -8,7 +8,7 @@ defmodule HubPayments.Providers do
   import Ecto.Query, warn: false
   alias HubPayments.Repo
 
-  alias HubPayments.Providers.{Paygent, Provider, Vault}
+  alias HubPayments.Providers.{Paygent, Provider, SBPS, Vault}
   alias HubPayments.Payments.Charge
   alias HubPayments.Wallets.CreditCard
 
@@ -116,7 +116,30 @@ defmodule HubPayments.Providers do
     end
   end
 
-  # def process_capture(charge, %Provider{id: id, name: "paygent"}, message) do
+
+  def process_authorization(
+        %Provider{id: id, name: "sbps"},
+        %Charge{uuid: charge_uuid} = charge,
+        %CreditCard{} = credit_card,
+        token_uid,
+        cvv
+      ) do
+    with %{"provider" => "sbps"} = request <-
+           SBPS.MessageBuilder.build_authorization(charge, credit_card, token_uid, cvv),
+         {:ok, request_json} <- Jason.encode(request),
+         {:ok, message} <-
+           create_message(%{
+             provider_id: id,
+             request: request_json,
+             type: "authorization",
+             owner: %{object: "HubPayments.Charge", uid: charge_uuid}
+           }),
+         {:ok, response, data} <- Vault.authorize(request, "sbps") do
+      update_message(message, %{response: response, data: data})
+    end
+  end
+
+   # def process_capture(charge, %Provider{id: id, name: "paygent"}, message) do
   def process_capture({:ok, message}, %Provider{id: id, name: "paygent"}, charge) do
     {:ok, request} = Paygent.MessageBuilder.build_capture(charge, message)
 

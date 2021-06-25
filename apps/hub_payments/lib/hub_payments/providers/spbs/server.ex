@@ -1,5 +1,5 @@
 defmodule HubPayments.Providers.SBPS.Server do
-  import HubPayments.Providers.ResponseParser, only: [parse_response: 2]
+  import HubPayments.Providers.SBPS.ResponseParser, only: [parse_response: 2]
   alias HubPayments.Providers.SBPS.MessageBuilder
 
   @basic_id Application.get_env(:hub_payments, :sbps_basic_id)

@@ -1,7 +1,7 @@
-defmodule HubPayments.Providers.ResponseParser do
+defmodule HubPayments.Providers.SBPS.ResponseParser do
   require Logger
 
-  def parse_response({:ok, %HTTPoison.Response{status_code: 200, body: body}}, "paygent") do
+  def parse_response({:ok, %HTTPoison.Response{status_code: 200, body: body}}, "SBPS") do
     Codepagex.to_string(body, "VENDORS/MICSFT/WINDOWS/CP932")
   end
 
