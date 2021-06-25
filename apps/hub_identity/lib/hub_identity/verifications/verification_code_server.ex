@@ -1,7 +1,8 @@
 defmodule HubIdentity.Verifications.VerificationCodeServer do
   use GenServer
 
-  alias HubIdentity.{Identities, MementoRepo}
+  alias HubCluster.MementoRepo
+  alias HubIdentity.Identities
   alias HubIdentity.Verifications.VerificationCode
 
   # Max age in miliseconds
@@ -12,7 +13,7 @@ defmodule HubIdentity.Verifications.VerificationCodeServer do
   end
 
   def init(_) do
-    HubIdentity.MementoRepo.create_table(VerificationCode)
+    MementoRepo.create_table(VerificationCode)
     {:ok, %{}}
   end
 

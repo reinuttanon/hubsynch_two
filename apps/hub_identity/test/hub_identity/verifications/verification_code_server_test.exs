@@ -3,11 +3,13 @@ defmodule HubIdentity.Verifications.VerificationCodeServerTest do
 
   import HubIdentity.Factory
 
-  alias HubIdentity.{Identities, MementoRepo}
+  alias HubCluster.MementoRepo
+  alias HubIdentity.Identities
   alias HubIdentity.Verifications.{VerificationCode, VerificationCodeServer}
 
   describe "generate_code/2" do
     test "generate and save a verification code" do
+      MementoRepo.clear(VerificationCode)
       user = insert(:user)
       insert(:email, user: user, primary: true)
       client_service = insert(:client_service)

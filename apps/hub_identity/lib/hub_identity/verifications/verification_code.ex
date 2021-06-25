@@ -1,5 +1,5 @@
 defmodule HubIdentity.Verifications.VerificationCode do
-  alias HubIdentity.MementoRepo
+  alias HubCluster.MementoRepo
   alias HubIdentity.ClientServices.ClientService
   alias HubIdentity.Identities.User
 

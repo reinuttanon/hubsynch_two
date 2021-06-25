@@ -3,12 +3,15 @@ defmodule HubIdentityWeb.Api.V1.ResponseControllerTest do
 
   import HubIdentity.Factory
 
-  alias HubIdentity.{ClientServices, Identities, MementoRepo, Metrics}
+  alias HubCluster.MementoRepo
+  alias HubIdentity.{ClientServices, Identities, Metrics}
   alias HubIdentityWeb.Authentication.AccessCookiesServer
   alias HubIdentity.Verifications.EmailVerifyReference
 
   describe "response/2 with google and a confirmed email" do
     setup do
+      MementoRepo.clear(HubIdentity.Providers.Oauth2Provider)
+
       {:ok, provider_config} =
         params_for(:provider_config, %{
           name: "google",
@@ -68,6 +71,8 @@ defmodule HubIdentityWeb.Api.V1.ResponseControllerTest do
 
   describe "response/2 with facebook and an unconfirmed email" do
     setup do
+      MementoRepo.clear(HubIdentity.Providers.Oauth2Provider)
+
       {:ok, provider_config} =
         params_for(:provider_config, %{
           name: "facebook",
@@ -221,6 +226,7 @@ defmodule HubIdentityWeb.Api.V1.ResponseControllerTest do
   end
 
   defp create_environment(client_service_attrs \\ %{}) do
+    MementoRepo.clear(EmailVerifyReference)
     client_service = insert(:client_service, client_service_attrs)
     state_secret = ClientServices.create_state_secret!(client_service)
 

@@ -1,4 +1,4 @@
-defmodule HubIdentity.MementoRepo do
+defmodule HubCluster.MementoRepo do
   @doc """
   Get all of an object
 
@@ -75,6 +75,12 @@ defmodule HubIdentity.MementoRepo do
     end)
   end
 
+  def select_raw(object, query) do
+    Memento.transaction!(fn ->
+      Memento.Query.select_raw(object, query)
+    end)
+  end
+
   @doc """
   Save a record.
   https://hexdocs.pm/memento/Memento.Query.html#write/2
@@ -123,6 +129,10 @@ defmodule HubIdentity.MementoRepo do
     end)
   end
 
+  def clear(table) do
+    :mnesia.clear_table(table)
+  end
+
   @doc """
   Find and delete a record by query. This will only delete the first
   record returned by the query.
@@ -139,7 +149,7 @@ defmodule HubIdentity.MementoRepo do
       {:ok, %StateSecret{id: 1}}
 
       iex> withdraw(StateSecret, 1)
-      {:ok, {:error, "Elixir.HubIdentity.StateSecrets.StateSecret not found"}}
+      {:ok, {:error, "Elixir.HubCluster.StateSecrets.StateSecret not found"}}
 
   """
   def withdraw(object, query) when is_tuple(query) do
@@ -182,53 +192,4 @@ defmodule HubIdentity.MementoRepo do
       {:error, msg} -> {:error, msg}
     end
   end
-
-  # def setup(nodes \\ [node() | Node.list()]) do
-  # :ok = File.mkdir_p!(@path)
-
-  # Create the Schema
-  # Memento.stop()
-  # Memento.Schema.create(nodes)
-  # Memento.start()
-
-  # with [:ok] <- create_tables(nodes),
-  #      :ok <- :mnesia.wait_for_tables(@disk_tables) do
-  #   :ok
-  # end
-  # end
-
-  # defp create_tables(nodes) do
-  #   Enum.map(@disk_tables, fn table -> create_table(table, disc_copies: nodes) end)
-  #   |> Enum.uniq()
-  # end
 end
-
-# Memento.add_nodes(Node.list())
-# Memento.info
-# Creates the Mnesia Database for `Que` on disk
-# This creates the Schema, Database and Tables for
-# Que Jobs on disk for the specified erlang nodes so
-# Jobs are persisted across application restarts.
-# Calling this momentarily stops the `:mnesia`
-# application so you should make sure it's not being
-# used when you do.
-# If no argument is provided, the database is created
-# for the current node.
-# ## On Production
-# For a compiled release (`Distillery` or `Exrm`),
-# start the application in console mode or connect a
-# shell to the running release and simply call the
-# method:
-# ```
-# $ bin/my_app remote_console
-# iex(my_app@127.0.0.1)1> HubIdentity.MementoRepo.setup(nodes)
-# :ok
-# ```
-# You can alternatively provide a list of nodes for
-# which you would like to create the schema:
-# ```
-# iex(my_app@host_x)1> nodes = [node() | Node.list]
-# [:my_app@host_x, :my_app@host_y, :my_app@host_z]
-# iex(my_app@node_x)2> HubIdentity.MementoRepo.setup(nodes)
-# :ok
-# ```

@@ -1,4 +1,4 @@
-defmodule HubIdentity.HubsynchV2.ProviderTest do
+defmodule HubIdentity.Providers.ProviderConfigTest do
   use HubIdentity.DataCase
 
   import HubIdentity.Factory

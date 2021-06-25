@@ -1,7 +1,8 @@
 defmodule HubIdentityWeb.UserConfirmationControllerTest do
   use HubIdentityWeb.ConnCase, async: false
 
-  alias HubIdentity.{Identities, MementoRepo, Verifications}
+  alias HubCluster.MementoRepo
+  alias HubIdentity.{Identities, Verifications}
   alias HubIdentity.Verifications.EmailVerifyReference
   alias HubIdentityWeb.Authentication.AccessCookiesServer
 

@@ -8,7 +8,7 @@ defmodule HubPayments.WalletsTest do
       new_wallet = insert(:wallet)
       [wallet] = Wallets.list_wallets()
 
-      assert new_wallet = wallet
+      assert new_wallet == wallet
     end
   end
 
@@ -17,7 +17,7 @@ defmodule HubPayments.WalletsTest do
       new_wallet = insert(:wallet)
       wallet = Wallets.get_wallet!(new_wallet.id)
 
-      assert new_wallet = wallet
+      assert new_wallet == wallet
     end
   end
 

@@ -57,7 +57,8 @@ defmodule HubIdentity.MixProject do
       {:memento, "~> 0.3.1"},
       {:httpoison, "~> 1.7"},
       {:ex_doc, "~> 0.23", only: :dev, runtime: false},
-      {:sendgrid, "~> 2.0"}
+      {:sendgrid, "~> 2.0"},
+      {:hub_cluster, in_umbrella: true}
     ]
   end
 

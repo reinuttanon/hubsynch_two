@@ -1,6 +1,7 @@
 defmodule HubPayments.Shared.SettingServerTest do
   use HubPayments.DataCase
 
+  alias HubCluster.MementoRepo
   alias HubPayments.Shared.{SettingRecord, SettingServer}
 
   @records [
@@ -9,8 +10,10 @@ defmodule HubPayments.Shared.SettingServerTest do
   ]
 
   setup do
+    MementoRepo.clear(SettingRecord)
+
     @records
-    |> Enum.each(&insert_setting_record(&1))
+    |> Enum.each(&MementoRepo.insert(&1))
   end
 
   describe "list_settings/0" do
@@ -29,11 +32,5 @@ defmodule HubPayments.Shared.SettingServerTest do
     test "returns nil when given key and env do not match" do
       assert nil == SettingServer.get_setting("bad_key", "wrong_env")
     end
-  end
-
-  defp insert_setting_record(object) do
-    Memento.transaction(fn ->
-      Memento.Query.write(object)
-    end)
   end
 end

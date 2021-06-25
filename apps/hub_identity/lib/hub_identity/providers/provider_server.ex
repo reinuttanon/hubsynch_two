@@ -1,7 +1,7 @@
 defmodule HubIdentity.Providers.ProviderServer do
   use GenServer
 
-  alias HubIdentity.MementoRepo
+  alias HubCluster.MementoRepo
   alias HubIdentity.Providers
   alias HubIdentity.Providers.Oauth2Provider
 
@@ -12,8 +12,7 @@ defmodule HubIdentity.Providers.ProviderServer do
   end
 
   def init(_) do
-    MementoRepo.create_table(@table)
-
+    MementoRepo.create_table(Oauth2Provider)
     seed_data()
     {:ok, %{}}
   end
@@ -30,7 +29,7 @@ defmodule HubIdentity.Providers.ProviderServer do
   end
 
   defp seed_data do
-    Memento.Table.clear(@table)
+    MementoRepo.clear(@table)
 
     Providers.list_active_provider_configs()
     |> Task.async_stream(fn provider_config ->

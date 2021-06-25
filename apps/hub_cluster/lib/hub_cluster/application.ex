@@ -7,6 +7,7 @@ defmodule HubCluster.Application do
 
   def start(_type, _args) do
     children = [
+      HubCluster.MnesiaServer,
       {Cluster.Supervisor,
        [Application.get_env(:libcluster, :topologies), [name: HubCluster.ClusterSupervisor]]}
     ]

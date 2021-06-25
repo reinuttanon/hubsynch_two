@@ -3,11 +3,13 @@ defmodule HubIdentity.VerificationsTest do
 
   import HubIdentity.Factory
 
-  alias HubIdentity.{Identities, MementoRepo, Verifications}
+  alias HubCluster.MementoRepo
+  alias HubIdentity.{Identities, Verifications}
   alias HubIdentity.Verifications.{EmailVerifyReference, VerificationCode}
 
   describe "create_email_verify_reference/1" do
     setup do
+      MementoRepo.clear(EmailVerifyReference)
       client_service = insert(:client_service, redirect_url: "redirect/url/here")
 
       %{client_service: client_service}
@@ -154,6 +156,11 @@ defmodule HubIdentity.VerificationsTest do
   end
 
   describe "delete_code/3" do
+    setup do
+      MementoRepo.clear(VerificationCode)
+      :ok
+    end
+
     test "with valid user, client_service, and reference deletes the verification_code" do
       user = insert(:user)
       insert(:confirmed_email, user: user)
@@ -253,6 +260,11 @@ defmodule HubIdentity.VerificationsTest do
   end
 
   describe "generate_code/2" do
+    setup do
+      MementoRepo.clear(VerificationCode)
+      :ok
+    end
+
     test "with valid reference generates and save a verification code" do
       user = insert(:user)
       insert(:confirmed_email, user: user)
@@ -510,6 +522,8 @@ defmodule HubIdentity.VerificationsTest do
 
   describe "withdraw_verify_email_reference/1" do
     setup do
+      MementoRepo.clear(EmailVerifyReference)
+
       client_service = insert(:client_service)
       %{client_service: client_service}
     end

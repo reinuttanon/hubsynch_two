@@ -8,7 +8,8 @@ defmodule HubIdentity.ClientServices do
   alias Ecto.Multi
   alias HubIdentity.Administration.Administrator
   alias HubIdentity.ClientServices.{ApiKey, ClientService, StateSecret}
-  alias HubIdentity.{MementoRepo, Repo}
+  alias HubCluster.MementoRepo
+  alias HubIdentity.Repo
 
   @doc """
   Returns the list of client_services.

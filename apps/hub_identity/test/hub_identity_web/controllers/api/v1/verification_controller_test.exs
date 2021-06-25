@@ -3,7 +3,8 @@ defmodule HubIdentityWeb.Api.V1.VerificationControllerTest do
 
   import HubIdentity.Factory
 
-  alias HubIdentity.{MementoRepo, Metrics}
+  alias HubCluster.MementoRepo
+  alias HubIdentity.Metrics
   alias HubIdentity.Verifications.VerificationCode
 
   setup :build_api_conn

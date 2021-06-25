@@ -55,8 +55,9 @@ defmodule HubPayments.MixProject do
       {:codepagex, "~> 0.1.6"},
       {:ex_machina, "~> 2.7.0", only: :test},
       {:hub_identity_elixir, "~> 0.1.51"},
+      {:memento, "~> 0.3.1"},
       {:hub_identity, in_umbrella: true},
-      {:memento, "~> 0.3.1"}
+      {:hub_cluster, in_umbrella: true}
     ]
   end
 

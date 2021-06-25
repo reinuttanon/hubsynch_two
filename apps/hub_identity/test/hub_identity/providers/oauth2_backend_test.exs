@@ -1,10 +1,12 @@
-defmodule HubIdentity.HubsynchV2.Oauth2BackendTest do
+defmodule HubIdentity.Providers.Oauth2BackendTest do
   use HubIdentity.DataCase
 
   alias HubIdentity.Providers
   alias HubIdentity.Providers.Oauth2Backend
 
   describe "get_tokens/1" do
+    setup [:clear_table]
+
     test "with google returns the access_token" do
       google_url =
         "www.google.com?client_id=client_id_123&client_secret=client_secret_shhhhhh!&grant_type=authorization_code&redirect_uri=http://test.com/api/v1/providers/oauth/response/google&code=1234"
@@ -36,5 +38,10 @@ defmodule HubIdentity.HubsynchV2.Oauth2BackendTest do
       {:ok, %{"access_token" => access_token}} = Oauth2Backend.get_tokens(provider)
       assert access_token != nil
     end
+  end
+
+  def clear_table(_) do
+    HubCluster.MementoRepo.clear(HubIdentity.Providers.Oauth2Provider)
+    :ok
   end
 end

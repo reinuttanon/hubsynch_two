@@ -12,7 +12,7 @@ defmodule HubPayments.Shared.SettingServer do
   end
 
   def init(_) do
-    create_table(SettingRecord)
+    HubCluster.MementoRepo.create_table(SettingRecord)
 
     for setting <- Shared.list_settings() do
       setting
@@ -93,15 +93,6 @@ defmodule HubPayments.Shared.SettingServer do
     Memento.transaction(fn ->
       Memento.Query.write(object)
     end)
-  end
-
-  defp create_table(table, opts \\ []) do
-    case Memento.Table.create(table, opts) do
-      :ok -> :ok
-      {:error, {:already_exists, _}} -> :ok
-      # log this in future
-      {:error, msg} -> {:error, msg}
-    end
   end
 
   defp delete_record(object) do

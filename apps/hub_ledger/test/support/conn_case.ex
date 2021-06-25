@@ -43,6 +43,8 @@ defmodule HubLedgerWeb.ConnCase do
       end
     end
 
+    # on_exit(fn -> HubCluster.MementoRepo.clear_all() end)
+
     {:ok, conn: Phoenix.ConnTest.build_conn()}
   end
 

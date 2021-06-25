@@ -1,7 +1,7 @@
 defmodule HubIdentity.Verifications.EmailVerifyReferenceServer do
   use GenServer
 
-  alias HubIdentity.MementoRepo
+  alias HubCluster.MementoRepo
   alias HubIdentity.Verifications.EmailVerifyReference
 
   # Max age in miliseconds
@@ -12,7 +12,7 @@ defmodule HubIdentity.Verifications.EmailVerifyReferenceServer do
   end
 
   def init(_) do
-    HubIdentity.MementoRepo.create_table(EmailVerifyReference)
+    MementoRepo.create_table(EmailVerifyReference)
     {:ok, %{}}
   end
 

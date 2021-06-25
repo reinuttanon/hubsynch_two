@@ -50,7 +50,7 @@ defmodule HubPaymentsWeb.ConnCase do
       url: "https://sandbox.paygent.co.jp/n/card/request"
     })
 
-    on_exit(fn -> Memento.Table.clear(HubPayments.Shared.SettingRecord) end)
+    # on_exit(fn -> HubCluster.MementoRepo.clear_all() end)
     {:ok, conn: Phoenix.ConnTest.build_conn()}
   end
 end
