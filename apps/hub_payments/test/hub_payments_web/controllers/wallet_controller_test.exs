@@ -1,29 +1,32 @@
 defmodule HubPaymentsWeb.WalletControllerTest do
   use HubPaymentsWeb.ConnCase
 
-  # alias HubPayments.Wallets
-  # alias HubPayments.Wallets.Wallet
+  alias HubPayments.Wallets
+  alias HubPayments.Wallets.Wallet
 
-  # @create_attrs %{
-  #   owner: %{},
-  #   prefered_credit_card_uuid: "some prefered_credit_card_uuid",
-  #   uuid: "some uuid"
-  # }
-  # @update_attrs %{
-  #   owner: %{},
-  #   prefered_credit_card_uuid: "some updated prefered_credit_card_uuid",
-  #   uuid: "some updated uuid"
-  # }
-  # @invalid_attrs %{owner: nil, prefered_credit_card_uuid: nil, uuid: nil}
+  @create_attrs %{
+    owner: %{},
+    prefered_credit_card_uuid: "some prefered_credit_card_uuid",
+    uuid: "some uuid"
+  }
+  @update_attrs %{
+    owner: %{},
+    prefered_credit_card_uuid: "some updated prefered_credit_card_uuid",
+    uuid: "some updated uuid"
+  }
+  @invalid_attrs %{owner: nil, prefered_credit_card_uuid: nil, uuid: nil}
 
-  # def fixture(:wallet) do
-  #   {:ok, wallet} = Wallets.create_wallet(@create_attrs)
-  #   wallet
-  # end
+  def fixture(:wallet) do
+    {:ok, wallet} = Wallets.create_wallet(@create_attrs)
+    wallet
+  end
 
-  # setup %{conn: conn} do
-  #   {:ok, conn: put_req_header(conn, "accept", "application/json")}
-  # end
+  setup %{conn: conn} do
+    {:ok, conn:
+    build_conn()
+    |> put_req_header("accept", "application/json")
+    |> put_req_header("x-api-key", HubIdentity.Factory.insert(:api_key, type: "private").data)}
+  end
 
   # describe "index" do
   #   test "lists all wallets", %{conn: conn} do
@@ -32,26 +35,21 @@ defmodule HubPaymentsWeb.WalletControllerTest do
   #   end
   # end
 
-  # describe "create wallet" do
-  #   test "renders wallet when data is valid", %{conn: conn} do
-  #     conn = post(conn, Routes.wallet_path(conn, :create), wallet: @create_attrs)
-  #     assert %{"id" => id} = json_response(conn, 201)["data"]
+  describe "create wallet" do
+    test "renders wallet when data is valid", %{conn: conn} do
+      create_conn = post(conn, Routes.wallet_path(conn, :create), wallet: @create_attrs)
 
-  #     conn = get(conn, Routes.wallet_path(conn, :show, id))
+      assert %{
+               "owner" => %{},
+               "prefered_credit_card_uuid" => "some prefered_credit_card_uuid"
+             } = json_response(create_conn, 200)
+    end
 
-  #     assert %{
-  #              "id" => id,
-  #              "owner" => %{},
-  #              "prefered_credit_card_uuid" => "some prefered_credit_card_uuid",
-  #              "uuid" => "some uuid"
-  #            } = json_response(conn, 200)["data"]
-  #   end
-
-  #   test "renders errors when data is invalid", %{conn: conn} do
-  #     conn = post(conn, Routes.wallet_path(conn, :create), wallet: @invalid_attrs)
-  #     assert json_response(conn, 422)["errors"] != %{}
-  #   end
-  # end
+    # test "renders errors when data is invalid", %{conn: conn} do
+    #   conn = post(conn, Routes.wallet_path(conn, :create), wallet: @invalid_attrs)
+    #   assert json_response(conn, 422)["errors"] != %{}
+    # end
+  end
 
   # describe "update wallet" do
   #   setup [:create_wallet]
@@ -89,8 +87,8 @@ defmodule HubPaymentsWeb.WalletControllerTest do
   #   end
   # end
 
-  # defp create_wallet(_) do
-  #   wallet = fixture(:wallet)
-  #   %{wallet: wallet}
-  # end
+  defp create_wallet(_) do
+    wallet = fixture(:wallet)
+    %{wallet: wallet}
+  end
 end
