@@ -119,26 +119,19 @@ defmodule HubPayments.Providers.SBPS.MessageBuilder do
 
   defp body(request_values) do
     ~s(<?xml version="1.0" encoding="Shift_JIS"?>\
-<sps-api-request id="ST01-00111-101">\
-<merchant_id>#{request_values["merchant_id"]}</merchant_id>\
-<service_id>#{request_values["service_id"]}</service_id>\
-<cust_code>#{request_values["cust_code"]}</cust_code>\
-<order_id>#{request_values["order_id"]}</order_id>\
-<item_id>#{request_values["item_id"]}</item_id>\
-<amount>#{request_values["amount"]}</amount>\
-<pay_method_info>\
-<cc_number>#{request_values["cc_number"]}</cc_number>\
-<cc_expiration>#{request_values["cc_expiration"]}</cc_expiration>\
-</pay_method_info>\
-<pay_option_manage>\
-<cust_manage_flg>#{request_values["cust_manage_flg"]}</cust_manage_flg>\
-<cardbrand_return_flg>#{request_values["cardbrand_return_flg"]}</cardbrand_return_flg>\
-</pay_option_manage>\
-<encrypted_flg>#{request_values["encrypted_flg"]}</encrypted_flg>\
-<request_date>#{request_values["request_date"]}</request_date>\
-<limit_second>#{request_values["limit_second"]}</limit_second>\
-<sps_hashcode>#{request_values["sps_hashcode"]}</sps_hashcode>\
-</sps-api-request>)
+    <sps-api-request id=" ST02-00201-101">
+    <merchant_id>99999</merchant_id>
+    <service_id>999</service_id>
+    <sps_transaction_id>12345678901234567890123456789012</sps_transaction_id>
+    <tracking_id>12345678901234</tracking_id>
+    <processing_datetime>20071225190000</processing_datetime>
+    <pay_option_manage>
+      <amount>5000</amount>
+    </pay_option_manage>
+    <request_date>20080101235959</request_date>
+    <limit_second>600</limit_second>
+    <sps_hashcode>70352f41061eda4ff3c322094af068ba70c3b38b</sps_hashcode>
+    </sps-api-request>)
   end
 
   defp encrypt_encode(nil), do: nil
