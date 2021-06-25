@@ -109,7 +109,7 @@ defmodule HubPaymentsWeb.Api.V1.PaymentControllerTest do
     assert :ok == HubIdentity.Verifications.generate_code(loaded_user, client_service, reference)
 
     {:ok, [verification_code]} =
-      HubIdentity.MementoRepo.get(HubIdentity.Verifications.VerificationCode, [
+      HubCluster.MementoRepo.get(HubIdentity.Verifications.VerificationCode, [
         {:==, :user_uid, user.uid}
       ])
 
