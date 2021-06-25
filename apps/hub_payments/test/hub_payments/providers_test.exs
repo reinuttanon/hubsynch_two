@@ -83,7 +83,7 @@ defmodule HubPayments.ProvidersTest do
       charge = insert(:charge)
       message = insert(:message)
 
-      {:ok, %Message{} = message} = Providers.process_capture(charge, provider, message)
+      {:ok, %Message{} = message} = Providers.process_capture({:ok, message}, provider, charge)
 
       assert message.data.payment_id == "26505142"
       assert message.type == "capture"

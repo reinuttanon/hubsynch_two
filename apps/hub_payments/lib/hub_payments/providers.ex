@@ -3,6 +3,8 @@ defmodule HubPayments.Providers do
   The Providers context.
   """
 
+  require Logger
+
   import Ecto.Query, warn: false
   alias HubPayments.Repo
 
@@ -83,24 +85,14 @@ defmodule HubPayments.Providers do
     |> Repo.update()
   end
 
-  def process_authorization(
-        %Provider{id: id, name: "paygent"},
-        %Charge{uuid: charge_uuid} = charge,
-        %CreditCard{} = credit_card
+  def process_charge(
+        %Provider{} = provider,
+        %Charge{} = charge,
+        %CreditCard{} = credit_card,
+        token_uuid \\ nil
       ) do
-    with %{"provider" => "paygent"} = request <-
-           Paygent.MessageBuilder.build_authorization(charge, credit_card),
-         {:ok, request_json} <- Jason.encode(request),
-         {:ok, message} <-
-           create_message(%{
-             provider_id: id,
-             request: request_json,
-             type: "authorization",
-             owner: %{object: "HubPayments.Charge", uid: charge_uuid}
-           }),
-         {:ok, response, data} <- Vault.authorize(request, "paygent") do
-      update_message(message, %{response: response, data: data})
-    end
+    process_authorization(provider, charge, credit_card, token_uuid)
+    |> process_capture(provider, charge)
   end
 
   def process_authorization(
@@ -124,7 +116,8 @@ defmodule HubPayments.Providers do
     end
   end
 
-  def process_capture(charge, %Provider{id: id, name: "paygent"}, message) do
+  # def process_capture(charge, %Provider{id: id, name: "paygent"}, message) do
+  def process_capture({:ok, message}, %Provider{id: id, name: "paygent"}, charge) do
     {:ok, request} = Paygent.MessageBuilder.build_capture(charge, message)
 
     {:ok, capture_message} =
@@ -141,6 +134,17 @@ defmodule HubPayments.Providers do
     {:ok, response, data} = Paygent.Server.capture(request)
 
     update_message(capture_message, %{response: response, data: data})
+  end
+
+  def process_capture({:error, message}, %Provider{name: "paygent"}, %Charge{uuid: uuid})
+      when is_binary(message) do
+    # Logger.error("charge uuid: #{uuid} failed for Paygent with error: #{message}")
+    {:error, message}
+  end
+
+  def process_capture({:error, message}, provider, charge) do
+    encoded = Jason.encode!(message)
+    process_capture({:error, encoded}, provider, charge)
   end
 
   @doc """
