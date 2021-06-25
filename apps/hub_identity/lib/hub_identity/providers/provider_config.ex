@@ -4,7 +4,6 @@ defmodule HubIdentity.Providers.ProviderConfig do
 
   import Ecto.Changeset
 
-  @redirect_host Application.get_env(:hub_identity, :redirect_host)
   @redirect_path "/api/v1/providers/oauth/response"
 
   schema "provider_configs" do
@@ -85,6 +84,6 @@ defmodule HubIdentity.Providers.ProviderConfig do
   end
 
   defp redirect_uri(name) do
-    "#{@redirect_host}#{@redirect_path}/#{name}"
+    "#{HubIdentityWeb.Endpoint.url()}#{@redirect_path}/#{name}"
   end
 end

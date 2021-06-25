@@ -37,4 +37,4 @@ erl_crash.dump
 apps/hub_payments/priv/certs/
 
 # Ignore static assets
-apps/dashboard/priv/static/
+/apps/dashboard/priv/static/

@@ -14,7 +14,7 @@ config :hub_identity, HubIdentity.Repo,
 # We don't run a server during test. If one is required,
 # you can enable the server option below.
 config :hub_identity, HubIdentityWeb.Endpoint,
-  http: [port: 4002],
+  url: [host: "test.com"],
   server: false,
   secret_key_base: "wsX8Hsuy5IhCxpYOV0xBOi7NgfjCfylyX+ceIxqK/WmR/Mee1RJJOdpJObm6JgPc"
 
