@@ -18,6 +18,7 @@ defmodule HubPaymentsWeb.Api.V1.PaymentController do
   end
 
   def process(conn, %{
+        "provider" => "paygent",
         "charge" =>
           %{
             "card_uuid" => card_uuid,

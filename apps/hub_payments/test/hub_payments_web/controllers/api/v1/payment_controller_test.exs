@@ -16,23 +16,12 @@ defmodule HubPaymentsWeb.Api.V1.PaymentControllerTest do
       assert response["result"] == "Payment successful"
     end
 
-    test "with a nil token_uid returns error" do
-      charge = %{charge_token_body().charge | token_uid: nil}
-
-      response =
-        build_api_conn()
-        |> post("/api/v1/payments/process", %{charge: charge})
-        |> json_response(400)
-
-      assert response["error"] == "Token should not be nil"
-    end
-
     test "with nil amount returns error" do
       charge = %{charge_token_body().charge | amount: nil}
 
       response =
         build_api_conn()
-        |> post("/api/v1/payments/process", %{charge: charge})
+        |> post("/api/v1/payments/process", %{provider: "paygent", charge: charge})
         |> json_response(400)
 
       assert response["error"]["money"] == ["can't be blank"]
@@ -43,9 +32,8 @@ defmodule HubPaymentsWeb.Api.V1.PaymentControllerTest do
 
       response =
         build_api_conn()
-        |> post("/api/v1/payments/process", %{charge: charge})
+        |> post("/api/v1/payments/process", %{provider: "paygent", charge: charge})
         |> json_response(400)
-
       assert response["error"] == "failure result 1"
     end
 
@@ -75,6 +63,7 @@ defmodule HubPaymentsWeb.Api.V1.PaymentControllerTest do
 
   def charge_token_body do
     %{
+      provider: "paygent",
       charge: %{
         amount: 34567,
         currency: "JPY",
@@ -114,6 +103,7 @@ defmodule HubPaymentsWeb.Api.V1.PaymentControllerTest do
       ])
 
     message = %{
+      "provider" => "paygent",
       "charge" => %{
         "amount" => "34567",
         "currency" => "JPY",
