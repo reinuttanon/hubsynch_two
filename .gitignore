@@ -34,7 +34,7 @@ erl_crash.dump
 *node_modules/
 
 # Ignore certs dir
-apps/hub_payments/priv/certs/
+/apps/hub_payments/priv/certs/
 
 # Ignore static assets
 /apps/dashboard/priv/static/
