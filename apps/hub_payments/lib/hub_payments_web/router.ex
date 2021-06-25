@@ -10,5 +10,9 @@ defmodule HubPaymentsWeb.Router do
     pipe_through [:auth_api]
 
     post "/payments/process", PaymentController, :process
+
+    post "/wallets", WalletController, :create
+
+    post "/wallets/:uuid/credit_cards", CreditCardController, :create
   end
 end

@@ -34,6 +34,7 @@ For production deployment run these commands in a Linux or Mac machine with Elix
 Ensure you have the environmental variables installed.
 
 - set -a; source .env.prod;
+- git pull
 - cd apps/dashboard && npm run deploy --prefix ./assets
 - mix phx.digest
 - cd ../..
