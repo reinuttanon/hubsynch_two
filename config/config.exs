@@ -31,11 +31,6 @@ import_config "../apps/hub_identity/config/config.exs"
 import_config "../apps/hub_ledger/config/config.exs"
 import_config "../apps/hub_payments/config/config.exs"
 
-# Configures Elixir's Logger
-config :logger, :console,
-  format: "$time $metadata[$level] $message\n",
-  metadata: [:request_id]
-
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
@@ -48,9 +43,6 @@ config :money,
   custom_currencies: [
     HIP: %{name: "Hivelocity Points", symbol: "HiP", exponent: 0, symbol_on_right: true}
   ]
-
-config :sendgrid,
-  api_key: {:system, "SENDGRID_API_KEY"}
 
 config :mnesia,
   dir: '.mnesia/#{Mix.env()}/#{node()}'
@@ -66,6 +58,4 @@ config :codepagex, :encodings, [
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
-# import_config "#{Mix.env()}.exs"
-
-config :hub_identity_elixir, :private_key, System.get_env("HUBLEDGER_HUBIDENTITY_API_KEY")
+import_config "#{Mix.env()}.exs"

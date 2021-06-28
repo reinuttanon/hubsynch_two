@@ -17,9 +17,3 @@ config :hub_crm, HubCrmWeb.Endpoint,
   http: [port: 4003],
   secret_key_base: "o7GhEKUlQU4YAnDTBbSzBcSq0J4D7DBWSUdwBtL2PJf33gMUFTKopy/ZFFE1gOhl",
   server: false
-
-# Print only warnings and errors during test
-config :logger, level: :warn
-
-# Only in tests, remove the complexity from the password hashing algorithm
-config :bcrypt_elixir, :log_rounds, 1

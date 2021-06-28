@@ -22,10 +22,3 @@ config :hub_ledger, hub_identity: HubLedger.HttpTester
 config :hub_ledger, hub_identity_user: HubLedger.HttpTester
 
 config :hub_ledger, email: HubLedger.EmailTester
-
-# Sendgrid config
-config :sendgrid,
-  api_key: "test_api"
-
-# Print only warnings and errors during test
-config :logger, level: :warn

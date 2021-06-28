@@ -18,16 +18,6 @@ config :hub_identity, HubIdentityWeb.Endpoint,
   server: false,
   secret_key_base: "wsX8Hsuy5IhCxpYOV0xBOi7NgfjCfylyX+ceIxqK/WmR/Mee1RJJOdpJObm6JgPc"
 
-# Print only warnings and errors during test
-config :logger, level: :warn
-
-# Only in tests, remove the complexity from the password hashing algorithm
-config :bcrypt_elixir, :log_rounds, 1
-
-# Sendgrid config
-config :sendgrid,
-  api_key: "test_api"
-
 # Open Auth redirect url
 config :hub_identity, redirect_host: "http://test.com"
 
