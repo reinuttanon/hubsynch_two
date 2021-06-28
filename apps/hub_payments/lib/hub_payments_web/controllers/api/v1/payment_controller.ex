@@ -16,7 +16,7 @@ defmodule HubPaymentsWeb.Api.V1.PaymentController do
            Payments.create_charge(charge_params, provider, credit_card),
          {:ok, _message} <-
            Providers.process_charge(provider, charge, credit_card, token_uuid) do
-      render(conn, "success.json", %{charge_uuid: charge.uuid, amount: amount, currency: currency})
+      render(conn, "success.json", %{charge_uuid: charge.uuid, amount: amount, currency: currency, card_uuid: credit_card.uuid})
     end
   end
 
@@ -45,7 +45,7 @@ defmodule HubPaymentsWeb.Api.V1.PaymentController do
            Payments.create_charge(charge_params, provider, credit_card),
          {:ok, _message} <-
            Providers.process_charge(provider, charge, credit_card) do
-      render(conn, "success.json", %{charge_uuid: charge.uuid, amount: amount, currency: currency})
+      render(conn, "success.json", %{charge_uuid: charge.uuid, amount: amount, currency: currency, card_uuid: card_uuid})
     end
   end
 
@@ -60,7 +60,36 @@ defmodule HubPaymentsWeb.Api.V1.PaymentController do
            Payments.create_charge(charge_params, provider, credit_card),
          {:ok, _message} <-
            Providers.process_charge(provider, charge, credit_card, cvv, token_uuid) do
-      render(conn, "success.json", %{charge_uuid: charge.uuid, amount: amount, currency: currency})
+      render(conn, "success.json", %{charge_uuid: charge.uuid, amount: amount, currency: currency, card_uuid: credit_card.uuid})
+    end
+  end
+
+  def process(conn, %{
+        "provider" => "sbps",
+        "charge" =>
+          %{
+            "card_uuid" => card_uuid,
+            "authorization" => %{
+              "user_uuid" => user_uuid,
+              "code" => code,
+              "reference" => reference
+            }
+          } = charge_params
+      }) do
+    with %ClientService{} = client_service <- get_session(conn, :client_service),
+         {:ok, _} <-
+           HubIdentity.Verifications.validate_code(code, user_uuid, client_service, reference),
+         provider <- Providers.get_provider(%{name: "sbps"}),
+         %CreditCard{} = credit_card <-
+           Wallets.get_credit_card(%{
+             uuid: card_uuid,
+             owner: %{object: "HubIdentity.User", uid: user_uuid}
+           }),
+         {:ok, %Charge{money: %Money{amount: amount, currency: currency}} = charge} <-
+           Payments.create_charge(charge_params, provider, credit_card),
+         {:ok, _message} <-
+           Providers.process_charge(provider, charge, credit_card) do
+      render(conn, "success.json", %{charge_uuid: charge.uuid, amount: amount, currency: currency, card_uuid: card_uuid})
     end
   end
 

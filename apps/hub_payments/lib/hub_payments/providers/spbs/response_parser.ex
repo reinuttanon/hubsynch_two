@@ -3,13 +3,18 @@ defmodule HubPayments.Providers.SBPS.ResponseParser do
 
   def parse_response({:ok, %HTTPoison.Response{status_code: 200, body: body}}, "authorization") do
     decoded = Jason.decode!(body)
+    response = decoded["response"]
 
-    with {:ok, "OK"} <- get_tag(decoded["response"], "res_result"),
-         {:ok, data} <- get_authorization_data(decoded["response"]) do
-      {:ok, body, data}
+    with {:ok, "OK"} <- get_tag(response, "res_result"),
+         {:ok, data} <- get_authorization_data(response) do
+      {:ok, response, data}
     else
-      {:error, message} -> {:error, message}
-      {:ok, "NG"} -> {:error, "SBPS error"}
+      {:error, message} ->
+        {:error, message}
+
+      {:ok, "NG"} ->
+        {:ok, error_code} = get_tag(response, "res_err_code")
+        {:error, "SBPS error: #{error_code}"}
     end
   end
 
@@ -18,8 +23,12 @@ defmodule HubPayments.Providers.SBPS.ResponseParser do
          {:ok, data} <- get_capture_data(body) do
       {:ok, body, data}
     else
-      {:error, message} -> {:error, message}
-      {:ok, "NG"} -> {:error, "SBPS error"}
+      {:error, message} ->
+        {:error, message}
+
+      {:ok, "NG"} ->
+        {:ok, error_code} = get_tag(body, "res_err_code")
+        {:error, "SBPS error: #{error_code}"}
     end
   end
 

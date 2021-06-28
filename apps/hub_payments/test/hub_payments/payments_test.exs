@@ -48,6 +48,7 @@ defmodule HubPayments.PaymentsTest do
       assert charge.owner == %HubPayments.Embeds.Owner{object: "User", uid: "1234"}
       assert charge.request_date == now()
       assert charge.reference == "reference-1"
+      assert charge.provider_id == provider.id
       assert charge.uuid != nil
     end
 
@@ -59,7 +60,12 @@ defmodule HubPayments.PaymentsTest do
       charge = insert(:charge)
       assert {:ok, %Charge{} = updated_charge} = Payments.update_charge(charge, @update_attrs)
       assert updated_charge.money == %Money{amount: 5000, currency: :JPY}
-      assert updated_charge.owner == %HubPayments.Embeds.Owner{object: nil, uid: nil}
+
+      assert updated_charge.owner == %HubPayments.Embeds.Owner{
+               object: "HubIdentity.User",
+               uid: "user_12345678"
+             }
+
       assert updated_charge.reference == "New reference"
       assert updated_charge.uuid == charge.uuid
     end

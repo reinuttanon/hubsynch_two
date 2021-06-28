@@ -60,7 +60,7 @@ defmodule HubPayments.ProvidersTest do
       assert {:error, %Ecto.Changeset{}} = Providers.update_provider(provider, @invalid_attrs)
     end
 
-    test "process_authorization/4 with valid data returns authorization response" do
+    test "process_authorization/4 Paygent with valid data returns authorization response" do
       provider = insert(:provider, name: "paygent")
       charge = insert(:charge)
       credit_card = insert(:credit_card)
@@ -78,7 +78,27 @@ defmodule HubPayments.ProvidersTest do
       assert message.type == "authorization"
     end
 
-    test "process_capture/2 with valid data returns capture response" do
+    test "process_authorization/4 SBPS with valid data returns authorization response" do
+      provider = insert(:provider, name: "sbps")
+      charge = insert(:charge)
+      credit_card = insert(:credit_card)
+
+      {:ok, %Message{} = message} =
+        Providers.process_authorization(provider, charge, credit_card, "001", "valid_token")
+
+      assert message.data.processing_datetime == "20210628161127"
+      assert message.data.sps_transaction_id == "B68832001ST010011110102331019339"
+      assert message.data.tracking_id == "00000631552577"
+
+      {:ok, %Message{} = message} =
+        Providers.process_authorization(provider, charge, credit_card, "001", "valid_card_uuid")
+
+      assert message.data.processing_datetime == "20210628161127"
+      assert message.data.sps_transaction_id == "B68832001ST010011110102331019339"
+      assert message.data.tracking_id == "00000631552577"
+    end
+
+    test "process_capture/2 with valid data returns Paygent capture response" do
       provider = insert(:provider, name: "paygent")
       charge = insert(:charge)
       message = insert(:message)
@@ -87,6 +107,44 @@ defmodule HubPayments.ProvidersTest do
 
       assert message.data.payment_id == "26505142"
       assert message.type == "capture"
+    end
+
+    test "process_capture/2 with valid data returns SBPS capture response" do
+      provider = insert(:provider, name: "sbps")
+      charge = insert(:charge)
+
+      message =
+        insert(:message,
+          data: %{
+            processing_datetime: "20210628161127",
+            sps_transaction_id: "sps_transaction_id",
+            tracking_id: "tracking_id"
+          }
+        )
+
+      {:ok, %Message{} = message} = Providers.process_capture({:ok, message}, provider, charge)
+
+      assert message.data.processing_datetime == "20120620144317"
+      assert message.data.res_date == "20120620144318"
+      assert message.data.sps_transaction_id == "X1234567890123456789012345678901"
+      assert message.type == "capture"
+    end
+
+    test "process_capture/2 with invalid data returns SBPS error response" do
+      provider = insert(:provider, name: "sbps")
+
+      message =
+        insert(:message,
+          data: %{
+            processing_datetime: "20210628161127",
+            sps_transaction_id: "invalid_transaction_id",
+            tracking_id: "tracking_id"
+          }
+        )
+
+      {:error, error_message} = Providers.process_capture({:ok, message}, provider, "charge")
+
+      assert error_message == "SBPS error: 10137999"
     end
 
     test "delete_provider/1 deletes the provider" do

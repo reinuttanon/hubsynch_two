@@ -8,7 +8,7 @@ defmodule HubPayments.Providers.Paygent.ResponseParser do
 
     with {:ok, "success"} <- success(fields),
          {:ok, data} <- get_data(fields) do
-      {:ok, body, data}
+      {:ok, decoded["response"], data}
     end
   end
 

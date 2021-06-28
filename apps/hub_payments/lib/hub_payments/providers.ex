@@ -149,8 +149,7 @@ defmodule HubPayments.Providers do
     end
   end
 
-  # def process_capture(charge, %Provider{id: id, name: "paygent"}, message) do
-  def process_capture({:ok, message}, %Provider{id: id, name: "sbps"} = provider, _charge) do
+  def process_capture({:ok, message}, %Provider{id: id, name: "sbps"}, _charge) do
     with {:ok, request_body} <- SBPS.MessageBuilder.build_capture(message),
          {:ok, capture_message} <-
            create_message(%{
