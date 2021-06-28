@@ -34,6 +34,7 @@ defmodule HubPaymentsWeb.Api.V1.PaymentControllerTest do
         build_api_conn()
         |> post("/api/v1/payments/process", %{provider: "paygent", charge: charge})
         |> json_response(400)
+
       assert response["error"] == "failure result 1"
     end
 

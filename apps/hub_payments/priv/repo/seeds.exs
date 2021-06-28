@@ -88,8 +88,6 @@ for provider <- providers do
   end
 end
 
-
-
 wallet_params = %{
   owner: %{
     object: "HubIdentity.User",

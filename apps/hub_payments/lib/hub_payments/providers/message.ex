@@ -20,8 +20,9 @@ defmodule HubPayments.Providers.Message do
   @doc false
   def changeset(message, attrs) do
     message
-    |> cast(attrs, [:type, :request, :response, :data])
+    |> cast(attrs, [:type, :request, :response, :data, :provider_id])
     |> cast_embed(:owner, with: &Owner.changeset/2)
     |> validate_required([:type, :owner, :request])
+    |> foreign_key_constraint(:provider_id)
   end
 end

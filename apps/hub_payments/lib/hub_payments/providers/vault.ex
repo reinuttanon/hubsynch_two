@@ -30,7 +30,7 @@ defmodule HubPayments.Providers.Vault do
 
     @url
     |> @http.post(encoded, headers(), [])
-    |> Providers.SBPS.ResponseParser.parse_response("sbps")
+    |> Providers.SBPS.ResponseParser.parse_response("authorization")
   end
 
   defp headers do
