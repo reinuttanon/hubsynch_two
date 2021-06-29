@@ -12,12 +12,27 @@ defmodule HubPayments.WalletsTest do
     end
   end
 
+  describe "get_wallet/1" do
+    test "returns the wallet with given uuid" do
+      new_wallet = insert(:wallet)
+      for _ <- 1..3 do
+        insert(:credit_card, %{wallet: new_wallet})
+        insert(:credit_card)
+      end
+
+      wallet = Wallets.get_wallet(%{uuid: new_wallet.uuid})
+
+      assert new_wallet.id == wallet.id
+      assert length(wallet.credit_cards) == 3
+    end
+  end
+
   describe "get_wallet!/1" do
     test "returns the wallet with given id" do
       new_wallet = insert(:wallet)
       wallet = Wallets.get_wallet!(new_wallet.id)
 
-      assert new_wallet = wallet
+      assert new_wallet == wallet
     end
   end
 
@@ -38,18 +53,15 @@ defmodule HubPayments.WalletsTest do
   describe "update_wallet/2" do
     test "with valid data creates a wallet" do
       wallet = insert(:wallet)
-      new_owner = build(:owner, object: "another_object", uid: "another_uid")
 
       {:ok, updated_wallet} =
         Wallets.update_wallet(wallet, %{
-          prefered_credit_card_uuid: "new_card_uuid",
-          owner: new_owner
+          prefered_credit_card_uuid: "new_card_uuid"
         })
 
       assert updated_wallet.prefered_credit_card_uuid == "new_card_uuid"
-      assert updated_wallet.owner.object == "another_object"
-      assert updated_wallet.owner.uid == "another_uid"
       assert updated_wallet.uuid == wallet.uuid
+      assert updated_wallet.owner == wallet.owner
     end
   end
 
@@ -78,11 +90,18 @@ defmodule HubPayments.WalletsTest do
   end
 
   describe "list_credit_cards/0" do
-    test "returns all credit cards" do
+    test "returns all credit cards that belong to a wallet" do
       credit_card = insert(:credit_card)
-      [found_credit_card] = Wallets.list_credit_cards()
+      insert(:credit_card)
+      [found_credit_card] = Wallets.list_credit_cards(%{wallet_uuid: credit_card.wallet.uuid})
 
       assert found_credit_card.uuid == credit_card.uuid
+      assert found_credit_card.wallet_id == credit_card.wallet_id
+    end
+
+    test "returns [] if there are no credit cards" do
+      wallet = insert(:wallet)
+      assert Wallets.list_credit_cards(%{wallet_uuid: wallet.uuid}) == []
     end
   end
 
@@ -171,10 +190,7 @@ defmodule HubPayments.WalletsTest do
                       ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"]}
                    ]
                  }
-               },
-               {:exp_month,
-                {"should be %{count} character(s)",
-                 [count: 2, validation: :length, kind: :is, type: :string]}}
+               }
              ]
 
       {:error, credit_card} =
@@ -226,23 +242,15 @@ defmodule HubPayments.WalletsTest do
 
       {:ok, updated_credit_card} =
         Wallets.update_credit_card(credit_card, %{
-          brand: "master_card",
           exp_month: "12",
           exp_year: String.slice("#{DateTime.utc_now().year}", -2..-1),
-          fingerprint: "updated_fingerprint",
-          last_four: "4444",
-          vault_uuid: "updated_vault_uuid",
-          wallet_id: wallet.id
+          vault_uuid: "updated_vault_uuid"
         })
 
-      assert updated_credit_card.brand == "master_card"
       assert updated_credit_card.exp_month == "12"
       assert updated_credit_card.exp_year == String.slice("#{DateTime.utc_now().year}", -2..-1)
-      assert updated_credit_card.fingerprint == "updated_fingerprint"
-      assert updated_credit_card.last_four == "4444"
       assert updated_credit_card.vault_uuid == "updated_vault_uuid"
-      assert updated_credit_card.wallet_id == wallet.id
-      assert updated_credit_card.uuid != nil
+      assert updated_credit_card.uuid == credit_card.uuid
     end
 
     test "with invalid data returns error changeset" do
@@ -264,7 +272,7 @@ defmodule HubPayments.WalletsTest do
       {:ok, deleted_credit_card} = Wallets.delete_credit_card(credit_card)
 
       assert deleted_credit_card.uuid == credit_card.uuid
-      assert Wallets.list_credit_cards() == []
+      assert Wallets.list_credit_cards(%{wallet_uuid: credit_card.wallet.uuid}) == []
     end
   end
 

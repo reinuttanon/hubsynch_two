@@ -9,7 +9,7 @@ defmodule HubPayments.Wallets.Wallet do
     field :uuid, :string
 
     embeds_one :owner, Owner, on_replace: :update
-
+    has_many :credit_cards, HubPayments.Wallets.CreditCard
     timestamps()
   end
 
@@ -25,7 +25,6 @@ defmodule HubPayments.Wallets.Wallet do
   def update_changeset(wallet, attrs) do
     wallet
     |> cast(attrs, [:prefered_credit_card_uuid])
-    |> cast_embed(:owner, with: &Owner.changeset/2)
-    |> validate_required([:owner])
+    |> validate_required([:owner, :uuid])
   end
 end
