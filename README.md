@@ -19,14 +19,46 @@ To start Hubsync 2.0 services:
 
 Now you can use the api at [`localhost:4001`](http://localhost:4001).
 
-## Localhost deployment with vault
+## Localhost deployment with HubVault
 After initial setup this can be run with vault using Erlang Distributed Protocol by first starting the Vault with:
-`iex --sname vault@localhost -S mix phx.server`
+```bash
+iex --sname vault@localhost -S mix phx.server
+```
 Then start hubsynch_two with:
-`iex --sname hubsynch_two@localhost -S mix phx.server`
+```bash
+iex --sname hubsynch_two@localhost -S mix phx.server
+```
 To confirm once you are in an iex shell (using `-S`) run the following command:
-`Node.list()`
+```elixir
+iex> Node.list()
+```
 You should see `[:vault@localhost]` or `[:hubsynch_two@localhost]` depending on which server your iex shell is connected to.
+
+## Localhost deployment with MnesiaManager
+After initial setup this can be run with vault using Erlang Distributed Protocol by first starting the MnesiaManager following the instructions on the README at MnesiaManager Repo.
+Go to `apps/hub_cluster/config/dev.exs` and read the comments and uncomment the correct `config` settings to enable this service to connect with MnesiaManager. (don't forget to comment out the other config settings!)
+
+Then start this service with:
+```bash
+iex --sname hubsynch_two@localhost -S mix phx.server
+```
+This service should startup, connect to MnesiaManager and synch tables.
+
+## Localhost deployment with MnesiaManager and HubVault
+Follow instructions for MnesiaManager and start that service. For example:
+In one terminal in the MnesiaManger app:
+```bash
+iex --sname mnesia_manager@localhost -S mix
+```
+In second terminal in the HubVault app:
+```bash
+iex --sname vault@localhost -S mix phx.server
+```
+In third terminal from this app:
+```bash
+iex --sname hubsynch_two@localhost -S mix phx.server
+```
+You will have a full distributed network of all 3 services connected and :mnesia synching tables with backup.
 
 ## Production deployment
 Currently using Elixir 1.11.2 (compiled with Erlang/OTP 23)

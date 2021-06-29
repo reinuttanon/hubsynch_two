@@ -7,7 +7,7 @@ use Mix.Config
 # watchers to your application. For example, we use it
 # with webpack to recompile .js and .css sources.
 config :dashboard, DashboardWeb.Endpoint,
-  http: [port: 4008],
+  http: [port: String.to_integer(System.get_env("DASHBOARD_PORT") || "4011")],
   debug_errors: true,
   code_reloader: true,
   check_origin: false,

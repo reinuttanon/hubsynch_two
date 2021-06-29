@@ -1,4 +1,9 @@
 defmodule HubCluster.MementoRepo do
+  require Logger
+
+  @mnesia_manager Application.get_env(:hub_cluster, :mnesia_manager)
+  @default_options Application.get_env(:hub_cluster, :mnesia_options)
+
   @doc """
   Get all of an object
 
@@ -179,17 +184,38 @@ defmodule HubCluster.MementoRepo do
     end)
   end
 
+  def create_table(table) do
+    with :ok <- add_mnesia_manager(),
+         :ok <- Memento.Table.create(table, @default_options) do
+      Logger.info("successfully created table: #{table}")
+    else
+      {:error, {:already_exists, _}} -> copy_table(table)
+      {:error, message} -> Logger.error("Memento.Table.create failed with: #{message}")
+    end
+  end
+
+  defp add_mnesia_manager do
+    case :mnesia.change_config(:extra_db_nodes, [@mnesia_manager]) do
+      {:ok, _} -> :ok
+      {:error, message} -> Logger.error("mnesia_manager connection failed with: #{message}")
+    end
+  end
+
+  defp copy_table(table) do
+    case Memento.Table.create_copy(table, node(), :ram_copies) do
+      :ok ->
+        Logger.info("successfully copied table: #{table}")
+
+      {:error, {:already_exists, _, _}} ->
+        Logger.info("table already exists and recovered: #{table}")
+
+      {:error, message} ->
+        Logger.error("failed to copy table: #{table} with: #{message}")
+    end
+  end
+
   defp delete_return(record) do
     Memento.Query.delete_record(record)
     {:ok, record}
-  end
-
-  def create_table(table, opts \\ [{:ram_copies, [node() | Node.list()]}]) do
-    case Memento.Table.create(table, opts) do
-      :ok -> :ok
-      {:error, {:already_exists, _}} -> :ok
-      # log this in future
-      {:error, msg} -> {:error, msg}
-    end
   end
 end
