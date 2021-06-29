@@ -36,7 +36,8 @@ defmodule HubPayments.Providers.Paygent.ResponseParser do
 
   def parse_capture_response({:ok, %HTTPoison.Response{status_code: 200, body: body}}) do
     {:ok, decoded} = Codepagex.to_string(body, "VENDORS/MICSFT/WINDOWS/CP932")
-
+    require IEx;
+    IEx.pry()
     fields = String.split(decoded, "\r\n")
 
     with {:ok, "success"} <- success(fields),
