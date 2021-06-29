@@ -36,8 +36,6 @@ defmodule HubPayments.DataCase do
       Ecto.Adapters.SQL.Sandbox.mode(HubPayments.Repo, {:shared, self()})
     end
 
-    # on_exit(fn -> HubCluster.MementoRepo.clear_all() end)
-
     :ok
   end
 

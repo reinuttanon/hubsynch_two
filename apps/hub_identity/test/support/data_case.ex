@@ -40,13 +40,6 @@ defmodule HubIdentity.DataCase do
       end
     end
 
-    # on_exit(fn -> HubCluster.MementoRepo.clear_all() end)
-    # on_exit(fn -> HubCluster.MementoRepo.clear(HubIdentity.ClientServices.StateSecret) end)
-    # on_exit(fn -> HubCluster.MementoRepo.clear(HubIdentity.Providers.Oauth2Provider) end)
-    # on_exit(fn -> HubCluster.MementoRepo.clear(HubIdentityWeb.Authentication.AccessCookie) end)
-
-    # on_exit(fn -> HubCluster.MementoRepo.clear(HubIdentity.Verifications.EmailVerifyReference) end)
-
     :ok
   end
 

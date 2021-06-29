@@ -40,8 +40,6 @@ defmodule HubLedger.DataCase do
       end
     end
 
-    # on_exit(fn -> HubCluster.MementoRepo.clear_all() end)
-
     :ok
   end
 
