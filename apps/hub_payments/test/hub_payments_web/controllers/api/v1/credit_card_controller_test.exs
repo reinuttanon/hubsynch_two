@@ -74,6 +74,20 @@ defmodule HubPaymentsWeb.Api.V1.CreditCardControllerTest do
       assert response["exp_month"] == credit_card.exp_month
       assert response["exp_year"] == credit_card.exp_year
     end
+
+    test "returns error if there is no credit_card in this wallet", %{conn: conn} do
+      wallet = insert(:wallet)
+      credit_card = insert(:credit_card)
+
+      response =
+        get(conn, "/api/v1/wallets/#{wallet.uuid}/credit_cards/#{credit_card.uuid}", %{
+          "wallet_uuid" => wallet.uuid,
+          "credit_card_uuid" => credit_card.uuid
+        })
+        |> json_response(200)
+
+      assert response == %{"error" => "no such credit card for this wallet"}
+    end
   end
 
   describe "create credit_card" do
@@ -82,7 +96,7 @@ defmodule HubPaymentsWeb.Api.V1.CreditCardControllerTest do
 
       response =
         post(conn, "/api/v1/wallets/#{wallet.uuid}/credit_cards", %{
-          "uuid" => wallet.uuid,
+          "wallet_uuid" => wallet.uuid,
           "credit_card" => @create_attrs
         })
         |> json_response(200)
@@ -159,11 +173,26 @@ defmodule HubPaymentsWeb.Api.V1.CreditCardControllerTest do
 
       response =
         delete(conn, "/api/v1/wallets/#{wallet.uuid}/credit_cards/#{credit_card.uuid}", %{
-          "credit_card" => credit_card
+          "wallet_uuid" => wallet.uuid,
+          "credit_card_uuid" => credit_card.uuid
         })
 
       assert response.status == 204
       assert Wallets.get_credit_card(%{uuid: credit_card.uuid, wallet_uuid: wallet.uuid}) == nil
+    end
+
+    test "returns error if there is no such credit_card in this wallet", %{conn: conn} do
+      wallet = insert(:wallet)
+      credit_card = insert(:credit_card)
+
+      response =
+        get(conn, "/api/v1/wallets/#{wallet.uuid}/credit_cards/#{credit_card.uuid}", %{
+          "wallet_uuid" => wallet.uuid,
+          "credit_card_uuid" => credit_card.uuid
+        })
+        |> json_response(200)
+
+      assert response == %{"error" => "no such credit card for this wallet"}
     end
   end
 end

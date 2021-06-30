@@ -10,14 +10,15 @@ defmodule HubPaymentsWeb.Api.V1.CreditCardController do
   end
 
   def show(conn, %{"wallet_uuid" => wallet_uuid, "credit_card_uuid" => credit_card_uuid}) do
-    with credit_card <-
+    case credit_card =
            Wallets.get_credit_card(%{uuid: credit_card_uuid, wallet_uuid: wallet_uuid}) do
-      render(conn, "show.json", %{credit_card: credit_card})
+      nil -> render(conn, "error.json", %{error: "no such credit card for this wallet"})
+      _ -> render(conn, "show.json", %{credit_card: credit_card})
     end
   end
 
-  def create(conn, %{"uuid" => uuid, "credit_card" => credit_card_params}) do
-    with %Wallet{id: wallet_id} <- Wallets.get_wallet(%{uuid: uuid}),
+  def create(conn, %{"wallet_uuid" => wallet_uuid, "credit_card" => credit_card_params}) do
+    with %Wallet{id: wallet_id} <- Wallets.get_wallet(%{uuid: wallet_uuid}),
          {:ok, credit_card} <- Wallets.create_credit_card(credit_card_params, wallet_id) do
       render(conn, "show.json", %{credit_card: credit_card})
     end
@@ -35,9 +36,15 @@ defmodule HubPaymentsWeb.Api.V1.CreditCardController do
     end
   end
 
-  def delete(conn, %{"credit_card" => credit_card}) do
-    with {:ok, _} <- Wallets.delete_credit_card(credit_card) do
-      send_resp(conn, :no_content, "")
+  def delete(conn, %{"wallet_uuid" => wallet_uuid, "credit_card_uuid" => credit_card_uuid}) do
+    case credit_card =
+           Wallets.get_credit_card(%{uuid: credit_card_uuid, wallet_uuid: wallet_uuid}) do
+      nil ->
+        render(conn, "error.json", %{error: "no such credit card for this wallet"})
+
+      _ ->
+        Wallets.delete_credit_card(credit_card)
+        send_resp(conn, :no_content, "")
     end
   end
 end

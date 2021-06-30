@@ -15,4 +15,8 @@ defmodule HubPaymentsWeb.Api.V1.CreditCardView do
       "uuid" => credit_card.uuid
     }
   end
+
+  def render("error.json", %{error: message}) do
+    %{error: message}
+  end
 end
