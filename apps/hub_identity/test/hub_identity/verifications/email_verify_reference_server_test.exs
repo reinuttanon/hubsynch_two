@@ -3,11 +3,14 @@ defmodule HubIdentity.Verifications.EmailVerifyReferenceServerTest do
 
   import HubIdentity.Factory
 
-  alias HubIdentity.{Identities, MementoRepo}
+  alias HubCluster.MementoRepo
+  alias HubIdentity.Identities
   alias HubIdentity.Verifications.{EmailVerifyReference, EmailVerifyReferenceServer}
 
   describe "create_reference/2" do
     test "generate and save email verify reference" do
+      MementoRepo.clear(EmailVerifyReference)
+
       {:ok, user} = Identities.user_registration_changeset(%{password: "LongPassword!"})
 
       client_service = insert(:client_service)

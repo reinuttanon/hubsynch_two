@@ -1,7 +1,7 @@
 defmodule HubIdentity.Encryption do
   alias HubIdentity.ClientServices.ClientService
   alias HubIdentity.Encryption.{JWKCert, JWKCertServer, Tokens}
-  alias HubIdentity.MementoRepo
+  alias HubCluster.MementoRepo
 
   def current_kids do
     JWKCertServer.current_keys()

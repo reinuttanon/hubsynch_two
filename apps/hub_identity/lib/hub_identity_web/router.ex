@@ -121,22 +121,6 @@ defmodule HubIdentityWeb.Router do
     resources "/provider_configs", ProviderConfigController
   end
 
-  ## User browser based cookie routes
-  scope "/browser/v1", HubIdentityWeb.Browser.V1, as: :browser_v1 do
-    pipe_through [:public_browser]
-
-    post "/providers/hub_identity", ProviderController, :authenticate
-    get "/users", UserController, :new
-    get "/users/email_verification", UserController, :email_verification
-    post "/users", UserController, :create
-  end
-
-  scope "/browser/v1", HubIdentityWeb.Browser.V1, as: :browser_v1 do
-    pipe_through [:public_browser, HubIdentityWeb.Authentication.BrowserAuth]
-
-    get "/providers", ProviderController, :providers
-  end
-
   ## API routes
   ## Public key routes
   scope "/api/v1", HubIdentityWeb.Api.V1, as: :api_v1 do

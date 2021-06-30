@@ -3,7 +3,7 @@ defmodule HubIdentityWeb.Api.V1.EmailControllerTest do
 
   import HubIdentity.Factory
 
-  alias HubIdentity.MementoRepo
+  alias HubCluster.MementoRepo
   alias HubIdentity.Verifications.EmailVerifyReferenceServer
   alias HubIdentity.Verifications.VerificationCode
   alias HubIdentity.Identities

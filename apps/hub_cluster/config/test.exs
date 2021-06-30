@@ -7,6 +7,10 @@ config :libcluster,
     ]
   ]
 
+config :hub_cluster, :mnesia_manager, node()
+
+config :hub_cluster, :mnesia_options, []
+
 # # The function to use for connecting nodes. The node
 # # name will be appended to the argument list. Optional
 # connect: {:net_kernel, :connect_node, []},

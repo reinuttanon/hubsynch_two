@@ -19,9 +19,6 @@ config :hub_payments, HubPaymentsWeb.Endpoint,
   secret_key_base: "Q+OP19O2U0NIS7k9U3NLm/zj66PK7tkUQokVLQXU3Qda4gwpgpLqyN6mx+cJj7ND",
   server: false
 
-# Print only warnings and errors during test
-config :logger, level: :warn
-
 config :hub_payments, :default_key_id, 1
 config :hub_payments, :default_key, "CEkcWrYAdS7pLC5w/xbf4zB2fH14R8on0xdjbIFYK6s="
 config :hub_payments, :sha_3_key, "o7yT24bQN+HnzFcnFBv8G3d7xq2WK1dlTSB0Qvv3MwA="

@@ -10,7 +10,7 @@ defmodule HubIdentity.Encryption.JWKCertServer do
   require Logger
 
   alias HubIdentity.Encryption.JWKCert
-  alias HubIdentity.MementoRepo
+  alias HubCluster.MementoRepo
 
   @behaviour Guardian.Token.Jwt.SecretFetcher
 
@@ -23,7 +23,7 @@ defmodule HubIdentity.Encryption.JWKCertServer do
 
   @impl true
   def init(_) do
-    HubIdentity.MementoRepo.create_table(JWKCert)
+    MementoRepo.create_table(JWKCert)
 
     with {:ok, key_1, timer_reference_1} <- generate_rsa_jwk(),
          {:ok, key_2, timer_reference_2} <- generate_rsa_jwk() do

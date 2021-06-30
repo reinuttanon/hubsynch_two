@@ -5,7 +5,7 @@ defmodule HubIdentity.ClientServices.StateServer do
   require Logger
 
   alias HubIdentity.ClientServices.StateSecret
-  alias HubIdentity.MementoRepo
+  alias HubCluster.MementoRepo
 
   @delete_interval 60_000
   @expire_milliseconds -600_000
@@ -15,8 +15,7 @@ defmodule HubIdentity.ClientServices.StateServer do
   end
 
   def init(_) do
-    HubIdentity.MementoRepo.create_table(StateSecret)
-
+    HubCluster.MementoRepo.create_table(StateSecret)
     :timer.send_interval(@delete_interval, :delete_expired)
 
     {:ok, %{}}

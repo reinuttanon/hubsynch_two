@@ -2,7 +2,7 @@ defmodule HubIdentityWeb.Authentication.AccessCookiesServer do
   @moduledoc false
   use GenServer
   alias HubIdentity.Identities.{CurrentUser, Email, User}
-  alias HubIdentity.MementoRepo
+  alias HubCluster.MementoRepo
   alias HubIdentityWeb.Authentication.AccessCookie
 
   # Max age in miliseconds
@@ -13,7 +13,7 @@ defmodule HubIdentityWeb.Authentication.AccessCookiesServer do
   end
 
   def init(_) do
-    HubIdentity.MementoRepo.create_table(AccessCookie)
+    MementoRepo.create_table(AccessCookie)
     {:ok, %{}}
   end
 
@@ -72,28 +72,19 @@ defmodule HubIdentityWeb.Authentication.AccessCookiesServer do
   end
 
   def handle_call({:delete_cookies, uid}, _from, state) do
-    Memento.transaction!(fn ->
-      case Memento.Query.select_raw(AccessCookie, get_cookies_by_uid_query(uid)) do
-        [] ->
-          nil
+    case MementoRepo.select_raw(AccessCookie, get_cookies_by_uid_query(uid)) do
+      [] ->
+        nil
 
-        cookies when is_list(cookies) ->
-          Enum.each(cookies, fn cookie -> Memento.Query.delete_record(cookie) end)
-
-        _ ->
-          nil
-      end
-    end)
+      cookies when is_list(cookies) ->
+        Enum.each(cookies, fn cookie -> MementoRepo.delete(cookie) end)
+    end
 
     {:reply, :ok, state}
   end
 
   def handle_call({:get_cookies, %{uid: uid}}, _from, state) do
-    results =
-      Memento.transaction!(fn ->
-        Memento.Query.select_raw(AccessCookie, get_cookies_by_uid_query(uid))
-      end)
-
+    results = MementoRepo.select_raw(AccessCookie, get_cookies_by_uid_query(uid))
     {:reply, results, state}
   end
 

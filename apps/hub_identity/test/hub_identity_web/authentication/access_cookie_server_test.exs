@@ -3,8 +3,13 @@ defmodule HubIdentityWeb.Authentication.AccessCookiesServerTest do
 
   import HubIdentity.Factory
 
-  alias HubIdentity.MementoRepo
+  alias HubCluster.MementoRepo
   alias HubIdentityWeb.Authentication.{AccessCookie, AccessCookiesServer}
+
+  setup do
+    MementoRepo.clear(AccessCookie)
+    :ok
+  end
 
   describe "create_cookie/1" do
     test "with a User creates a cookie and returns the cookie id" do

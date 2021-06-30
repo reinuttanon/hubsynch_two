@@ -7,7 +7,7 @@ defmodule HubIdentity.Providers do
 
   alias HubIdentity.ClientServices.StateSecret
   alias HubIdentity.Providers.{Oauth2Backend, Oauth2Provider, ProviderConfig}
-  alias HubIdentity.MementoRepo
+  alias HubCluster.MementoRepo
   alias HubIdentity.Repo
 
   @doc """

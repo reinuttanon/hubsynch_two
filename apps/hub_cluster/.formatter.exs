@@ -1,5 +1,4 @@
-# Used by "mix format"
 [
   inputs: ["*.{ex,exs}", "priv/*/seeds.exs", "{config,lib,test}/**/*.{ex,exs}"],
-  subdirectories: ["apps/*"]
+  subdirectories: ["priv/*/migrations"]
 ]

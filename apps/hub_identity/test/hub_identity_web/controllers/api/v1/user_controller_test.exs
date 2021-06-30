@@ -1,14 +1,20 @@
 defmodule HubIdentityWeb.Api.V1.UserControllerTest do
-  use HubIdentityWeb.ConnCase, async: false
+  use HubIdentityWeb.ConnCase
 
   import HubIdentity.Factory
 
-  alias HubIdentity.{Identities, Metrics, MementoRepo}
+  alias HubCluster.MementoRepo
+  alias HubIdentity.{Identities, Metrics}
   alias HubIdentity.Verifications.EmailVerifyReference
   alias HubIdentityWeb.Authentication.AccessCookiesServer
   alias HubIdentity.Verifications.VerificationCode
 
   describe "public key routes" do
+    setup do
+      MementoRepo.clear(EmailVerifyReference)
+      :ok
+    end
+
     test "create/2 creates a new user with valid params" do
       %{api_key: api_key} = create_client_service("public")
 

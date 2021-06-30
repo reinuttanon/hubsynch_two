@@ -4,7 +4,7 @@ defmodule HubIdentity.ClientServices.StateServerTest do
   import HubIdentity.Factory
 
   alias HubIdentity.ClientServices.{StateSecret, StateServer}
-  alias HubIdentity.MementoRepo
+  alias HubCluster.MementoRepo
 
   @clear_interval 600_000
 

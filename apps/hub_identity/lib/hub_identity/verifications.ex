@@ -5,7 +5,7 @@ defmodule HubIdentity.Verifications do
 
   alias HubIdentity.ClientServices.ClientService
   alias HubIdentity.Identities.User
-  alias HubIdentity.MementoRepo
+  alias HubCluster.MementoRepo
   alias HubIdentity.Identities
 
   alias HubIdentity.Verifications.{

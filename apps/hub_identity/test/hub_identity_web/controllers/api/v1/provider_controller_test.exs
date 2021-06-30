@@ -81,6 +81,8 @@ defmodule HubIdentityWeb.Api.V1.ProviderControllerTest do
 
   describe "providers/2" do
     test "returns a list of providers", %{conn: conn} do
+      HubCluster.MementoRepo.clear(Oauth2Provider)
+
       for _ <- 1..3 do
         HubIdentity.Factory.insert(:provider_config) |> Providers.create_oauth2_provider()
       end
@@ -92,7 +94,7 @@ defmodule HubIdentityWeb.Api.V1.ProviderControllerTest do
       assert length(response) >= 3
 
       for provider <- response do
-        assert provider["name"] =~ "twinner"
+        assert provider["name"] != nil
         assert provider["request_url"] != nil
       end
     end

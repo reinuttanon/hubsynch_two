@@ -40,10 +40,6 @@ defmodule HubIdentity.DataCase do
       end
     end
 
-    on_exit(fn -> Memento.Table.clear(HubIdentity.Providers.Oauth2Provider) end)
-    on_exit(fn -> Memento.Table.clear(HubIdentity.Verifications.EmailVerifyReference) end)
-    on_exit(fn -> Memento.Table.clear(HubIdentity.Verifications.VerificationCode) end)
-
     :ok
   end
 

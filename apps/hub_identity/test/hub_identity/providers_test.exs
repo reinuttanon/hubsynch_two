@@ -86,6 +86,7 @@ defmodule HubIdentity.ProvidersTest do
     end
 
     test "update_provider_config/2 updates the oauth_providers" do
+      HubCluster.MementoRepo.clear(Oauth2Provider)
       valid_attrs = params_for(:provider_config, %{name: "ErinOauth"})
 
       {:ok, provider_config} = Providers.create_provider_config(valid_attrs)
@@ -106,6 +107,7 @@ defmodule HubIdentity.ProvidersTest do
     end
 
     test "update_provider_config/2 removes the oauth_provider if active is changed to false" do
+      HubCluster.MementoRepo.clear(Oauth2Provider)
       valid_attrs = params_for(:provider_config, %{name: "ErinOauth"})
 
       {:ok, provider_config} = Providers.create_provider_config(valid_attrs)
@@ -205,11 +207,11 @@ defmodule HubIdentity.ProvidersTest do
     test "create_oauth2_provider/1 does not allow duplicate named providers" do
       provider_config = insert(:provider_config)
       Providers.create_oauth2_provider(provider_config)
-      pre = HubIdentity.MementoRepo.all(HubIdentity.Providers.Oauth2Provider) |> length()
+      pre = HubCluster.MementoRepo.all(HubIdentity.Providers.Oauth2Provider) |> length()
       Providers.create_oauth2_provider(provider_config)
       Providers.create_oauth2_provider(provider_config)
       Providers.create_oauth2_provider(provider_config)
-      post = HubIdentity.MementoRepo.all(HubIdentity.Providers.Oauth2Provider) |> length()
+      post = HubCluster.MementoRepo.all(HubIdentity.Providers.Oauth2Provider) |> length()
       assert pre == post
     end
   end

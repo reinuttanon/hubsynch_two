@@ -1,4 +1,4 @@
-defmodule HubIdentity.HubsynchV2.GoogleTest do
+defmodule HubIdentity.Providers.GoogleTest do
   use HubIdentity.DataCase
 
   alias HubIdentity.Providers.Google

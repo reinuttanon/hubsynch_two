@@ -46,7 +46,7 @@ defmodule HubPayments.PaymentsTest do
 
       assert charge.money == %Money{amount: 100, currency: :JPY}
       assert charge.owner == %HubPayments.Embeds.Owner{object: "User", uid: "1234"}
-      assert charge.request_date == now()
+      assert DateTime.diff(charge.request_date, now()) < 10
       assert charge.reference == "reference-1"
       assert charge.provider_id == provider.id
       assert charge.uuid != nil
