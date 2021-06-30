@@ -12,10 +12,12 @@ config :hub_payments, :sbps_iv, System.get_env("SBPS_IV")
 config :hub_payments, :sbps_hash_key, System.get_env("SBPS_HASH_KEY")
 config :hub_payments, :sbps_basic_id, System.get_env("SBPS_BASIC_ID")
 config :hub_payments, :sbps_url, "https://stbfep.sps-system.com/api/xmlapi.do"
+config :hub_payments, :sbps_merchant_id, System.get_env("SBPS_MERCHANT_ID")
+config :hub_payments, :service_id, System.get_env("SBPS_SERVICE_ID")
 
 config :hub_payments, :paygent_cacertfile, "priv/certs/curl-ca-bundle20160624.crt"
 config :hub_payments, :paygent_certfile, "priv/certs/Mdev-20180516_client_cert.pem"
-config :hub_payments, :merchant_id, System.get_env("PAYGENT_MERCHANT_ID")
+config :hub_payments, :paygent_merchant_id, System.get_env("PAYGENT_MERCHANT_ID")
 config :hub_payments, :connect_id, System.get_env("PAYGENT_CONNECT_ID")
 config :hub_payments, :connect_password, System.get_env("PAYGENT_CONNECT_PASSWORD")
 config :hub_payments, :paygent_password, System.get_env("PAYGENT_PASSWORD")
