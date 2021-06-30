@@ -24,7 +24,7 @@ defmodule HubIdentity.MixProject do
   def application do
     [
       mod: {HubIdentity.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :hub_cluster]
     ]
   end
 
