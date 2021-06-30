@@ -66,7 +66,6 @@ defmodule HubPayments.Providers.Paygent.MessageBuilder do
 
   def build_authorization(_, _, _), do: {:error, "Invalid charge values"}
 
-  @spec build_capture(any, any) :: {:error, <<_::168>>} | {:ok, bitstring}
   def build_capture(%Charge{money: money}, %Message{data: data}) do
     request_values = [
       {"merchant_id", @merchant_id},

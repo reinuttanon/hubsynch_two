@@ -6,9 +6,10 @@ defmodule HubPayments.Providers.Paygent.ResponseParser do
 
     fields = String.split(decoded["response"], "\r\n")
 
-    with {:ok, "success"} <- success(fields),
-         {:ok, data} <- get_data(fields) do
-      {:ok, decoded["response"], data}
+    with {:ok, %{"result" => "0"} = data} <- get_response_data(%{}, fields) do
+      {:ok, decoded, data}
+    else
+      {:ok, data} -> {:error, data}
     end
   end
 
@@ -23,9 +24,10 @@ defmodule HubPayments.Providers.Paygent.ResponseParser do
   def parse_response({:ok, %{"response" => response}}) do
     fields = String.split(response, "\r\n")
 
-    with {:ok, "success"} <- success(fields),
-         {:ok, data} <- get_data(fields) do
+    with {:ok, %{"result" => "0"} = data} <- get_response_data(%{}, fields) do
       {:ok, response, data}
+    else
+      {:ok, data} -> {:error, data}
     end
   end
 
@@ -74,8 +76,14 @@ defmodule HubPayments.Providers.Paygent.ResponseParser do
   defp get_response_data(data, [response | responses]) do
     [key, value] = String.split(response, "=", parts: 2)
 
-    Map.put(data, key, value)
-    |> get_response_data(responses)
+    case value do
+      "" ->
+        get_response_data(data, responses)
+
+      _ ->
+        Map.put(data, key, value)
+        |> get_response_data(responses)
+    end
   end
 
   defp get_response_data(data, []), do: {:ok, data}
