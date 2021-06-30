@@ -1,8 +1,17 @@
 defmodule HubCluster.MementoRepo do
+  use GenServer
+
   require Logger
 
   @mnesia_manager Application.get_env(:hub_cluster, :mnesia_manager)
-  @default_options Application.get_env(:hub_cluster, :mnesia_options)
+
+  def start_link(_opts \\ []) do
+    GenServer.start_link(__MODULE__, [], name: __MODULE__)
+  end
+
+  def init(_) do
+    {add_mnesia_manager(), %{nodes: [node() | Node.list()]}}
+  end
 
   @doc """
   Get all of an object
@@ -185,8 +194,9 @@ defmodule HubCluster.MementoRepo do
   end
 
   def create_table(table) do
-    with :ok <- add_mnesia_manager(),
-         :ok <- Memento.Table.create(table, @default_options) do
+    options = Application.get_env(:hub_cluster, :mnesia_options)
+
+    with :ok <- Memento.Table.create(table, options) do
       Logger.info("successfully created table: #{table}")
     else
       {:error, {:already_exists, _}} -> copy_table(table)
@@ -195,10 +205,8 @@ defmodule HubCluster.MementoRepo do
   end
 
   defp add_mnesia_manager do
-    case :mnesia.change_config(:extra_db_nodes, [@mnesia_manager]) do
-      {:ok, _} -> :ok
-      {:error, message} -> Logger.error("mnesia_manager connection failed with: #{message}")
-    end
+    {:ok, _} = :mnesia.change_config(:extra_db_nodes, [@mnesia_manager])
+    :ok
   end
 
   defp copy_table(table) do
