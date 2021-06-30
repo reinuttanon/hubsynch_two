@@ -103,7 +103,13 @@ defmodule HubPaymentsWeb.Api.V1.CreditCardControllerTest do
         })
         |> json_response(400)
 
-      assert response["error"] != %{}
+      assert response["error"] == %{
+               "brand" => ["can't be blank"],
+               "exp_month" => ["can't be blank"],
+               "exp_year" => ["can't be blank"],
+               "fingerprint" => ["can't be blank"],
+               "last_four" => ["can't be blank"]
+             }
     end
   end
 
@@ -139,7 +145,10 @@ defmodule HubPaymentsWeb.Api.V1.CreditCardControllerTest do
         })
         |> json_response(400)
 
-      assert response["error"] != %{}
+      assert response["error"] == %{
+               "exp_month" => ["can't be blank"],
+               "exp_year" => ["can't be blank"]
+             }
     end
   end
 

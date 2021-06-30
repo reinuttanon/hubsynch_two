@@ -10,7 +10,7 @@ defmodule HubPaymentsWeb.Api.V1.CreditCardController do
   end
 
   def show(conn, %{"wallet_uuid" => wallet_uuid, "credit_card_uuid" => credit_card_uuid}) do
-    with credit_card =
+    with credit_card <-
            Wallets.get_credit_card(%{uuid: credit_card_uuid, wallet_uuid: wallet_uuid}) do
       render(conn, "show.json", %{credit_card: credit_card})
     end
@@ -28,7 +28,7 @@ defmodule HubPaymentsWeb.Api.V1.CreditCardController do
         "credit_card_uuid" => credit_card_uuid,
         "credit_card_params" => credit_card_params
       }) do
-    with credit_card =
+    with credit_card <-
            Wallets.get_credit_card(%{uuid: credit_card_uuid, wallet_uuid: wallet_uuid}),
          {:ok, credit_card} <- Wallets.update_credit_card(credit_card, credit_card_params) do
       render(conn, "show.json", %{credit_card: credit_card})

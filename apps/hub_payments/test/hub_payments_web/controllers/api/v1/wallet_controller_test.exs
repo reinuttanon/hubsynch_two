@@ -35,7 +35,7 @@ defmodule HubPaymentsWeb.Api.V1.WalletControllerTest do
     test "renders errors when data is invalid", %{conn: conn} do
       create_conn = post(conn, Routes.wallet_path(conn, :create), wallet: @invalid_attrs)
 
-      assert json_response(create_conn, 400)["errors"] != %{}
+      assert json_response(create_conn, 400)["error"] == %{"owner" => ["can't be blank"]}
     end
   end
 
@@ -76,22 +76,4 @@ defmodule HubPaymentsWeb.Api.V1.WalletControllerTest do
       assert length(response["credit_cards"]) == 3
     end
   end
-
-  # describe "delete wallet" do
-  #   setup [:create_wallet]
-
-  #   test "deletes chosen wallet", %{conn: conn, wallet: wallet} do
-  #     conn = delete(conn, Routes.wallet_path(conn, :delete, wallet))
-  #     assert response(conn, 204)
-
-  #     assert_error_sent 404, fn ->
-  #       get(conn, Routes.wallet_path(conn, :show, wallet))
-  #     end
-  #   end
-  # end
-
-  # defp create_wallet(_) do
-  #   wallet = fixture(:wallet)
-  #   %{wallet: wallet}
-  # end
 end
