@@ -39,6 +39,14 @@ defmodule HubPayments.Payments do
   """
   def get_charge!(id), do: Repo.get!(Charge, id)
 
+  def get_charge(%{uuid: uuid}) do
+    query =
+      from c in Charge,
+        where: c.uuid == ^uuid
+
+    Repo.one(query)
+  end
+
   @doc """
   Creates a charge.
 

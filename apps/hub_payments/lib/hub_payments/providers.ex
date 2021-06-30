@@ -8,7 +8,7 @@ defmodule HubPayments.Providers do
   import Ecto.Query, warn: false
   alias HubPayments.Repo
 
-  alias HubPayments.Providers.{Paygent, Provider, Vault}
+  alias HubPayments.Providers.{Paygent, Provider, SBPS, Vault}
   alias HubPayments.Payments.Charge
   alias HubPayments.Wallets.CreditCard
 
@@ -95,6 +95,17 @@ defmodule HubPayments.Providers do
     |> process_capture(provider, charge)
   end
 
+  def process_charge(
+        %Provider{} = provider,
+        %Charge{} = charge,
+        %CreditCard{} = credit_card,
+        cvv,
+        token_uuid
+      ) do
+    process_authorization(provider, charge, credit_card, cvv, token_uuid)
+    |> process_capture(provider, charge)
+  end
+
   def process_authorization(
         %Provider{id: id, name: "paygent"},
         %Charge{uuid: charge_uuid} = charge,
@@ -116,24 +127,60 @@ defmodule HubPayments.Providers do
     end
   end
 
-  # def process_capture(charge, %Provider{id: id, name: "paygent"}, message) do
+  def process_authorization(
+        %Provider{id: id, name: "sbps"},
+        %Charge{uuid: charge_uuid} = charge,
+        %CreditCard{} = credit_card,
+        cvv,
+        token_uid
+      ) do
+    with %{"provider" => "sbps"} = request <-
+           SBPS.MessageBuilder.build_authorization(charge, credit_card, token_uid, cvv),
+         {:ok, request_json} <- Jason.encode(request),
+         {:ok, message} <-
+           create_message(%{
+             provider_id: id,
+             request: request_json,
+             type: "authorization",
+             owner: %{object: "HubPayments.Charge", uid: charge_uuid}
+           }),
+         {:ok, response, data} <- Vault.authorize(request, "sbps") do
+      update_message(message, %{response: response, data: data})
+    end
+  end
+
+  def process_capture({:ok, message}, %Provider{id: id, name: "sbps"}, _charge) do
+    with {:ok, request_body} <- SBPS.MessageBuilder.build_capture(message),
+         {:ok, capture_message} <-
+           create_message(%{
+             provider_id: id,
+             request: request_body,
+             type: "capture",
+             owner: %{
+               object: message.owner.object,
+               uid: message.owner.uid
+             }
+           }),
+         {:ok, response, data} <- SBPS.Server.capture(request_body) do
+      update_message(capture_message, %{response: response, data: data})
+    end
+  end
+
   def process_capture({:ok, message}, %Provider{id: id, name: "paygent"}, charge) do
-    {:ok, request} = Paygent.MessageBuilder.build_capture(charge, message)
-
-    {:ok, capture_message} =
-      create_message(%{
-        provider_id: id,
-        request: request,
-        type: "capture",
-        owner: %{
-          object: message.owner.object,
-          uid: message.owner.uid
-        }
-      })
-
-    {:ok, response, data} = Paygent.Server.capture(request)
-
-    update_message(capture_message, %{response: response, data: data})
+    with {:ok, request} <- Paygent.MessageBuilder.build_capture(charge, message),
+         {:ok, capture_message} <-
+           create_message(%{
+             provider_id: id,
+             request: request,
+             type: "capture",
+             owner: %{
+               object: message.owner.object,
+               uid: message.owner.uid
+             }
+           }),
+         {:ok, response, data} <- Paygent.Server.capture(request) do
+      update_message(capture_message, %{response: response, data: data})
+    end
   end
 
   def process_capture({:error, message}, %Provider{name: "paygent"}, %Charge{uuid: uuid})

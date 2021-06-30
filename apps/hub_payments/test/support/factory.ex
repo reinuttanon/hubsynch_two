@@ -6,6 +6,10 @@ defmodule HubPayments.Factory do
       money: Money.new(10_000, :JPY),
       credit_card: build(:credit_card),
       provider: build(:provider),
+      owner: %HubPayments.Embeds.Owner{
+        object: "HubIdentity.User",
+        uid: "user_12345678"
+      },
       uuid: Ecto.UUID.generate()
     }
   end

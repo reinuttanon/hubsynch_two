@@ -68,15 +68,24 @@ for setting <- settings do
   Shared.create_setting(setting)
 end
 
-paygent = %{
-  name: "paygent",
-  credentials: %{},
-  url: "https://sandbox.paygent.co.jp/n/card/request"
-}
+providers = [
+  %{
+    name: "paygent",
+    credentials: %{},
+    url: "https://sandbox.paygent.co.jp/n/card/request"
+  },
+  %{
+    name: "sbps",
+    credentials: %{},
+    url: "https://stbfep.sps-system.com/api/xmlapi.do"
+  }
+]
 
-case HubPayments.Providers.get_provider(%{name: paygent.name}) do
-  nil -> HubPayments.Providers.create_provider(paygent)
-  _ -> nil
+for provider <- providers do
+  case HubPayments.Providers.get_provider(%{name: provider.name}) do
+    nil -> HubPayments.Providers.create_provider(provider)
+    _ -> nil
+  end
 end
 
 wallet_params = %{

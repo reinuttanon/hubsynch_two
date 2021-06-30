@@ -1,13 +1,11 @@
 defmodule HubPaymentsWeb.Api.V1.PaymentControllerTest do
   use HubPaymentsWeb.ConnCase
 
-  alias HubPayments.{Wallets, Payments, Providers}
-
   describe "process/2" do
-    test "charge payment with valid data returns success and charge uuid" do
+    test "Paygent charge payment with valid data returns success and charge uuid" do
       response =
         build_api_conn()
-        |> post("/api/v1/payments/process", charge_token_body())
+        |> post("/api/v1/payments/process", paygent_charge_token_body())
         |> json_response(200)
 
       assert response["amount"] == 34567
@@ -16,40 +14,43 @@ defmodule HubPaymentsWeb.Api.V1.PaymentControllerTest do
       assert response["result"] == "Payment successful"
     end
 
-    test "with a nil token_uid returns error" do
-      charge = %{charge_token_body().charge | token_uid: nil}
+    test "SBPS charge payment with valid data returns success and charge uuid" do
+      insert(:provider, name: "sbps")
 
       response =
         build_api_conn()
-        |> post("/api/v1/payments/process", %{charge: charge})
-        |> json_response(400)
+        |> post("/api/v1/payments/process", sbps_charge_token_body())
+        |> json_response(200)
 
-      assert response["error"] == "Token should not be nil"
+      assert response["amount"] == 34567
+      assert response["charge_uuid"] != nil
+      assert response["currency"] == "JPY"
+      assert response["result"] == "Payment successful"
     end
 
-    test "with nil amount returns error" do
-      charge = %{charge_token_body().charge | amount: nil}
+    test "Paygent charge with nil amount returns error" do
+      charge = %{paygent_charge_token_body().charge | amount: nil}
 
       response =
         build_api_conn()
-        |> post("/api/v1/payments/process", %{charge: charge})
+        |> post("/api/v1/payments/process", %{provider: "paygent", charge: charge})
         |> json_response(400)
 
       assert response["error"]["money"] == ["can't be blank"]
     end
 
-    test "with invalid token returns failure" do
-      charge = %{charge_token_body().charge | token_uid: "invalid_token"}
+    test "Paygent charge with invalid token returns failure" do
+      charge = %{paygent_charge_token_body().charge | token_uid: "invalid_token"}
 
       response =
         build_api_conn()
-        |> post("/api/v1/payments/process", %{charge: charge})
+        |> post("/api/v1/payments/process", %{provider: "paygent", charge: charge})
         |> json_response(400)
 
       assert response["error"] == "failure result 1"
     end
 
-    test "charge payment with valid card_uuid returns success and charge uuid" do
+    test "Paygent charge payment with valid card_uuid returns success and charge uuid" do
       {message, client_service} = charge_uid_body()
 
       response =
@@ -63,7 +64,7 @@ defmodule HubPaymentsWeb.Api.V1.PaymentControllerTest do
       assert response["result"] == "Payment successful"
     end
 
-    test "charge payment with invalid data returns error and charge uuid" do
+    test "Paygent charge payment with invalid data returns error and charge uuid" do
       response =
         build_api_conn()
         |> post("/api/v1/payments/process", %{})
@@ -73,8 +74,33 @@ defmodule HubPaymentsWeb.Api.V1.PaymentControllerTest do
     end
   end
 
-  def charge_token_body do
+  def paygent_charge_token_body do
     %{
+      provider: "paygent",
+      charge: %{
+        amount: 34567,
+        currency: "JPY",
+        reference: "optional",
+        owner: %{
+          object: "HubPayments.Wallet",
+          uid: "wallet_uuuid"
+        },
+        token_uid: "valid_token",
+        card: %{
+          brand: "visa",
+          exp_month: "05",
+          exp_year: "23",
+          last_four: "1881",
+          fingerprint: "d94c89c3bb48759efceb824555580429"
+        }
+      }
+    }
+  end
+
+  def sbps_charge_token_body do
+    %{
+      provider: "sbps",
+      cvv: "001",
       charge: %{
         amount: 34567,
         currency: "JPY",
@@ -114,6 +140,7 @@ defmodule HubPaymentsWeb.Api.V1.PaymentControllerTest do
       ])
 
     message = %{
+      "provider" => "paygent",
       "charge" => %{
         "amount" => "34567",
         "currency" => "JPY",
