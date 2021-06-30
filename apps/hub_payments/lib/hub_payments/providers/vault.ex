@@ -12,11 +12,6 @@ defmodule HubPayments.Providers.Vault do
     end
   end
 
-  defp rpc_authorize(message, "paygent") do
-    :erpc.call(vault_node(), HubVault, :process, [message])
-    |> Providers.Paygent.ResponseParser.parse_response()
-  end
-
   defp api_authorize(message, "paygent") do
     encoded = Jason.encode!(message)
 
@@ -31,6 +26,16 @@ defmodule HubPayments.Providers.Vault do
     @url
     |> @http.post(encoded, headers(), [])
     |> Providers.SBPS.ResponseParser.parse_response("authorization")
+  end
+
+  defp rpc_authorize(message, "paygent") do
+    :erpc.call(vault_node(), HubVault, :process, [message])
+    |> Providers.Paygent.ResponseParser.parse_response()
+  end
+
+  defp rpc_authorize(message, "sbps") do
+    :erpc.call(vault_node(), HubVault, :process, [message])
+    |> Providers.SBPS.ResponseParser.parse_response()
   end
 
   defp headers do

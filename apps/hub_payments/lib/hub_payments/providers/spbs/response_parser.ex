@@ -41,6 +41,25 @@ defmodule HubPayments.Providers.SBPS.ResponseParser do
     {:error, :unknown_token_failure}
   end
 
+  def parse_response({:ok, %{"response" => response}}) do
+    with {:ok, "OK"} <- get_tag(response, "res_result"),
+         {:ok, data} <- get_authorization_data(response) do
+      {:ok, response, data}
+    else
+      {:error, message} ->
+        {:error, message}
+
+      {:ok, "NG"} ->
+        {:ok, error_code} = get_tag(response, "res_err_code")
+        {:error, "SBPS error: #{error_code}"}
+    end
+  end
+
+  def parse_response({:error, reason}) do
+    Logger.error(%{provider: "sbps", error: reason})
+    {:error, :unknown_token_failure}
+  end
+
   defp get_tag(response, tag) when is_binary(response) do
     with true <- String.contains?(response, "<#{tag}>") do
       [_ | tail] = String.split(response, "<#{tag}>", parts: 2)
