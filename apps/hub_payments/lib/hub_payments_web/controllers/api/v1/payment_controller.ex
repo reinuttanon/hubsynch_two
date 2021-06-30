@@ -5,12 +5,13 @@ defmodule HubPaymentsWeb.Api.V1.PaymentController do
   alias HubPayments.Payments.Charge
   alias HubPayments.{Wallets, Payments, Providers}
   alias HubPayments.Wallets.CreditCard
+  alias HubPayments.Providers.Provider
 
   def process(conn, %{
         "provider" => "paygent",
         "charge" => %{"token_uid" => token_uuid, "card" => card} = charge_params
       }) do
-    with provider <- Providers.get_provider(%{name: "paygent"}),
+    with %Provider{} = provider <- Providers.get_provider(%{name: "paygent"}),
          {:ok, credit_card} <- Wallets.create_credit_card(card),
          {:ok, %Charge{money: %Money{amount: amount, currency: currency}} = charge} <-
            Payments.create_charge(charge_params, provider, credit_card),
@@ -35,7 +36,7 @@ defmodule HubPaymentsWeb.Api.V1.PaymentController do
     with %ClientService{} = client_service <- get_session(conn, :client_service),
          {:ok, _} <-
            HubIdentity.Verifications.validate_code(code, user_uuid, client_service, reference),
-         provider <- Providers.get_provider(%{name: "paygent"}),
+           %Provider{} = provider <- Providers.get_provider(%{name: "paygent"}),
          %CreditCard{} = credit_card <-
            Wallets.get_credit_card(%{
              uuid: card_uuid,
@@ -54,7 +55,7 @@ defmodule HubPaymentsWeb.Api.V1.PaymentController do
         "cvv" => cvv,
         "charge" => %{"token_uid" => token_uuid, "card" => card} = charge_params
       }) do
-    with provider <- Providers.get_provider(%{name: "sbps"}),
+    with %Provider{} = provider <- Providers.get_provider(%{name: "sbps"}),
          {:ok, credit_card} <- Wallets.create_credit_card(card),
          {:ok, %Charge{money: %Money{amount: amount, currency: currency}} = charge} <-
            Payments.create_charge(charge_params, provider, credit_card),
@@ -79,7 +80,7 @@ defmodule HubPaymentsWeb.Api.V1.PaymentController do
     with %ClientService{} = client_service <- get_session(conn, :client_service),
          {:ok, _} <-
            HubIdentity.Verifications.validate_code(code, user_uuid, client_service, reference),
-         provider <- Providers.get_provider(%{name: "sbps"}),
+           %Provider{} = provider <- Providers.get_provider(%{name: "sbps"}),
          %CreditCard{} = credit_card <-
            Wallets.get_credit_card(%{
              uuid: card_uuid,
