@@ -2,8 +2,7 @@ defmodule HubPayments.Providers.SBPS.ResponseParser do
   require Logger
 
   def parse_response({:ok, %HTTPoison.Response{status_code: 200, body: body}}, "authorization") do
-    decoded = Jason.decode!(body)
-    response = decoded["response"]
+    %{"response" => response} = Jason.decode!(body)
 
     with {:ok, "OK"} <- get_tag(response, "res_result"),
          {:ok, data} <- get_authorization_data(response) do

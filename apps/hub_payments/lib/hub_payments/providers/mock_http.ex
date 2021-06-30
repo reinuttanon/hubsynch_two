@@ -6,10 +6,7 @@ defmodule HubPayments.Providers.MockHttp do
       when is_binary(body) do
     with true <- headers == sbps_headers(),
          true <- options == sbps_options() do
-      case body =~ "invalid_transaction_id" do
-        true -> {:ok, %HTTPoison.Response{status_code: 200, body: sbps_capture_failure_body()}}
-        false -> {:ok, %HTTPoison.Response{status_code: 200, body: sbps_capture_success_body()}}
-      end
+      simulate_sbps_response(body)
     else
       false -> {:error, "invalid sbps request"}
     end
@@ -89,6 +86,13 @@ defmodule HubPayments.Providers.MockHttp do
     basic_id = Application.get_env(:hub_payments, :sbps_basic_id)
     hash_key = Application.get_env(:hub_payments, :sbps_hash_key)
     [hackney: [basic_auth: {basic_id, hash_key}]]
+  end
+
+  defp simulate_sbps_response(body) do
+    case body =~ "invalid_transaction_id" do
+      true -> {:ok, %HTTPoison.Response{status_code: 200, body: sbps_capture_failure_body()}}
+      false -> {:ok, %HTTPoison.Response{status_code: 200, body: sbps_capture_success_body()}}
+    end
   end
 
   defp sbps_auth_success_body do
