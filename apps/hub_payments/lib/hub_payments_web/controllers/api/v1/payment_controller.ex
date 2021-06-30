@@ -114,14 +114,19 @@ defmodule HubPaymentsWeb.Api.V1.PaymentController do
   end
 
   def process(conn, %{"atm_payment" => atm_payment_params}) do
-with provider <- Providers.get_provider(%{name: "paygent"}),
-     {:ok, %AtmPayment{money: %Money{amount: amount, currency: currency}} = atm_payment} <-
-       Payments.create_atm_payment(atm_payment_params, provider) do
-        res =
-          Providers.process_atm_payment(provider, atm_payment)
-  render(conn, "success.json", %{charge_uuid: atm_payment.uuid, amount: amount, currency: currency})
-end
-end
+    with provider <- Providers.get_provider(%{name: "paygent"}),
+         {:ok, %AtmPayment{money: %Money{amount: amount, currency: currency}} = atm_payment} <-
+           Payments.create_atm_payment(atm_payment_params, provider),
+         {ok, message} <- Providers.process_atm_payment(provider, atm_payment) do
+          require IEx
+          IEx.pry()
+        render(conn, "success.json", %{
+          charge_uuid: atm_payment.uuid,
+          amount: amount,
+          currency: currency
+        })
+    end
+  end
 
   def process(_conn, _), do: {:error, "bad request"}
 end

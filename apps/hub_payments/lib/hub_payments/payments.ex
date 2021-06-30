@@ -215,8 +215,6 @@ defmodule HubPayments.Payments do
     Point.changeset(point, attrs)
   end
 
-
-
   alias HubPayments.Payments.AtmPayment
 
   @doc """

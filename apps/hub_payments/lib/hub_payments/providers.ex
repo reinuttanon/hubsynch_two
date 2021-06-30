@@ -183,11 +183,20 @@ defmodule HubPayments.Providers do
   end
 
   def process_atm_payment(
-        %Provider{name: "paygent"} = provider,
-        atm_payment
+        %Provider{id: provider_id, name: "paygent"},
+        %AtmPayment{uuid: atm_payment_uuid} = atm_payment
       ) do
-    {:ok, request} = Paygent.MessageBuilder.build_atm_payment(atm_payment)
-    {:ok, response, data} = Paygent.Server.capture(request)
+    with {:ok, request} <- Paygent.MessageBuilder.build_atm_payment(atm_payment),
+         {:ok, message} <-
+           create_message(%{
+             provider_id: provider_id,
+             request: request,
+             type: "atm_payment",
+             owner: %{object: "HubPayments.AtmPayment", uid: atm_payment_uuid}
+           }),
+         {:ok, response, data} <- Paygent.Server.capture(request) do
+      update_message(message, %{response: response, data: data})
+    end
   end
 
   @doc """

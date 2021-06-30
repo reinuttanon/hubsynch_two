@@ -36,13 +36,12 @@ defmodule HubPayments.Providers.Paygent.ResponseParser do
 
   def parse_capture_response({:ok, %HTTPoison.Response{status_code: 200, body: body}}) do
     {:ok, decoded} = Codepagex.to_string(body, "VENDORS/MICSFT/WINDOWS/CP932")
-    require IEx;
-    IEx.pry()
     fields = String.split(decoded, "\r\n")
 
-    with {:ok, "success"} <- success(fields),
-         {:ok, data} <- get_data(fields) do
+    with {:ok, %{"result" => "0"} = data} <- get_response_data(%{}, fields) do
       {:ok, decoded, data}
+    else
+      {:ok, data} -> {:error, data}
     end
   end
 
@@ -69,6 +68,17 @@ defmodule HubPayments.Providers.Paygent.ResponseParser do
       do: {:ok, %{payment_id: payment_id}}
 
   def get_data([_hd | tail]), do: get_data(tail)
+
+  defp get_response_data(data, ["" | responses]), do: get_response_data(data, responses)
+
+  defp get_response_data(data, [response | responses]) do
+    [key, value] = String.split(response, "=", parts: 2)
+
+    Map.put(data, key, value)
+    |> get_response_data(responses)
+  end
+
+  defp get_response_data(data, []), do: {:ok, data}
 end
 
 # "\r\nresult=0\r\npayment_id=28569257\r\ntrading_id=\r\nissur_class=1\r\nacq_id=50001\r\nacq_name=NICOS\r\nissur_name=ﾋﾞｻﾞ\r\nfc_auth_umu=\r\ndaiko_code=\r\ncard_shu_code=\r\nk_card_name=\r\nissur_id=\r\nattempt_kbn=\r\nfingerprint=wbrb6GN5ikxJdC21cmrtZOl2shaJa9858V7yKBfXzQNQAOxjEA0I3wyX345HG6fh\r\nmasked_card_number=************1881\r\ncard_valid_term=0122\r\nout_acs_html="

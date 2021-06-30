@@ -26,10 +26,27 @@ defmodule HubPayments.Payments.AtmPayment do
   @doc false
   def changeset(atm_payment, attrs) do
     atm_payment
-    |> cast(attrs, [:amount, :currency, :provider_id, :reference, :request_date, :process_date, :payment_detail, :payment_detail_kana, :payment_limit_date])
+    |> cast(attrs, [
+      :amount,
+      :currency,
+      :provider_id,
+      :reference,
+      :request_date,
+      :process_date,
+      :payment_detail,
+      :payment_detail_kana,
+      :payment_limit_date
+    ])
     |> cast_embed(:owner, with: &Owner.changeset/2)
     |> make_money()
-    |> validate_required([:owner, :money, :payment_detail, :payment_detail_kana, :payment_limit_date, :provider_id])
+    |> validate_required([
+      :owner,
+      :money,
+      :payment_detail,
+      :payment_detail_kana,
+      :payment_limit_date,
+      :provider_id
+    ])
     |> put_change(:request_date, now())
     |> put_change(:uuid, Ecto.UUID.generate())
   end
