@@ -163,6 +163,7 @@ defmodule HubPaymentsWeb.Api.V1.CreditCardControllerTest do
         })
 
       assert response.status == 204
+      assert Wallets.get_credit_card(%{uuid: credit_card.uuid, wallet_uuid: wallet.uuid}) == nil
     end
   end
 end
