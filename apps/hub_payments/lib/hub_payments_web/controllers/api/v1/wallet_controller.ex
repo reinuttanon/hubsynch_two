@@ -18,7 +18,7 @@ defmodule HubPaymentsWeb.Api.V1.WalletController do
 
   def update(conn, %{"uuid" => uuid, "wallet" => wallet_params}) do
     with %Wallet{} = wallet <- Wallets.get_wallet(%{uuid: uuid}),
-    {:ok, updated_wallet} <- Wallets.update_wallet(wallet, wallet_params) do
+         {:ok, updated_wallet} <- Wallets.update_wallet(wallet, wallet_params) do
       render(conn, "show.json", %{wallet: updated_wallet})
     end
   end

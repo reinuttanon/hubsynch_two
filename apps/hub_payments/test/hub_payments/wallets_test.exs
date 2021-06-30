@@ -15,6 +15,7 @@ defmodule HubPayments.WalletsTest do
   describe "get_wallet/1" do
     test "returns the wallet with given uuid" do
       new_wallet = insert(:wallet)
+
       for _ <- 1..3 do
         insert(:credit_card, %{wallet: new_wallet})
         insert(:credit_card)

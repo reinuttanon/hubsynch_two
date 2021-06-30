@@ -136,6 +136,7 @@ defmodule HubPayments.Wallets do
         join: w in Wallet,
         on: c.wallet_id == w.id,
         where: w.uuid == ^wallet_uuid
+
     Repo.all(query)
   end
 
