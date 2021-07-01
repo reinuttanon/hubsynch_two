@@ -117,9 +117,9 @@ defmodule HubPaymentsWeb.Api.V1.PaymentController do
     with provider <- Providers.get_provider(%{name: "paygent"}),
          {:ok, %AtmPayment{money: %Money{amount: amount, currency: currency}} = atm_payment} <-
            Payments.create_atm_payment(atm_payment_params, provider),
-         {ok, _message} <- Providers.process_atm_payment(provider, atm_payment) do
+         {:ok, message} <- Providers.process_atm_payment(provider, atm_payment) do
       render(conn, "success.json", %{
-        charge_uuid: atm_payment.uuid,
+        atm_payment_uuid: atm_payment.uuid,
         amount: amount,
         currency: currency
       })

@@ -67,7 +67,7 @@ defmodule HubPayments.Providers.MockHttp do
     %{
       provider: "paygent",
       response:
-        "\r\nresult=1\r\npayment_id=\r\ntrading_id=\r\nissur_class=1\r\nacq_id=50001\r\nacq_name=NICOS\r\nissur_name=ﾋﾞｻﾞ\r\nfc_auth_umu=\r\ndaiko_code=\r\ncard_shu_code=\r\nk_card_name=\r\nissur_id=\r\nattempt_kbn=\r\nfingerprint=fvryIbkXNqjADaNqIRvpdcf5BDbhYQJhBsybDua0RGGVliC0QWHcXXTy6N7YeaUV\r\nmasked_card_number=************0000\r\ncard_valid_term=0122\r\nout_acs_html=",
+        "\r\nresult=1\r\nresponse_code=P004\r\nresponse_detail=SomePaygentFailureMessage\r\npayment_id=\r\ntrading_id=\r\nissur_class=\r\nacq_id=\r\nacq_name=\r\nissur_name=\r\nfc_auth_umu=\r\ndaiko_code=\r\ncard_shu_code=\r\nk_card_name=\r\nshonin_no=\r\nissur_id=\r\nattempt_kbn=\r\nfingerprint=\r\nmasked_card_number=\r\ncard_valid_term=\r\nacq_member_no=\r\nout_acs_html=",
       type: "authorization",
       uid: "vault_record_531914f6-7e21-4753-b2ee-4809a6540882"
     }

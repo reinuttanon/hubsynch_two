@@ -2,22 +2,19 @@ defmodule HubPayments.Providers.Paygent.ResponseParser do
   require Logger
 
   def parse_response({:ok, %HTTPoison.Response{status_code: 200, body: body}}) do
-    decoded = Jason.decode!(body)
-
-    fields = String.split(decoded["response"], "\r\n")
+    %{"response" => response} = Jason.decode!(body)
+    fields = String.split(response, "\r\n")
 
     with {:ok, %{"result" => "0"} = data} <- get_response_data(%{}, fields) do
-      {:ok, decoded, data}
+      {:ok, response, data}
     else
-      {:ok, data} -> {:error, data}
+      {:ok, data} -> {:error, data["response_detail"]}
     end
   end
 
-  def parse_response({:ok, %HTTPoison.Response{status_code: 200, body: body}}),
-    do: {:ok, body}
-
   def parse_response({:ok, %HTTPoison.Response{status_code: code, body: body}}) do
     Logger.error(%{provider: "paygent", status_code: code, error: body})
+
     {:error, :authorization_fail}
   end
 
@@ -27,7 +24,7 @@ defmodule HubPayments.Providers.Paygent.ResponseParser do
     with {:ok, %{"result" => "0"} = data} <- get_response_data(%{}, fields) do
       {:ok, response, data}
     else
-      {:ok, data} -> {:error, data}
+      {:ok, data} -> {:error, data["response_detail"]}
     end
   end
 
@@ -43,7 +40,7 @@ defmodule HubPayments.Providers.Paygent.ResponseParser do
     with {:ok, %{"result" => "0"} = data} <- get_response_data(%{}, fields) do
       {:ok, decoded, data}
     else
-      {:ok, data} -> {:error, data}
+      {:ok, data} -> {:error, data["response_detail"]}
     end
   end
 

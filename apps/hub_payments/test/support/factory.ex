@@ -1,6 +1,22 @@
 defmodule HubPayments.Factory do
   use ExMachina.Ecto, repo: HubPayments.Repo
 
+  def atm_payment_factory do
+    %HubPayments.Payments.AtmPayment{
+      money: Money.new(10_000, :JPY),
+      payment_detail: "Payment Detail",
+      payment_detail_kana: "Payment Detail Kana",
+      payment_limit_date: 20,
+      reference: "some reference",
+      provider: build(:provider),
+      owner: %HubPayments.Embeds.Owner{
+        object: "HubIdentity.User",
+        uid: "user_12345678"
+      },
+      uuid: Ecto.UUID.generate()
+    }
+  end
+
   def charge_factory do
     %HubPayments.Payments.Charge{
       money: Money.new(10_000, :JPY),

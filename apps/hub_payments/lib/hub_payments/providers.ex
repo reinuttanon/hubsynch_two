@@ -95,6 +95,16 @@ defmodule HubPayments.Providers do
     |> process_capture(provider, charge)
   end
 
+  def process_charge(
+        %Provider{} = provider,
+        %Charge{} = charge,
+        %CreditCard{} = credit_card,
+        token_uuid
+      ) do
+    process_authorization(provider, charge, credit_card, token_uuid)
+    |> process_capture(provider, charge)
+  end
+
   def process_authorization(
         %Provider{id: id, name: "paygent"},
         %Charge{uuid: charge_uuid} = charge,
@@ -119,7 +129,7 @@ defmodule HubPayments.Providers do
   def process_authorization(
         %Provider{id: id, name: "sbps"},
         %Charge{uuid: charge_uuid} = charge,
-        %CreditCard{} = credit_card,
+        %CreditCard{cvv: cvv} = credit_card,
         token_uid
       ) do
     with %{"provider" => "sbps"} = request <-
