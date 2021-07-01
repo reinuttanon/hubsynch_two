@@ -17,7 +17,12 @@ defmodule HubPaymentsWeb.Api.V1.PaymentController do
            Payments.create_charge(charge_params, provider, credit_card),
          {:ok, _message} <-
            Providers.process_charge(provider, charge, credit_card, token_uuid) do
-      render(conn, "success.json", %{charge_uuid: charge.uuid, amount: amount, currency: currency, card_uuid: credit_card.uuid})
+      render(conn, "success.json", %{
+        charge_uuid: charge.uuid,
+        amount: amount,
+        currency: currency,
+        card_uuid: credit_card.uuid
+      })
     end
   end
 
@@ -36,7 +41,7 @@ defmodule HubPaymentsWeb.Api.V1.PaymentController do
     with %ClientService{} = client_service <- get_session(conn, :client_service),
          {:ok, _} <-
            HubIdentity.Verifications.validate_code(code, user_uuid, client_service, reference),
-           %Provider{} = provider <- Providers.get_provider(%{name: "paygent"}),
+         %Provider{} = provider <- Providers.get_provider(%{name: "paygent"}),
          %CreditCard{} = credit_card <-
            Wallets.get_credit_card(%{
              uuid: card_uuid,
@@ -46,13 +51,17 @@ defmodule HubPaymentsWeb.Api.V1.PaymentController do
            Payments.create_charge(charge_params, provider, credit_card),
          {:ok, _message} <-
            Providers.process_charge(provider, charge, credit_card) do
-      render(conn, "success.json", %{charge_uuid: charge.uuid, amount: amount, currency: currency, card_uuid: card_uuid})
+      render(conn, "success.json", %{
+        charge_uuid: charge.uuid,
+        amount: amount,
+        currency: currency,
+        card_uuid: card_uuid
+      })
     end
   end
 
   def process(conn, %{
         "provider" => "sbps",
-        "cvv" => cvv,
         "charge" => %{"token_uid" => token_uuid, "card" => card} = charge_params
       }) do
     with %Provider{} = provider <- Providers.get_provider(%{name: "sbps"}),
@@ -60,8 +69,13 @@ defmodule HubPaymentsWeb.Api.V1.PaymentController do
          {:ok, %Charge{money: %Money{amount: amount, currency: currency}} = charge} <-
            Payments.create_charge(charge_params, provider, credit_card),
          {:ok, _message} <-
-           Providers.process_charge(provider, charge, credit_card, cvv, token_uuid) do
-      render(conn, "success.json", %{charge_uuid: charge.uuid, amount: amount, currency: currency, card_uuid: credit_card.uuid})
+           Providers.process_charge(provider, charge, credit_card, token_uuid) do
+      render(conn, "success.json", %{
+        charge_uuid: charge.uuid,
+        amount: amount,
+        currency: currency,
+        card_uuid: credit_card.uuid
+      })
     end
   end
 
@@ -80,7 +94,7 @@ defmodule HubPaymentsWeb.Api.V1.PaymentController do
     with %ClientService{} = client_service <- get_session(conn, :client_service),
          {:ok, _} <-
            HubIdentity.Verifications.validate_code(code, user_uuid, client_service, reference),
-           %Provider{} = provider <- Providers.get_provider(%{name: "sbps"}),
+         %Provider{} = provider <- Providers.get_provider(%{name: "sbps"}),
          %CreditCard{} = credit_card <-
            Wallets.get_credit_card(%{
              uuid: card_uuid,
@@ -90,7 +104,12 @@ defmodule HubPaymentsWeb.Api.V1.PaymentController do
            Payments.create_charge(charge_params, provider, credit_card),
          {:ok, _message} <-
            Providers.process_charge(provider, charge, credit_card) do
-      render(conn, "success.json", %{charge_uuid: charge.uuid, amount: amount, currency: currency, card_uuid: card_uuid})
+      render(conn, "success.json", %{
+        charge_uuid: charge.uuid,
+        amount: amount,
+        currency: currency,
+        card_uuid: card_uuid
+      })
     end
   end
 

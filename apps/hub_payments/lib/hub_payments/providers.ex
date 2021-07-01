@@ -95,17 +95,6 @@ defmodule HubPayments.Providers do
     |> process_capture(provider, charge)
   end
 
-  def process_charge(
-        %Provider{} = provider,
-        %Charge{} = charge,
-        %CreditCard{} = credit_card,
-        cvv,
-        token_uuid
-      ) do
-    process_authorization(provider, charge, credit_card, cvv, token_uuid)
-    |> process_capture(provider, charge)
-  end
-
   def process_authorization(
         %Provider{id: id, name: "paygent"},
         %Charge{uuid: charge_uuid} = charge,
@@ -131,11 +120,10 @@ defmodule HubPayments.Providers do
         %Provider{id: id, name: "sbps"},
         %Charge{uuid: charge_uuid} = charge,
         %CreditCard{} = credit_card,
-        cvv,
         token_uid
       ) do
     with %{"provider" => "sbps"} = request <-
-           SBPS.MessageBuilder.build_authorization(charge, credit_card, token_uid, cvv),
+           SBPS.MessageBuilder.build_authorization(charge, credit_card, token_uid),
          {:ok, request_json} <- Jason.encode(request),
          {:ok, message} <-
            create_message(%{
@@ -183,9 +171,9 @@ defmodule HubPayments.Providers do
     end
   end
 
-  def process_capture({:error, message}, %Provider{name: "paygent"}, %Charge{uuid: uuid})
+  def process_capture({:error, message}, %Provider{name: name}, %Charge{uuid: uuid})
       when is_binary(message) do
-    # Logger.error("charge uuid: #{uuid} failed for Paygent with error: #{message}")
+    Logger.error("charge uuid: #{uuid} failed for #{name} with error: #{message}")
     {:error, message}
   end
 

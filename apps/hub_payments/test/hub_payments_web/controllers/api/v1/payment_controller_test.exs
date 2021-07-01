@@ -100,7 +100,6 @@ defmodule HubPaymentsWeb.Api.V1.PaymentControllerTest do
   def sbps_charge_token_body do
     %{
       provider: "sbps",
-      cvv: "001",
       charge: %{
         amount: 34567,
         currency: "JPY",
@@ -112,6 +111,7 @@ defmodule HubPaymentsWeb.Api.V1.PaymentControllerTest do
         token_uid: "valid_token",
         card: %{
           brand: "visa",
+          cvv: "001",
           exp_month: "05",
           exp_year: "23",
           last_four: "1881",

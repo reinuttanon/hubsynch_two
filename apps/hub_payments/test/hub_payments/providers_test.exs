@@ -84,14 +84,14 @@ defmodule HubPayments.ProvidersTest do
       credit_card = insert(:credit_card)
 
       {:ok, %Message{} = message} =
-        Providers.process_authorization(provider, charge, credit_card, "001", "valid_token")
+        Providers.process_authorization(provider, charge, credit_card, "valid_token")
 
       assert message.data.processing_datetime == "20210628161127"
       assert message.data.sps_transaction_id == "B68832001ST010011110102331019339"
       assert message.data.tracking_id == "00000631552577"
 
       {:ok, %Message{} = message} =
-        Providers.process_authorization(provider, charge, credit_card, "001", "valid_card_uuid")
+        Providers.process_authorization(provider, charge, credit_card, "valid_card_uuid")
 
       assert message.data.processing_datetime == "20210628161127"
       assert message.data.sps_transaction_id == "B68832001ST010011110102331019339"
