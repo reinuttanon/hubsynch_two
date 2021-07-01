@@ -68,7 +68,7 @@ config :hub_payments, HubPaymentsWeb.Endpoint,
 
 config :hub_payments, vault_rpc: true
 
-# config :hub_payments, :http_module, HubPayments.Providers.MockHttp
-config :hub_payments, :http_module, HTTPoison
+config :hub_payments, :http_module, HubPayments.Providers.MockHttp
+# config :hub_payments, :http_module, HTTPoison
 
 import_config "dev.secret.exs"
