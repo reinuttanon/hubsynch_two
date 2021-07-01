@@ -5,7 +5,6 @@ defmodule HubPayments.Wallets.CreditCard do
   @months ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"]
 
   schema "credit_cards" do
-    field :cvv, :string, virtual: true
     field :brand, :string
     field :cvv, :string, virtual: true, redact: true
     field :exp_month, :string
