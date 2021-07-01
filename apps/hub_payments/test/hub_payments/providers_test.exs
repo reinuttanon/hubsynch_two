@@ -158,17 +158,6 @@ defmodule HubPayments.ProvidersTest do
       assert message.provider_id == provider.id
     end
 
-    test "process_atm_payment/2 with invalid data return message" do
-      provider = insert(:provider, name: "paygent")
-      atm_payment = insert(:atm_payment)
-
-      assert {:ok, message} = Providers.process_atm_payment("somthing", atm_payment)
-
-      assert message.data["result"] == "0"
-      assert message.data["payment_id"] == "26505142"
-      assert message.provider_id == provider.id
-    end
-
     test "delete_provider/1 deletes the provider" do
       provider = insert(:provider)
       assert {:ok, %Provider{}} = Providers.delete_provider(provider)

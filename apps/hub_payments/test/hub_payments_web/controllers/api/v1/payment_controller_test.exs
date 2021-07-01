@@ -72,6 +72,42 @@ defmodule HubPaymentsWeb.Api.V1.PaymentControllerTest do
 
       assert response["error"] == "bad request"
     end
+
+    test "Paygent atm payment with valid data returns success response" do
+      body = atm_payment_body()
+
+      response =
+        build_api_conn()
+        |> post("/api/v1/payments/process", body)
+        |> json_response(200)
+
+      assert response["amount"] == 3500
+      assert response["atm_payment_uuid"] != nil
+      assert response["currency"] == "JPY"
+      assert response["result"] == "Payment successful"
+      assert response["customer_number"] == "customer_number"
+      assert response["pay_center_number"] == "pay_center_number"
+      assert response["payment_limit_date"] == "some_date"
+      assert response["result"] == "Payment successful"
+    end
+
+    test "Paygent atm payment without payment amount returns error" do
+      body = %{atm_payment_body().atm_payment | amount: nil}
+
+      response =
+        build_api_conn()
+        |> post("/api/v1/payments/process", %{atm_payment: body})
+        |> json_response(200)
+
+      assert response["amount"] == 3500
+      assert response["atm_payment_uuid"] != nil
+      assert response["currency"] == "JPY"
+      assert response["result"] == "Payment successful"
+      assert response["customer_number"] == "customer_number"
+      assert response["pay_center_number"] == "pay_center_number"
+      assert response["payment_limit_date"] == "some_date"
+      assert response["result"] == "Payment successful"
+    end
   end
 
   def paygent_charge_token_body do
@@ -159,6 +195,22 @@ defmodule HubPaymentsWeb.Api.V1.PaymentControllerTest do
     }
 
     {message, client_service}
+  end
+
+  def atm_payment_body do
+    %{
+      atm_payment: %{
+        amount: 3500,
+        currency: "JPY",
+        owner: %{
+          object: "HubPayments.Wallet",
+          uid: "wallet_uuuid"
+        },
+        payment_detail: "テストです",
+        payment_detail_kana: "テストデス",
+        payment_limit_date: 20
+      }
+    }
   end
 
   defp build_api_conn(type \\ "private", client_service \\ nil) do

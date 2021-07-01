@@ -12,9 +12,12 @@ defmodule HubPayments.Providers.MockHttp do
     end
   end
 
-  def post(@paygent_url <> _url, "", headers, _options) do
-    with true <- headers == paygent_headers() do
-      {:ok, %HTTPoison.Response{status_code: 200, body: paygent_success_body()}}
+  def post(@paygent_url <> data, "", headers, _options) do
+    request_values_list = String.split(data, "&")
+
+    with true <- headers == paygent_headers(),
+         {:ok, request_values} = get_response_data(%{}, request_values_list) do
+      paygent_response(request_values["telegram_kind"])
     end
   end
 
@@ -32,16 +35,12 @@ defmodule HubPayments.Providers.MockHttp do
     end
   end
 
-  def post(
-        @paygent_url <> _url,
-        _body,
-        _headers,
-        _options
-      ) do
-    {:ok, %HTTPoison.Response{status_code: 200, body: paygent_success_body()}}
-  end
-
   def post(_url, _body, _headers, _options), do: {:error, "bad request"}
+
+  defp paygent_atm_success_body do
+    "\r\nresult=0\r\npayment_id=26505142\r\ntrading_id=traiding_id\r\npay_center_number=pay_center_number\r\ncustomer_number=customer_number\r\nconf_number=conf_number\r\npayment_limit_date=some_date"
+    |> Codepagex.from_string!("VENDORS/MICSFT/WINDOWS/CP932")
+  end
 
   defp paygent_success_body do
     "\r\nresult=0\r\npayment_id=26505142\r\ntrading_id=\r\nissur_class=1\r\nacq_id=50001\r\nacq_name=NICOS\r\nissur_name=ﾋﾞｻﾞ\r\nfc_auth_umu=\r\ndaiko_code=\r\ncard_shu_code=\r\nk_card_name=\r\nissur_id=\r\nattempt_kbn=\r\nfingerprint=fvryIbkXNqjADaNqIRvpdcf5BDbhYQJhBsybDua0RGGVliC0QWHcXXTy6N7YeaUV\r\nmasked_card_number=************0000\r\ncard_valid_term=0122\r\nout_acs_html="
@@ -146,6 +145,19 @@ defmodule HubPayments.Providers.MockHttp do
     ]
   end
 
+  defp paygent_response(telegram_kind) do
+    case telegram_kind do
+      "010" ->
+        {:ok, %HTTPoison.Response{status_code: 200, body: paygent_atm_success_body()}}
+
+      "020" ->
+        {:ok, %HTTPoison.Response{status_code: 200, body: paygent_auth_success_body()}}
+
+      "022" ->
+        {:ok, %HTTPoison.Response{status_code: 200, body: paygent_success_capture_body()}}
+    end
+  end
+
   defp vault_paygent_response(card_number) do
     case card_number do
       "valid_token" ->
@@ -171,4 +183,21 @@ defmodule HubPayments.Providers.MockHttp do
         {:ok, %HTTPoison.Response{status_code: 200, body: sbps_auth_failure_body()}}
     end
   end
+
+  defp get_response_data(data, ["" | responses]), do: get_response_data(data, responses)
+
+  defp get_response_data(data, [response | responses]) do
+    [key, value] = String.split(response, "=", parts: 2)
+
+    case value do
+      "" ->
+        get_response_data(data, responses)
+
+      _ ->
+        Map.put(data, key, value)
+        |> get_response_data(responses)
+    end
+  end
+
+  defp get_response_data(data, []), do: {:ok, data}
 end

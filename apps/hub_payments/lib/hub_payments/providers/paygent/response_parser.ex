@@ -49,25 +49,6 @@ defmodule HubPayments.Providers.Paygent.ResponseParser do
     {:error, :unknown_token_failure}
   end
 
-  def success([]), do: false
-
-  def success(["result=0" | _tail]), do: {:ok, "success"}
-
-  def success(["result=1" | _tail]), do: {:error, "failure result 1"}
-
-  def success(["result=7" | _tail]), do: {:error, "3d secure required"}
-
-  def success([_hd | tail]), do: success(tail)
-
-  def get_data([]), do: {:error, "no payment id"}
-
-  def get_data([
-        <<112, 97, 121, 109, 101, 110, 116, 95, 105, 100, 61, payment_id::binary>> | _tail
-      ]),
-      do: {:ok, %{payment_id: payment_id}}
-
-  def get_data([_hd | tail]), do: get_data(tail)
-
   defp get_response_data(data, ["" | responses]), do: get_response_data(data, responses)
 
   defp get_response_data(data, [response | responses]) do
