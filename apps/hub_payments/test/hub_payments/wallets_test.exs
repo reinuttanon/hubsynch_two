@@ -146,6 +146,7 @@ defmodule HubPayments.WalletsTest do
       assert {:ok, credit_card} =
                Wallets.create_credit_card(%{
                  brand: "visa",
+                 cvv: "123",
                  exp_month: "01",
                  exp_year: String.slice("#{DateTime.utc_now().year}", -2..-1),
                  fingerprint: "some_fingerprint",
@@ -155,6 +156,7 @@ defmodule HubPayments.WalletsTest do
                })
 
       assert credit_card.brand == "visa"
+      assert credit_card.cvv == "123"
       assert credit_card.exp_month == "01"
       assert credit_card.exp_year == String.slice("#{DateTime.utc_now().year}", -2..-1)
       assert credit_card.fingerprint == "some_fingerprint"

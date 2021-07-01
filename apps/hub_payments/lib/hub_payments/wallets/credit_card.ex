@@ -6,6 +6,7 @@ defmodule HubPayments.Wallets.CreditCard do
 
   schema "credit_cards" do
     field :brand, :string
+    field :cvv, :string, virtual: true, redact: true
     field :exp_month, :string
     field :exp_year, :string
     field :fingerprint, :string
@@ -23,6 +24,7 @@ defmodule HubPayments.Wallets.CreditCard do
     credit_card
     |> cast(attrs, [
       :brand,
+      :cvv,
       :exp_month,
       :exp_year,
       :fingerprint,

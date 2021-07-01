@@ -11,10 +11,10 @@ defmodule HubPayments.Providers.SBPS.MessageBuilder do
         %Charge{money: money, owner: %{uid: owner_uid}} = charge,
         %CreditCard{
           exp_month: exp_month,
-          exp_year: exp_year
+          exp_year: exp_year,
+          cvv: cvv
         },
-        token_uid,
-        cvv
+        token_uid
       ) do
     %{
       "provider" => "sbps",
@@ -44,8 +44,7 @@ defmodule HubPayments.Providers.SBPS.MessageBuilder do
           vault_uuid: vault_uuid,
           exp_month: exp_month,
           exp_year: exp_year
-        },
-        cvv
+        }
       ) do
     %{
       "provider" => "sbps",
@@ -59,7 +58,6 @@ defmodule HubPayments.Providers.SBPS.MessageBuilder do
         "amount" => money.amount,
         "cc_number" => vault_uuid,
         "cc_expiration" => "20" <> exp_year <> exp_month,
-        "security_code" => cvv,
         "cust_manage_flg" => "1",
         "cardbrand_return_flg" => "1",
         "encrypted_flg" => "1",
@@ -125,8 +123,10 @@ defmodule HubPayments.Providers.SBPS.MessageBuilder do
       request_values["request_date"] <> request_values["limit_second"] <> @hash_key
   end
 
+  # Since Elixir only ships with UTC support we need to add 9 hours for Japan.
   defp build_current_date do
-    {{year, month, day}, {hour, minute, second}} = :calendar.local_time()
+    %DateTime{year: year, month: month, day: day, hour: hour, minute: minute, second: second} =
+      DateTime.utc_now() |> DateTime.add(32400, :second)
 
     "#{year}" <>
       get_last_two_num(month) <>
