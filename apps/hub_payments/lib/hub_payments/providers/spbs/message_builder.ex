@@ -8,27 +8,27 @@ defmodule HubPayments.Providers.SBPS.MessageBuilder do
   @hash_key System.get_env("SBPS_HASH_KEY") || Application.get_env(:hub_payments, :sbps_hash_key)
 
   def build_authorization(
-        %Charge{money: money, owner: %{uid: owner_uid}} = charge,
+        %Charge{money: money} = charge,
         %CreditCard{
+          vault_uuid: vault_uuid,
           exp_month: exp_month,
-          exp_year: exp_year,
-          cvv: cvv
+          exp_year: exp_year
         },
-        token_uid
-      ) do
+        nil
+      )
+      when is_binary(vault_uuid) do
     %{
       "provider" => "sbps",
       "type" => "authorization",
       "values" => %{
         "merchant_id" => @merchant_id,
         "service_id" => @service_id,
-        "cust_code" => owner_uid,
+        "cust_code" => charge.owner.uid,
         "order_id" => charge.uuid,
         "item_id" => "sbps_payment",
         "amount" => "#{money.amount}",
-        "cc_number" => token_uid,
+        "cc_number" => vault_uuid,
         "cc_expiration" => "20" <> exp_year <> exp_month,
-        "security_code" => cvv,
         "cust_manage_flg" => "1",
         "cardbrand_return_flg" => "1",
         "encrypted_flg" => "1",
@@ -39,25 +39,28 @@ defmodule HubPayments.Providers.SBPS.MessageBuilder do
   end
 
   def build_authorization(
-        %Charge{money: money, owner: %{uuid: owner_uuid}} = charge,
+        %Charge{money: money} = charge,
         %CreditCard{
-          vault_uuid: vault_uuid,
           exp_month: exp_month,
-          exp_year: exp_year
-        }
-      ) do
+          exp_year: exp_year,
+          cvv: cvv
+        },
+        token_uuid
+      )
+      when is_binary(token_uuid) do
     %{
       "provider" => "sbps",
       "type" => "authorization",
       "values" => %{
         "merchant_id" => @merchant_id,
         "service_id" => @service_id,
-        "cust_code" => owner_uuid,
+        "cust_code" => charge.owner.uid,
         "order_id" => charge.uuid,
         "item_id" => "sbps_payment",
-        "amount" => money.amount,
-        "cc_number" => vault_uuid,
+        "amount" => "#{money.amount}",
+        "cc_number" => token_uuid,
         "cc_expiration" => "20" <> exp_year <> exp_month,
+        "security_code" => cvv,
         "cust_manage_flg" => "1",
         "cardbrand_return_flg" => "1",
         "encrypted_flg" => "1",
