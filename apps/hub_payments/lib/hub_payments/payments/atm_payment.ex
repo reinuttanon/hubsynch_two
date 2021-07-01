@@ -51,6 +51,20 @@ defmodule HubPayments.Payments.AtmPayment do
     |> put_change(:uuid, Ecto.UUID.generate())
   end
 
+  def update_changeset(atm_payment, attrs) do
+    atm_payment
+    |> cast(attrs, [
+      :credit_card_id,
+      :money,
+      :provider_id,
+      :reference,
+      :payment_detail,
+      :payment_detail_kana,
+      :payment_limit_date
+    ])
+    |> cast_embed(:owner, with: &Owner.changeset/2)
+  end
+
   defp make_money(%Ecto.Changeset{changes: %{amount: amount, currency: currency}} = changeset) do
     put_change(changeset, :money, Money.new(amount, currency))
   end
