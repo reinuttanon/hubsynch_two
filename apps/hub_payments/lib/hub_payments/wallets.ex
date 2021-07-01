@@ -40,7 +40,8 @@ defmodule HubPayments.Wallets do
   def get_wallet(%{uuid: uuid}) do
     query =
       from w in Wallet,
-        where: w.uuid == ^uuid
+        where: w.uuid == ^uuid,
+        preload: :credit_cards
 
     Repo.one(query)
   end
@@ -129,8 +130,14 @@ defmodule HubPayments.Wallets do
       [%CreditCard{}, ...]
 
   """
-  def list_credit_cards do
-    Repo.all(CreditCard)
+  def list_credit_cards(%{wallet_uuid: wallet_uuid}) do
+    query =
+      from c in CreditCard,
+        join: w in Wallet,
+        on: c.wallet_id == w.id,
+        where: w.uuid == ^wallet_uuid
+
+    Repo.all(query)
   end
 
   @doc """
@@ -155,6 +162,17 @@ defmodule HubPayments.Wallets do
         where: c.uuid == ^uuid,
         join: w in Wallet,
         where: fragment("owner->>'object' = ? AND owner->>'uid' = ?", ^object, ^uid)
+
+    Repo.one(query)
+  end
+
+  def get_credit_card(%{uuid: uuid, wallet_uuid: wallet_uuid}) do
+    query =
+      from c in CreditCard,
+        where: c.uuid == ^uuid,
+        join: w in Wallet,
+        on: c.wallet_id == w.id,
+        where: w.uuid == ^wallet_uuid
 
     Repo.one(query)
   end

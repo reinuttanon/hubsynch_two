@@ -31,7 +31,6 @@ defmodule HubPayments.Wallets.CreditCard do
       :wallet_id
     ])
     |> validate_required([:brand, :exp_month, :exp_year, :fingerprint, :last_four])
-    |> validate_length(:exp_month, is: 2)
     |> validate_length(:exp_year, is: 2)
     |> validate_inclusion(:exp_month, @months)
     |> put_change(:uuid, Ecto.UUID.generate())
@@ -40,17 +39,12 @@ defmodule HubPayments.Wallets.CreditCard do
   def update_changeset(credit_card, attrs) do
     credit_card
     |> cast(attrs, [
-      :brand,
       :exp_month,
       :exp_year,
-      :fingerprint,
-      :last_four,
-      :vault_uuid,
-      :wallet_id
+      :vault_uuid
     ])
-    |> validate_length(:exp_month, is: 2)
     |> validate_length(:exp_year, is: 2)
     |> validate_inclusion(:exp_month, @months)
-    |> validate_required([:brand, :exp_month, :exp_year, :fingerprint, :last_four])
+    |> validate_required([:exp_month, :exp_year])
   end
 end

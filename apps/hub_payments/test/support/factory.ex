@@ -21,7 +21,8 @@ defmodule HubPayments.Factory do
       exp_year: "23",
       fingerprint: "this is a long fingerprint with a swirl",
       last_four: "4321",
-      uuid: Ecto.UUID.generate()
+      uuid: Ecto.UUID.generate(),
+      wallet: build(:wallet)
     }
   end
 
