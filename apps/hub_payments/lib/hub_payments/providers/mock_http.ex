@@ -49,6 +49,7 @@ defmodule HubPayments.Providers.MockHttp do
 
   defp paygent_success_capture_body do
     "\r\nresult=0\r\npayment_id=26505142\r\ntrading_id=\r\nissur_class=1\r\nacq_id=50001\r\nacq_name=NICOS\r\nissur_name=ﾋﾞｻﾞ\r\nfc_auth_umu=\r\ndaiko_code=\r\ncard_shu_code=\r\nk_card_name=\r\nissur_id=\r\nattempt_kbn=\r\nfingerprint=fvryIbkXNqjADaNqIRvpdcf5BDbhYQJhBsybDua0RGGVliC0QWHcXXTy6N7YeaUV\r\nmasked_card_number=************0000\r\ncard_valid_term=0122\r\nout_acs_html="
+    |> Codepagex.from_string!("VENDORS/MICSFT/WINDOWS/CP932")
   end
 
   defp paygent_auth_success_body do

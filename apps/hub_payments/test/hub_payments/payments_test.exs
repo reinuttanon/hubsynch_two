@@ -158,6 +158,8 @@ defmodule HubPayments.PaymentsTest do
   end
 
   describe "atm_payment" do
+    alias HubPayments.Payments.AtmPayment
+
     test "list_atm_payments/0 returns all atm_payments" do
       atm_payment = insert(:atm_payment)
       [found_atm_payment] = Payments.list_atm_payments()
@@ -174,13 +176,15 @@ defmodule HubPayments.PaymentsTest do
 
     test "create_atm_payment/1 with valid data creates a atm_payment" do
       provider = insert(:provider)
-      credit_card = insert(:credit_card)
 
       assert {:ok, %AtmPayment{} = atm_payment} =
                Payments.create_atm_payment(%{
-                 credit_card_id: credit_card.id,
-                 money: %{amount: 100, currency: "JPY"},
+                 amount: 100,
+                 currency: "JPY",
                  owner: %{object: "User", uid: "1234"},
+                 payment_detail: "payment_detail",
+                 payment_detail_kana: "payment_detail_kana",
+                 payment_limit_date: 10,
                  provider_id: provider.id,
                  reference: "reference-1"
                })
@@ -191,6 +195,24 @@ defmodule HubPayments.PaymentsTest do
       assert atm_payment.reference == "reference-1"
       assert atm_payment.provider_id == provider.id
       assert atm_payment.uuid != nil
+    end
+
+    test "create_atm_payment/1 with invalid data returns error changeset" do
+      provider = insert(:provider)
+
+      assert {:error, %Ecto.Changeset{} = changeset} =
+               Payments.create_atm_payment(%{
+                 amount: nil,
+                 currency: "JPY",
+                 owner: %{object: "User", uid: "1234"},
+                 payment_detail: "payment_detail",
+                 payment_detail_kana: "payment_detail_kana",
+                 payment_limit_date: 10,
+                 provider_id: provider.id,
+                 reference: "reference-1"
+               })
+
+      assert changeset.errors == [money: {"can't be blank", [validation: :required]}]
     end
   end
 

@@ -97,16 +97,9 @@ defmodule HubPaymentsWeb.Api.V1.PaymentControllerTest do
       response =
         build_api_conn()
         |> post("/api/v1/payments/process", %{atm_payment: body})
-        |> json_response(200)
+        |> json_response(400)
 
-      assert response["amount"] == 3500
-      assert response["atm_payment_uuid"] != nil
-      assert response["currency"] == "JPY"
-      assert response["result"] == "Payment successful"
-      assert response["customer_number"] == "customer_number"
-      assert response["pay_center_number"] == "pay_center_number"
-      assert response["payment_limit_date"] == "some_date"
-      assert response["result"] == "Payment successful"
+      assert response["error"] == %{"money" => ["can't be blank"]}
     end
   end
 
