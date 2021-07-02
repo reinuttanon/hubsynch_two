@@ -1,0 +1,18 @@
+<h4 class="title is-4">Client Service Payment Configurations</h4>
+
+<table class="table is-hoverable">
+  <thead>
+    <tr>
+      <th>Client Service</th>
+      <th>Provider</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= for payment_configs <- @payment_configs do %>
+      <tr>
+        <td><%= payment_configs.client_service_uuid %></td>
+        <td><%= payment_configs.provider_id %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -1,7 +1,7 @@
 defmodule HubIdentity.ClientServices.ApiKey do
   use Ecto.Schema
   use HubIdentity.SoftDelete
-  use HubIdentity.Uuid
+  use HubIdentity.Uid
 
   import Ecto.Changeset
   import HubIdentity.Encryption.Helpers, only: [generate_data: 1]

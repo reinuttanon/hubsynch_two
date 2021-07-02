@@ -89,3 +89,5 @@ Application is currently running as a service with systemctl, the file is locate
 - Stop: sudo systemctl stop hubsynch_two.service
 - Start: sudo systemctl start hubsynch_two.service
 - Check logs: journalctl -u hubsynch_two.service | tail -50
+
+mix phx.gen.context ClientServices PaymentConfig payment_configs client_service_uuid:string payment_methods:{:array, :string} statement_name:string uuid:string provider_id:references:providers

@@ -20,6 +20,12 @@ defmodule DashboardWeb.Router do
     live "/", PageLive, :index
   end
 
+  scope "/hub_payments", DashboardWeb.HubPayments do
+    pipe_through :browser
+
+    resources "/payment_configs", PaymentConfigController
+  end
+
   # Other scopes may use custom stacks.
   # scope "/api", DashboardWeb do
   #   pipe_through :api

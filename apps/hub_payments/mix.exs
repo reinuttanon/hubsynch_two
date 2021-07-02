@@ -24,7 +24,7 @@ defmodule HubPayments.MixProject do
   def application do
     [
       mod: {HubPayments.Application, []},
-      extra_applications: [:logger, :runtime_tools, :memento]
+      extra_applications: [:logger, :runtime_tools, :hub_cluster, :hub_identity]
     ]
   end
 

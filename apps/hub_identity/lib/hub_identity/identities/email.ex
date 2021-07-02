@@ -5,7 +5,7 @@ defmodule HubIdentity.Identities.Email do
   Primary email can't be deleted.
   """
   use Ecto.Schema
-  use HubIdentity.Uuid
+  use HubIdentity.Uid
 
   import Ecto.Changeset
   alias HubIdentity.Identities.User

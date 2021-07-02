@@ -1,7 +1,7 @@
 defmodule HubIdentity.ClientServices.ClientService do
   use Ecto.Schema
   use HubIdentity.SoftDelete
-  use HubIdentity.Uuid
+  use HubIdentity.Uid
 
   import Ecto.Changeset
 

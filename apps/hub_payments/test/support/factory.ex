@@ -59,6 +59,16 @@ defmodule HubPayments.Factory do
     }
   end
 
+  def payment_config_factory do
+    %HubPayments.ClientServices.PaymentConfig{
+      client_service_uuid: "hub_identity_client_service_uid",
+      payment_methods: ["credit_card"],
+      statement_name: "some statement name",
+      uuid: Ecto.UUID.generate(),
+      provider: build(:provider)
+    }
+  end
+
   def point_factory do
     %HubPayments.Payments.Point{
       money: Money.new(10_000, :JPY),

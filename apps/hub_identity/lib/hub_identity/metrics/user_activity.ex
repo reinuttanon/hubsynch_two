@@ -3,7 +3,7 @@ defmodule HubIdentity.Metrics.UserActivity do
   Module to store the user activities for BI purposes.
   """
   use Ecto.Schema
-  use HubIdentity.Uuid
+  use HubIdentity.Uid
 
   import Ecto.Changeset
 

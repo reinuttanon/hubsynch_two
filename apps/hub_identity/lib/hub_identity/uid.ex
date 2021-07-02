@@ -1,14 +1,14 @@
-defmodule HubIdentity.UUID do
+defmodule HubIdentity.Uid do
   @moduledoc false
   defmacro __using__(_opts) do
     quote do
-      defp generate_uuid, do: Ecto.UUID.generate()
+      defp generate_uid, do: Ecto.UUID.generate()
 
-      defp put_uuid(%Ecto.Changeset{valid?: true} = changeset) do
-        Ecto.Changeset.put_change(changeset, :uuid, generate_prefix(changeset) <> generate_uuid())
+      defp put_uid(%Ecto.Changeset{valid?: true} = changeset) do
+        Ecto.Changeset.put_change(changeset, :uid, generate_prefix(changeset) <> generate_uid())
       end
 
-      defp put_uuid(changeset), do: changeset
+      defp put_uid(changeset), do: changeset
 
       defp generate_prefix(%Ecto.Changeset{valid?: true} = changeset) do
         prefix =

@@ -1,6 +1,6 @@
 defmodule HubIdentity.Providers.ProviderConfig do
   use Ecto.Schema
-  use HubIdentity.Uuid
+  use HubIdentity.Uid
 
   import Ecto.Changeset
 
