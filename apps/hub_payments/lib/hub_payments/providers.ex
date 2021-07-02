@@ -129,7 +129,7 @@ defmodule HubPayments.Providers do
   def process_authorization(
         %Provider{id: id, name: "sbps"},
         %Charge{uuid: charge_uuid} = charge,
-        %CreditCard{cvv: cvv} = credit_card,
+        %CreditCard{} = credit_card,
         token_uid
       ) do
     with %{"provider" => "sbps"} = request <-
