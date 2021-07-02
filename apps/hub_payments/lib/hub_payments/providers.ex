@@ -9,7 +9,7 @@ defmodule HubPayments.Providers do
   alias HubPayments.Repo
 
   alias HubPayments.Providers.{Paygent, Provider, SBPS, Vault}
-  alias HubPayments.Payments.Charge
+  alias HubPayments.Payments.{AtmPayment, Charge}
   alias HubPayments.Wallets.CreditCard
 
   @doc """
@@ -180,6 +180,23 @@ defmodule HubPayments.Providers do
   def process_capture({:error, message}, provider, charge) do
     encoded = Jason.encode!(message)
     process_capture({:error, encoded}, provider, charge)
+  end
+
+  def process_atm_payment(
+        %Provider{id: provider_id, name: "paygent"},
+        %AtmPayment{uuid: atm_payment_uuid} = atm_payment
+      ) do
+    with {:ok, request} <- Paygent.MessageBuilder.build_atm_payment(atm_payment),
+         {:ok, message} <-
+           create_message(%{
+             provider_id: provider_id,
+             request: request,
+             type: "atm_payment",
+             owner: %{object: "HubPayments.AtmPayment", uid: atm_payment_uuid}
+           }),
+         {:ok, response, data} <- Paygent.Server.capture(request) do
+      update_message(message, %{response: response, data: data})
+    end
   end
 
   @doc """

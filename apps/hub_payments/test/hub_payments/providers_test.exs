@@ -68,13 +68,13 @@ defmodule HubPayments.ProvidersTest do
       {:ok, %Message{} = message} =
         Providers.process_authorization(provider, charge, credit_card, "valid_token")
 
-      assert message.data.payment_id == "26505142"
+      assert message.data["payment_id"] == "26505142"
       assert message.type == "authorization"
 
       {:ok, %Message{} = message} =
         Providers.process_authorization(provider, charge, credit_card, "valid_card_uuid")
 
-      assert message.data.payment_id == "26505142"
+      assert message.data["payment_id"] == "26505142"
       assert message.type == "authorization"
     end
 
@@ -105,7 +105,7 @@ defmodule HubPayments.ProvidersTest do
 
       {:ok, %Message{} = message} = Providers.process_capture({:ok, message}, provider, charge)
 
-      assert message.data.payment_id == "26505142"
+      assert message.data["payment_id"] == "26505142"
       assert message.type == "capture"
     end
 
@@ -145,6 +145,17 @@ defmodule HubPayments.ProvidersTest do
       {:error, error_message} = Providers.process_capture({:ok, message}, provider, "charge")
 
       assert error_message == "SBPS error: 10137999"
+    end
+
+    test "process_atm_payment/2 with valid data return message" do
+      provider = insert(:provider, name: "paygent")
+      atm_payment = insert(:atm_payment)
+
+      assert {:ok, message} = Providers.process_atm_payment(provider, atm_payment)
+
+      assert message.data["result"] == "0"
+      assert message.data["payment_id"] == "26505142"
+      assert message.provider_id == provider.id
     end
 
     test "delete_provider/1 deletes the provider" do

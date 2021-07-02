@@ -157,6 +157,65 @@ defmodule HubPayments.PaymentsTest do
     end
   end
 
+  describe "atm_payment" do
+    alias HubPayments.Payments.AtmPayment
+
+    test "list_atm_payments/0 returns all atm_payments" do
+      atm_payment = insert(:atm_payment)
+      [found_atm_payment] = Payments.list_atm_payments()
+      assert found_atm_payment.id == atm_payment.id
+      assert found_atm_payment.uuid == atm_payment.uuid
+    end
+
+    test "get_atm_payment!/1 returns the atm_payment with given id" do
+      atm_payment = insert(:atm_payment)
+      found_atm_payment = Payments.get_atm_payment!(atm_payment.id)
+      assert found_atm_payment.id == atm_payment.id
+      assert found_atm_payment.uuid == atm_payment.uuid
+    end
+
+    test "create_atm_payment/1 with valid data creates a atm_payment" do
+      provider = insert(:provider)
+
+      assert {:ok, %AtmPayment{} = atm_payment} =
+               Payments.create_atm_payment(%{
+                 amount: 100,
+                 currency: "JPY",
+                 owner: %{object: "User", uid: "1234"},
+                 payment_detail: "payment_detail",
+                 payment_detail_kana: "payment_detail_kana",
+                 payment_limit_date: 10,
+                 provider_id: provider.id,
+                 reference: "reference-1"
+               })
+
+      assert atm_payment.money == %Money{amount: 100, currency: :JPY}
+      assert atm_payment.owner == %HubPayments.Embeds.Owner{object: "User", uid: "1234"}
+      assert atm_payment.request_date == now()
+      assert atm_payment.reference == "reference-1"
+      assert atm_payment.provider_id == provider.id
+      assert atm_payment.uuid != nil
+    end
+
+    test "create_atm_payment/1 with invalid data returns error changeset" do
+      provider = insert(:provider)
+
+      assert {:error, %Ecto.Changeset{} = changeset} =
+               Payments.create_atm_payment(%{
+                 amount: nil,
+                 currency: "JPY",
+                 owner: %{object: "User", uid: "1234"},
+                 payment_detail: "payment_detail",
+                 payment_detail_kana: "payment_detail_kana",
+                 payment_limit_date: 10,
+                 provider_id: provider.id,
+                 reference: "reference-1"
+               })
+
+      assert changeset.errors == [money: {"can't be blank", [validation: :required]}]
+    end
+  end
+
   defp now do
     DateTime.utc_now()
     |> DateTime.truncate(:second)

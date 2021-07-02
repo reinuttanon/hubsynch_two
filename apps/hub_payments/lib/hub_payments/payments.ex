@@ -214,4 +214,107 @@ defmodule HubPayments.Payments do
   def change_point(%Point{} = point, attrs \\ %{}) do
     Point.changeset(point, attrs)
   end
+
+  alias HubPayments.Payments.AtmPayment
+
+  @doc """
+  Returns the list of atm_payments.
+
+  ## Examples
+
+      iex> list_atm_payments()
+      [%AtmPayment{}, ...]
+
+  """
+
+  def list_atm_payments do
+    Repo.all(AtmPayment)
+  end
+
+  @doc """
+  Gets a single AtmPayment.
+
+  Raises `Ecto.NoResultsError` if the AtmPayment does not exist.
+
+  ## Examples
+
+      iex> get_atm_payment!(123)
+      %AtmPayment{}
+
+      iex> get_atm_payment!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_atm_payment!(id), do: Repo.get!(AtmPayment, id)
+
+  @doc """
+  Creates a atm_payment.
+
+  ## Examples
+
+      iex> create_atm_payment(%{field: value})
+      {:ok, %AtmPayment{}}
+
+      iex> create_atm_payment(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_atm_payment(atm_payment_params, %Provider{id: provider_id}) do
+    atm_payment_params
+    |> Map.put("provider_id", provider_id)
+    |> create_atm_payment()
+  end
+
+  def create_atm_payment(attrs \\ %{}) do
+    %AtmPayment{}
+    |> AtmPayment.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a atm_payment.
+
+  ## Examples
+
+      iex> update_atm_payment(atm_payment, %{field: new_value})
+      {:ok, %AtmPayment{}}
+
+      iex> update_atm_payment(atm_payment, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_atm_payment(%AtmPayment{} = atm_payment, attrs) do
+    atm_payment
+    |> AtmPayment.update_changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a atm_payment.
+
+  ## Examples
+
+      iex> delete_atm_payment(atm_payment)
+      {:ok, %AtmPayment{}}
+
+      iex> delete_atm_payment(atm_payment)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_atm_payment(%AtmPayment{} = atm_payment) do
+    Repo.delete(atm_payment)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking atm_payment changes.
+
+  ## Examples
+
+      iex> change_atm_payment(atm_payment)
+      %Ecto.Changeset{data: %AtmPayment{}}
+
+  """
+  def change_atm_payment(%AtmPayment{} = atm_payment, attrs \\ %{}) do
+    AtmPayment.changeset(atm_payment, attrs)
+  end
 end

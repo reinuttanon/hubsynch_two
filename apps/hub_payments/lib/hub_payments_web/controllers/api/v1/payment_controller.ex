@@ -2,10 +2,10 @@ defmodule HubPaymentsWeb.Api.V1.PaymentController do
   use HubPaymentsWeb, :controller
 
   alias HubIdentity.ClientServices.ClientService
-  alias HubPayments.Payments.Charge
+  alias HubPayments.Payments.{AtmPayment, Charge}
   alias HubPayments.{Wallets, Payments, Providers}
   alias HubPayments.Wallets.CreditCard
-  alias HubPayments.Providers.Provider
+  alias HubPayments.Providers.{Message, Provider}
 
   def process(conn, %{
         "provider" => "paygent",
@@ -110,6 +110,28 @@ defmodule HubPaymentsWeb.Api.V1.PaymentController do
         currency: currency,
         card_uuid: card_uuid
       })
+    end
+  end
+
+  def process(conn, %{"atm_payment" => atm_payment_params}) do
+    with %Provider{} = provider <- Providers.get_provider(%{name: "paygent"}),
+         {:ok, %AtmPayment{money: %Money{amount: amount, currency: currency}} = atm_payment} <-
+           Payments.create_atm_payment(atm_payment_params, provider),
+         {:ok, %Message{data: data}} <-
+           Providers.process_atm_payment(provider, atm_payment) do
+      render(conn, "success.json", %{
+        atm_payment_uuid: atm_payment.uuid,
+        amount: amount,
+        currency: currency,
+        payment_id: data["payment_id"],
+        pay_center_number: data["pay_center_number"],
+        customer_number: data["customer_number"],
+        conf_number: data["conf_number"],
+        payment_limit_date: data["payment_limit_date"]
+      })
+    else
+      {:error, message} -> {:error, message}
+      nil -> {:error, "Provider doesn't exist"}
     end
   end
 

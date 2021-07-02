@@ -1,5 +1,5 @@
 defmodule HubPayments.Providers.Paygent.MessageBuilder do
-  alias HubPayments.Payments.Charge
+  alias HubPayments.Payments.{AtmPayment, Charge}
   alias HubPayments.Providers.Message
   alias HubPayments.Wallets.CreditCard
 
@@ -81,6 +81,22 @@ defmodule HubPayments.Providers.Paygent.MessageBuilder do
   end
 
   def build_capture(_, _), do: {:error, "Invalid charge values"}
+
+  def build_atm_payment(%AtmPayment{money: money} = atm_payment) do
+    request_values = [
+      {"merchant_id", @merchant_id},
+      {"connect_id", @connect_id},
+      {"connect_password", @connect_password},
+      {"telegram_kind", "010"},
+      {"telegram_version", "1.0"},
+      {"payment_amount", money.amount},
+      {"payment_detail", atm_payment.payment_detail},
+      {"payment_detail_kana", atm_payment.payment_detail_kana},
+      {"payment_limit_date", atm_payment.payment_limit_date}
+    ]
+
+    {:ok, url_encode(request_values)}
+  end
 
   defp url_encode(values, encoded \\ "")
 

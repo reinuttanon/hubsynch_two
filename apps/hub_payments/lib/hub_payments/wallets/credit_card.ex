@@ -23,6 +23,7 @@ defmodule HubPayments.Wallets.CreditCard do
   def changeset(credit_card, attrs) do
     credit_card
     |> cast(attrs, [
+      :cvv,
       :brand,
       :cvv,
       :exp_month,
