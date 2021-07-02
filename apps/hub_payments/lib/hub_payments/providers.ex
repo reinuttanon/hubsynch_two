@@ -171,7 +171,7 @@ defmodule HubPayments.Providers do
     end
   end
 
-  def process_capture({:error, message}, %Provider{name: name}, %Charge{uuid: uuid})
+  def process_capture({:user_error, message}, %Provider{name: name}, %Charge{uuid: uuid})
       when is_binary(message) do
     Logger.error("charge uuid: #{uuid} failed for #{name} with error: #{message}")
     {:error, message}
@@ -179,7 +179,7 @@ defmodule HubPayments.Providers do
 
   def process_capture({:error, message}, provider, charge) do
     encoded = Jason.encode!(message)
-    process_capture({:error, encoded}, provider, charge)
+    process_capture({:user_error, encoded}, provider, charge)
   end
 
   def process_atm_payment(

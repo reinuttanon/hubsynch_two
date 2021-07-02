@@ -1,9 +1,6 @@
 defmodule HubPaymentsWeb.Api.V1.WalletControllerTest do
   use HubPaymentsWeb.ConnCase
 
-  alias HubPayments.Wallets
-  alias HubPayments.Wallets.Wallet
-
   @create_attrs %{
     owner: %{},
     prefered_credit_card_uuid: "some prefered_credit_card_uuid",
@@ -17,7 +14,7 @@ defmodule HubPaymentsWeb.Api.V1.WalletControllerTest do
   setup %{conn: conn} do
     {:ok,
      conn:
-       build_conn()
+       conn
        |> put_req_header("accept", "application/json")
        |> put_req_header("x-api-key", HubIdentity.Factory.insert(:api_key, type: "private").data)}
   end

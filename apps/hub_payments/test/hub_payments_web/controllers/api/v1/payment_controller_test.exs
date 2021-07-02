@@ -143,7 +143,7 @@ defmodule HubPaymentsWeb.Api.V1.PaymentControllerTest do
         |> post("/api/v1/payments/process", message)
         |> json_response(400)
 
-      assert response["error"] == "Token should not be nil"
+      assert response["error"] == "Invalid charge values"
     end
 
     test "With wrong credit card owner returns error" do

@@ -246,7 +246,6 @@ defmodule HubPayments.WalletsTest do
   describe "update_credit_card/2" do
     test "with valid data updates a credit card" do
       credit_card = insert(:credit_card)
-      wallet = insert(:wallet)
 
       {:ok, updated_credit_card} =
         Wallets.update_credit_card(credit_card, %{

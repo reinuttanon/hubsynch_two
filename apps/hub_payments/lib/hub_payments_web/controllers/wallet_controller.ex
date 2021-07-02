@@ -13,7 +13,7 @@ defmodule HubPaymentsWeb.WalletController do
     with {:ok, %Wallet{} = wallet} <- Wallets.create_wallet(wallet_params) do
       conn
       |> put_status(:created)
-      |> put_resp_header("location", Routes.wallet_path(conn, :show, wallet))
+      |> put_resp_header("location", Routes.wallet_path(conn, :show, wallet.uuid))
       |> render("show.json", wallet: wallet)
     end
   end

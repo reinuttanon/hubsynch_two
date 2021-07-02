@@ -31,7 +31,7 @@ defmodule HubPayments.Providers.Paygent.MessageBuilderTest do
     end
 
     test "returns error with invalid value" do
-      {:error, message} = MessageBuilder.build_authorization("charge", "credit_card", "")
+      {:user_error, message} = MessageBuilder.build_authorization("charge", "credit_card", "")
       assert message == "Invalid charge values"
     end
   end
@@ -62,7 +62,9 @@ defmodule HubPayments.Providers.Paygent.MessageBuilderTest do
     end
 
     test "returns error with invalid value" do
-      {:error, message} = MessageBuilder.build_authorization("charge", "credit_card", "any_Value")
+      {:user_error, message} =
+        MessageBuilder.build_authorization("charge", "credit_card", "any_Value")
+
       assert message == "Invalid charge values"
     end
   end
@@ -81,8 +83,8 @@ defmodule HubPayments.Providers.Paygent.MessageBuilderTest do
     end
 
     test "returns error with invalid value" do
-      {:error, message} = MessageBuilder.build_capture("charge", "message")
-      assert message == "Invalid charge values"
+      {:user_error, message} = MessageBuilder.build_capture("charge", "message")
+      assert message == "Invalid capture charge values"
     end
   end
 end
