@@ -123,6 +123,7 @@ defmodule HubPaymentsWeb.Api.V1.PaymentController do
         atm_payment_uuid: atm_payment.uuid,
         amount: amount,
         currency: currency,
+        payment_id: data["payment_id"],
         pay_center_number: data["pay_center_number"],
         customer_number: data["customer_number"],
         conf_number: data["conf_number"],
