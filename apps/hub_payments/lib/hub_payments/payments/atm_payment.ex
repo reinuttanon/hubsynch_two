@@ -66,7 +66,13 @@ defmodule HubPayments.Payments.AtmPayment do
   end
 
   defp make_money(%Ecto.Changeset{changes: %{amount: amount, currency: currency}} = changeset) do
-    put_change(changeset, :money, Money.new(amount, currency))
+    case Money.parse("#{amount}", currency) do
+      {:ok, %Money{}} ->
+        put_change(changeset, :money, Money.new(amount, currency))
+
+      :error ->
+        add_error(changeset, :money, "Invalid amount or currency")
+    end
   end
 
   defp make_money(changeset), do: changeset
