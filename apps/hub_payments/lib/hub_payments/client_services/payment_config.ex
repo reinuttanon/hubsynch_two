@@ -8,6 +8,7 @@ defmodule HubPayments.ClientServices.PaymentConfig do
 
   schema "payment_configs" do
     field :client_service_uuid, :string
+    field :client_service, :map, virtual: true
     field :deleted_at, :utc_datetime
     field :payment_methods, {:array, :string}
     field :statement_name, :string
@@ -21,7 +22,7 @@ defmodule HubPayments.ClientServices.PaymentConfig do
   @doc false
   def changeset(payment_config, attrs) do
     payment_config
-    |> cast(attrs, [:client_service_uuid, :payment_methods, :statement_name])
+    |> cast(attrs, [:client_service_uuid, :payment_methods, :statement_name, :provider_id])
     |> validate_required([:client_service_uuid, :payment_methods])
     |> validate_length(:payment_methods, min: 1)
     |> validate_subset(:payment_methods, @payment_methods)
@@ -30,7 +31,7 @@ defmodule HubPayments.ClientServices.PaymentConfig do
 
   def update_changeset(payment_config, attrs) do
     payment_config
-    |> cast(attrs, [:client_service_uuid, :payment_methods, :statement_name])
+    |> cast(attrs, [:client_service_uuid, :payment_methods, :statement_name, :provider_id])
     |> validate_required([:client_service_uuid, :payment_methods])
     |> validate_length(:payment_methods, min: 1)
     |> validate_subset(:payment_methods, @payment_methods)

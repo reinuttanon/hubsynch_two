@@ -3,15 +3,19 @@
 <table class="table is-hoverable">
   <thead>
     <tr>
+      <th>Logo</th>
       <th>Client Service</th>
       <th>Provider</th>
+      <th>Payment Methods</th>
     </tr>
   </thead>
   <tbody>
     <%= for payment_configs <- @payment_configs do %>
       <tr>
-        <td><%= payment_configs.client_service_uuid %></td>
+        <td><%= payment_configs.client_service.logo %></td>
+        <td><%= payment_configs.client_service.name %></td>
         <td><%= payment_configs.provider_id %></td>
+        <td><%= payment_configs.payment_methods %></td>
       </tr>
     <% end %>
   </tbody>

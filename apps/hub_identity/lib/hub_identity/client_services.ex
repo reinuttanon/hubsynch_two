@@ -64,6 +64,14 @@ defmodule HubIdentity.ClientServices do
     Repo.all_present(query)
   end
 
+  def client_services_by_uids(uids) do
+    query =
+      from c in ClientService,
+        where: c.uid in ^uids
+
+    Repo.all(query)
+  end
+
   @doc """
   Gets a single client_service.
 

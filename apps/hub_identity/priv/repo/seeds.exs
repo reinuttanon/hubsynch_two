@@ -71,3 +71,40 @@ for provider_config <- provider_configs do
     Providers.create_provider_config(provider_config)
   end
 end
+
+client_services_params = [
+  %{
+    description: "this was born from a seed",
+    name: "erin's service",
+    redirect_url: "http://www.whizzletooth.co/redirect",
+    url: "www.whizzletooth.co",
+    logo: "https://www.glay.co.jp/img/uploads/index_contents/201901010322_02123.jpg",
+    email_confirmation_redirect_url: "email/confirm/required",
+    pass_change_redirect_url: "passwrod/change/redirect"
+  },
+  %{
+    description: "this was born from a seed",
+    name: "patrick's service",
+    redirect_url: "http://www.youtube.co/redirect",
+    url: "www.youtube.co",
+    logo: "https://www.glay.co.jp/img/uploads/index_contents/201901010322_02123.jpg",
+    email_confirmation_redirect_url: "email/confirm/required",
+    pass_change_redirect_url: "passwrod/change/redirect"
+  },
+  %{
+    description: "this was born from a seed",
+    name: "natali's service",
+    redirect_url: "http://www.pink_unikorn.co/redirect",
+    url: "www.pink_unikorn.co",
+    logo: "https://www.glay.co.jp/img/uploads/index_contents/201901010322_02123.jpg",
+    email_confirmation_redirect_url: "email/confirm/required",
+    pass_change_redirect_url: "passwrod/change/redirect"
+  }
+]
+
+for client_services_param <- client_services_params do
+  if Repo.get_by(ClientService, name: client_services_param[:name]) == nil do
+    admin = Administration.get_administrator_by_email("erin@hivelocity.co.jp")
+    ClientServices.create_client_service(client_services_param, admin)
+  end
+end

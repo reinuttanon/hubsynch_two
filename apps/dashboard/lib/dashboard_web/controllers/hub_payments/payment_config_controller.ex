@@ -5,7 +5,8 @@ defmodule DashboardWeb.HubPayments.PaymentConfigController do
   alias HubPayments.ClientServices, as: PaymentsClients
 
   def index(conn, _params) do
-    payment_configs = PaymentsClients.list_payment_configs()
+    payment_configs = preloaded_client_services()
+
     render(conn, "index.html", %{payment_configs: payment_configs})
   end
 
@@ -60,5 +61,19 @@ defmodule DashboardWeb.HubPayments.PaymentConfigController do
     #   conn
     #   |> put_flash(:info, "Client service deleted successfully.")
     #   |> redirect(to: Routes.client_service_path(conn, :index))
+  end
+
+  defp preloaded_client_services do
+    payment_configs = PaymentsClients.list_payment_configs()
+
+    client_services =
+      payment_configs
+      |> Enum.map(& &1.client_service_uuid)
+      |> HubIdentity.ClientServices.client_services_by_uids()
+      |> Enum.into(%{}, fn client_service -> {client_service.uid, client_service} end)
+
+    Enum.map(payment_configs, fn payment_config ->
+      %{payment_config | client_service: client_services[payment_config.client_service_uuid]}
+    end)
   end
 end

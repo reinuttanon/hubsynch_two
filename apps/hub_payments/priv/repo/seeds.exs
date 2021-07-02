@@ -109,3 +109,25 @@ HubPayments.Wallets.create_credit_card(%{
   last_four: "4321",
   wallet_id: wallet.id
 })
+
+client_services = HubIdentity.ClientServices.list_client_services()
+
+paygent = HubPayments.Providers.get_provider(%{name: "paygent"})
+
+payment_config_params = %{
+  payment_methods: ["credit_card"],
+  statement_name: "some statement name",
+  provider_id: paygent.id
+}
+
+for client_service <- client_services do
+  if(
+    HubPayments.Repo.get_by(
+      HubPayments.ClientServices.PaymentConfig,
+      client_service_uuid: client_service.uid
+    ) == nil
+  ) do
+    Map.put(payment_config_params, :client_service_uuid, client_service.uid)
+    |> HubPayments.ClientServices.create_payment_config()
+  end
+end
