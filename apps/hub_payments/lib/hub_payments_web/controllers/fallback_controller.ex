@@ -8,6 +8,13 @@ defmodule HubPaymentsWeb.FallbackController do
 
   # This clause handles errors returned by Ecto's insert/update/delete.
 
+  def call(conn, {:error, :system_failure}) do
+    conn
+    |> put_status(400)
+    |> put_view(HubPaymentsWeb.Api.V1.FallbackView)
+    |> render("error.json", %{error: "Internal HubPayment Error"})
+  end
+
   def call(conn, {:error, %Ecto.Changeset{} = changeset}) do
     conn
     |> put_status(400)
@@ -16,6 +23,13 @@ defmodule HubPaymentsWeb.FallbackController do
   end
 
   def call(conn, {:error, message}) when is_binary(message) do
+    conn
+    |> put_status(400)
+    |> put_view(HubPaymentsWeb.Api.V1.FallbackView)
+    |> render("error.json", %{error: message})
+  end
+
+  def call(conn, {:user_error, message}) when is_binary(message) do
     conn
     |> put_status(400)
     |> put_view(HubPaymentsWeb.Api.V1.FallbackView)

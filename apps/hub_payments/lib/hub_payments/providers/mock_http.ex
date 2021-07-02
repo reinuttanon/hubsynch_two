@@ -90,7 +90,7 @@ defmodule HubPayments.Providers.MockHttp do
 
   defp simulate_sbps_response(body) do
     case body =~ "invalid_transaction_id" do
-      true -> {:ok, %HTTPoison.Response{status_code: 200, body: sbps_capture_failure_body()}}
+      true -> {:error, %HTTPoison.Response{status_code: 200, body: sbps_capture_failure_body()}}
       false -> {:ok, %HTTPoison.Response{status_code: 200, body: sbps_capture_success_body()}}
     end
   end
@@ -168,7 +168,7 @@ defmodule HubPayments.Providers.MockHttp do
         {:ok, %HTTPoison.Response{status_code: 200, body: paygent_auth_success_body()}}
 
       _ ->
-        {:ok, %HTTPoison.Response{status_code: 200, body: paygent_auth_failure_body()}}
+        {:error, %HTTPoison.Response{status_code: 200, body: paygent_auth_failure_body()}}
     end
   end
 
@@ -181,7 +181,7 @@ defmodule HubPayments.Providers.MockHttp do
         {:ok, %HTTPoison.Response{status_code: 200, body: sbps_auth_success_body()}}
 
       _ ->
-        {:ok, %HTTPoison.Response{status_code: 200, body: sbps_auth_failure_body()}}
+        {:error, %HTTPoison.Response{status_code: 200, body: sbps_auth_failure_body()}}
     end
   end
 

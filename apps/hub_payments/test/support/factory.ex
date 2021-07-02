@@ -44,7 +44,7 @@ defmodule HubPayments.Factory do
 
   def message_factory do
     %HubPayments.Providers.Message{
-      data: %{value: "one", payment_id: "somepayment_id"},
+      data: %{"value" => "one", "payment_id" => "somepayment_id"},
       type: "authorization",
       request: "<xml>these are the droids your looking for</xml>",
       provider: build(:provider),

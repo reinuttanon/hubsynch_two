@@ -62,9 +62,7 @@ defmodule HubPayments.Providers.Paygent.MessageBuilder do
     }
   end
 
-  def build_authorization(_, _, nil), do: {:error, "Token should not be nil"}
-
-  def build_authorization(_, _, _), do: {:error, "Invalid charge values"}
+  def build_authorization(_, _, _), do: {:user_error, "Invalid charge values"}
 
   def build_capture(%Charge{money: money}, %Message{data: data}) do
     request_values = [
@@ -74,13 +72,13 @@ defmodule HubPayments.Providers.Paygent.MessageBuilder do
       {"telegram_kind", "022"},
       {"telegram_version", "1.0"},
       {"payment_amount", money.amount},
-      {"payment_id", data[:payment_id]}
+      {"payment_id", data["payment_id"]}
     ]
 
     {:ok, url_encode(request_values)}
   end
 
-  def build_capture(_, _), do: {:error, "Invalid charge values"}
+  def build_capture(_, _), do: {:user_error, "Invalid capture charge values"}
 
   def build_atm_payment(%AtmPayment{money: money} = atm_payment) do
     request_values = [

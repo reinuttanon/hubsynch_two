@@ -119,13 +119,18 @@ defmodule HubPayments.WalletsTest do
     test "with valid uuid and owner returns the card" do
       wallet = insert(:wallet)
       credit_card = insert(:credit_card, wallet: wallet)
-      found_card = Wallets.get_credit_card(%{uuid: credit_card.uuid, owner: wallet.owner})
+
+      assert {:ok, found_card} =
+               Wallets.get_credit_card(%{uuid: credit_card.uuid, owner: wallet.owner})
+
       assert found_card.id == credit_card.id
     end
 
     test "with invalid uuid returns nil" do
       wallet = insert(:wallet)
-      assert Wallets.get_credit_card(%{uuid: "invalid_uuid", owner: wallet.owner}) == nil
+
+      assert Wallets.get_credit_card(%{uuid: "invalid_uuid", owner: wallet.owner}) ==
+               {:user_error, "Credit card not found"}
     end
 
     test "with invalid owner returns nil" do
@@ -135,7 +140,7 @@ defmodule HubPayments.WalletsTest do
       assert Wallets.get_credit_card(%{
                uuid: credit_card.uuid,
                owner: %{object: "HubIdentity.User", uid: "wrong_uuid"}
-             }) == nil
+             }) == {:user_error, "Credit card not found"}
     end
   end
 

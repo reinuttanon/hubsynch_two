@@ -8,7 +8,9 @@ defmodule HubPayments.Providers.Paygent.ResponseParser do
     with {:ok, %{"result" => "0"} = data} <- get_response_data(%{}, fields) do
       {:ok, response, data}
     else
-      {:ok, data} -> {:error, data["response_detail"]}
+      {:ok, data} ->
+        Logger.error(%{provider: "paygent", error: data["response_detail"]})
+        {:error, :system_failure}
     end
   end
 
@@ -24,7 +26,9 @@ defmodule HubPayments.Providers.Paygent.ResponseParser do
     with {:ok, %{"result" => "0"} = data} <- get_response_data(%{}, fields) do
       {:ok, response, data}
     else
-      {:ok, data} -> {:error, data["response_detail"]}
+      {:ok, data} ->
+        Logger.error(%{provider: "paygent", error: data["response_detail"]})
+        {:error, :system_failure}
     end
   end
 
@@ -40,7 +44,9 @@ defmodule HubPayments.Providers.Paygent.ResponseParser do
     with {:ok, %{"result" => "0"} = data} <- get_response_data(%{}, fields) do
       {:ok, decoded, data}
     else
-      {:ok, data} -> {:error, data["response_detail"]}
+      {:ok, data} ->
+        Logger.error(%{provider: "paygent", error: data["response_detail"]})
+        {:error, :system_failure}
     end
   end
 

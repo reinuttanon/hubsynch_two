@@ -42,7 +42,7 @@ defmodule HubPaymentsWeb.Api.V1.PaymentController do
          {:ok, _} <-
            HubIdentity.Verifications.validate_code(code, user_uuid, client_service, reference),
          %Provider{} = provider <- Providers.get_provider(%{name: "paygent"}),
-         %CreditCard{} = credit_card <-
+         {:ok, credit_card} <-
            Wallets.get_credit_card(%{
              uuid: card_uuid,
              owner: %{object: "HubIdentity.User", uid: user_uuid}
@@ -131,11 +131,11 @@ defmodule HubPaymentsWeb.Api.V1.PaymentController do
       })
     else
       {:error, message} -> {:error, message}
-      nil -> {:error, "Provider doesn't exist"}
+      nil -> {:user_error, "Provider doesn't exist"}
     end
   end
 
-  def process(_conn, _), do: {:error, "bad request"}
+  def process(_conn, _), do: {:user_error, "bad request"}
 end
 
 # %{

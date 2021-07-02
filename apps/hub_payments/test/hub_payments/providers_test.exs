@@ -144,7 +144,7 @@ defmodule HubPayments.ProvidersTest do
 
       {:error, error_message} = Providers.process_capture({:ok, message}, provider, "charge")
 
-      assert error_message == "SBPS error: 10137999"
+      assert error_message == :unknown_token_failure
     end
 
     test "process_atm_payment/2 with valid data return message" do

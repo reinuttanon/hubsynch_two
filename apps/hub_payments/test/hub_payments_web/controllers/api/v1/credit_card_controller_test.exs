@@ -192,7 +192,9 @@ defmodule HubPaymentsWeb.Api.V1.CreditCardControllerTest do
         })
 
       assert response.status == 204
-      assert Wallets.get_credit_card(%{uuid: credit_card.uuid, wallet_uuid: wallet.uuid}) == nil
+
+      assert Wallets.get_credit_card(%{uuid: credit_card.uuid, wallet_uuid: wallet.uuid}) ==
+               {:user_error, "Credit card not found"}
     end
 
     test "returns error if there is no such credit_card in this wallet", %{conn: conn} do

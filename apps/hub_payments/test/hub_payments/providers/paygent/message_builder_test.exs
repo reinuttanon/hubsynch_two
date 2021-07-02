@@ -77,7 +77,7 @@ defmodule HubPayments.Providers.Paygent.MessageBuilderTest do
       assert result ==
                "merchant_id=some_merchant_id&connect_id=some_connect_id&connect_password=some_connect_password&telegram_kind=022&telegram_version=1.0&payment_amount=#{
                  charge.money.amount
-               }&payment_id=#{message.data.payment_id}"
+               }&payment_id=#{message.data["payment_id"]}"
     end
 
     test "returns error with invalid value" do

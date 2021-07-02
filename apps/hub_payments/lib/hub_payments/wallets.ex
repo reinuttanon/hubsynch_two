@@ -153,10 +153,16 @@ defmodule HubPayments.Wallets do
       iex> get_credit_card!(456)
       ** (Ecto.NoResultsError)
 
-  """
-  def get_credit_card!(id), do: Repo.get!(CreditCard, id)
+      iex> get_credit_card!(%{uuid: "uuid", owner: %{object: "object", uid: "uid"}})
+      %CreditCard{}
 
-  def get_credit_card(%{uuid: uuid, owner: %{object: object, uid: uid}}) do
+      iex> get_credit_card!(%{uuid: "invalid", owner: %{object: "invalid", uid: "invalid"}})
+      nil
+
+  """
+  def get_credit_card!(id) when is_integer(id), do: Repo.get!(CreditCard, id)
+
+  def get_credit_card!(%{uuid: uuid, owner: %{object: object, uid: uid}}) do
     query =
       from c in CreditCard,
         where: c.uuid == ^uuid,
@@ -166,7 +172,7 @@ defmodule HubPayments.Wallets do
     Repo.one(query)
   end
 
-  def get_credit_card(%{uuid: uuid, wallet_uuid: wallet_uuid}) do
+  def get_credit_card!(%{uuid: uuid, wallet_uuid: wallet_uuid}) do
     query =
       from c in CreditCard,
         where: c.uuid == ^uuid,
@@ -175,6 +181,25 @@ defmodule HubPayments.Wallets do
         where: w.uuid == ^wallet_uuid
 
     Repo.one(query)
+  end
+
+  @doc """
+  Gets a single credit_card.
+
+  Raises `Ecto.NoResultsError` if the Credit card does not exist.
+
+  ## Examples
+      iex> get_credit_card!(%{uuid: "uuid", owner: %{object: "object", uid: "uid"}})
+      {:ok, %CreditCard{}}
+
+      iex> get_credit_card!(%{uuid: "invalid", owner: %{object: "invalid", uid: "invalid"}})
+      {:user_error, "Credit card not found."}
+  """
+  def get_credit_card(attrs) do
+    case get_credit_card!(attrs) do
+      %CreditCard{} = credit_card -> {:ok, credit_card}
+      _ -> {:user_error, "Credit card not found"}
+    end
   end
 
   @doc """
